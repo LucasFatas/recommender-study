@@ -3,6 +3,7 @@ import {
   BrowserRouter,
   Routes,
   Route,
+  Navigate
 } from "react-router-dom";
 
 
@@ -26,16 +27,33 @@ const App = () => {
   ]
 
   const questions2 = [
-    'What is your name?',
-    'How old are you?',
-    'Where are you from?'
+    'How much do you relate to this?',
+    'Do you believe that you exist?',
+    'Do you believe in the existence of god?'
+  ]
+
+  const questions3 = [
+    'Bla bla bla question?',
+    'words words words question?',
+    'sentence sentence question?'
   ]
 
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Page questions={questions}/>}/>
-        <Route path="/page1" element={<Page questions={questions2}/>}/>
+        <Route path="/" element={<Navigate replace to="/page0"/>} />
+        {/* Page 0 */}
+        <Route path="/page0" element={ 
+          <Page questions={questions} nextPage={1}/>
+        }/>
+        {/* Page 1 */}
+        <Route path="/page1" element={
+          <Page questions={questions2} prevPage={0} nextPage={2} />
+        } />
+        {/* Page 2 */}
+        <Route path="/page2" element={
+          <Page questions={questions3} prevPage={1} />
+        } />
       </Routes>
     </BrowserRouter>
   );
