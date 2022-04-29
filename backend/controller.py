@@ -22,13 +22,16 @@ def save_answer():
     user_id, val_answers, pers_answers, spoti = variable_name['user'], variable_name['val_answers'], \
                                                 variable_name['pers_answers'], variable_name['spoti']
 
+    # Calculations for the personality and values.
     # TODO: implement value and personality calculations
     values, personalities = calculations(val_answers, pers_answers)
 
+    # Store all of the data gathered into our database.
     # TODO: store all data into our database
     store(user_id, val_answers, pers_answers, values, personalities, spoti)
 
-    return jsonify(user_id=user_id, val_answers=val_answers, pers_answers=pers_answers, spoti=spoti)
+    # Process successful, return results for frontend to show to the user.
+    return jsonify(values=values, personalities=personalities)
 
 
 if __name__ == "__main__":
