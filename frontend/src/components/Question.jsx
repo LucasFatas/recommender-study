@@ -1,9 +1,13 @@
 import React from 'react';
 
+import { Answer } from './Answer';
+
 export const Question = (props) => {
 
-
     return (
-        <h1 className='text-blue-500'>Question?</h1>
+        <div className='flex-col py-10'>
+            <h1 className='text-blue-500 text-center text-2xl'>{props.text}</h1>
+            <Answer questionNumber={props.questionNumber}/>
+        </div>
     );
 }

@@ -1,12 +1,21 @@
 import { Question } from './components/Question';
-import { Answer } from './components/Answer';
+
+
 
 const App = () => {
+
+  const questions = [
+    'What is your name?',
+    'How old are you?',
+    'Where are you from?'
+  ]
+
   return (
-    <>
-     <Question/>
-     <Answer/>
-    </>
+    <div className='grid place-items-center'>
+      {questions.map((text, index) => 
+        <Question text={text} questionNumber={index}/>
+      )}
+    </div>
   );
 }
 
