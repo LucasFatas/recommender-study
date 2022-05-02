@@ -1,4 +1,5 @@
 import { Question } from './components/Question';
+import { Buttons } from './components/Buttons';
 
 
 
@@ -15,6 +16,8 @@ const App = () => {
       {questions.map((text, index) => 
         <Question text={text} questionNumber={index}/>
       )}
+
+      <Buttons/>
     </div>
   );
 }
