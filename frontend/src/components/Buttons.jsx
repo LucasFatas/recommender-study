@@ -1,7 +1,7 @@
 import React from 'react';
 
 const buttonStyle = "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full ";
-const buttonStyleDisabled = "disabled text-white fonted bg-blue-200 hover:bg-blue-400  py-2 px-4 rounded-full ";
+const buttonStyleDisabled = " select-none text-transparent fonted bg-transparent hover:bg-transparent  py-2 px-4 rounded-full ";
 
 
 export const Buttons = () => {
