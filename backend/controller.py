@@ -1,7 +1,7 @@
 import json
 
 from flask import Flask, request, jsonify
-from service import store_answers, store_calculations, store_user
+from service import store_answers, store_user
 from psychology import calculations, split_data
 
 app = Flask(__name__)
@@ -32,9 +32,15 @@ def save_answer():
     # TODO: store answers into our database
     store_answers(user_id, answers)
 
-
     # Process successful, return results for frontend to show to the user.
     return jsonify(values=values, personalities=personalities)
+
+# Send questions to the frontend
+@app.route("/getQuestions", methods=["GET"])
+def get_questions():
+    # TODO: store and retrieve questions
+    questions = ["What is love?", "Baby don't hurt me", "Don't hurt me", "No more"]
+    return jsonify(questions=questions)
 
 
 if __name__ == "__main__":
