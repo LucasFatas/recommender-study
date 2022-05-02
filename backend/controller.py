@@ -3,6 +3,7 @@ import json
 from flask import Flask, request, jsonify
 from service import store
 from psychology import calculations
+from spotify import get_access_token, get_top_songs
 
 app = Flask(__name__)
 
@@ -33,6 +34,11 @@ def save_answer():
     # Process successful, return results for frontend to show to the user.
     return jsonify(values=values, personalities=personalities)
 
+@app.route('/callback')
+def spotifyLogIn():
+    access_token = get_access_token(request.args['code'])
+    return get_top_songs(access_token).text
+
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=True, port=3000)
