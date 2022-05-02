@@ -1,8 +1,8 @@
 import json
 
 from flask import Flask, request, jsonify
-from service import store_answers, store_calculations
-from psychology import calculations
+from service import store_answers, store_calculations, store_user
+from psychology import calculations, split_data
 
 app = Flask(__name__)
 
@@ -19,19 +19,18 @@ def mainConnection():
 @app.route("/saveAnswer", methods=["POST"])
 def save_answer():
     variable_name = request.get_json()
-    user_id, val_answers, pers_answers = variable_name['user'], variable_name['val_answers'], variable_name['pers_answers']
+    user_id, answers, batch = variable_name['user'], variable_name['answers'], variable_name['batch']
 
     # Calculations for the personality and values.
     # TODO: implement value and personality calculations
-    values, personalities = calculations(val_answers, pers_answers)
+    values, personalities = calculations(answers)
 
     # Store the data gathered about the participant into our database.
-    # TODO: store data into our database
-    store_answers(user_id, val_answers, pers_answers)
+    # TODO: store user into DB
+    store_user(user_id, values, personalities, batch)
 
-    # Store the data copmuted about the participant's personality into our database.
-    # TODO: store data into our database
-    store_calculations(user_id, values, personalities)
+    # TODO: store answers into our database
+    store_answers(user_id, answers)
 
 
     # Process successful, return results for frontend to show to the user.
