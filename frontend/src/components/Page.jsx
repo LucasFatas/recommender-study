@@ -1,37 +1,14 @@
 import React from "react";
-import { Link } from 'react-router-dom';
 import { Question } from './Question';
+import { Buttons } from "./Buttons";
 
 export const Page = (props) => {
-
-    const displayIfDefined = (page, component) => (page === undefined ? <></> : component);
-
-    const linkToPreviousPage  = (
-        <Link to={ `/page${props.prevPage }`}>
-            <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">prev</button>
-        </Link>
-    );
-
-    const linkToNextPage  = (
-        <Link to={ `/page${props.nextPage}` }>
-            <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">next</button>
-        </Link>
-    );
-
-    const submitButton = (
-        <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">submit</button>
-    )
-
     return (
         <div className='grid place-items-center'>
             {props.questions.map(([text, index]) => 
                 <Question text={text} questionNumber={index} key={index}/>
             )}
-            <div className="flex">
-                { displayIfDefined(props.prevPage, linkToPreviousPage) }
-                { props.showSubmit ? submitButton : <></>}
-                { displayIfDefined(props.nextPage, linkToNextPage) }
-            </div>
+            <Buttons {...props} />
         </div>
     );
 }

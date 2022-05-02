@@ -20,8 +20,6 @@ const App = () => {
 
   const lastQuestionIdx = questionMatrix.length;
 
-  console.log(questionMatrix);
-
   return (
     <BrowserRouter>
       <Routes>
@@ -35,7 +33,7 @@ const App = () => {
                 questions={questions} 
                 prevPage={idx === 0 ? undefined : idx - 1} 
                 nextPage={idx === lastQuestionIdx - 1 ? undefined : idx + 1}
-                showSubmit={idx === lastQuestionIdx - 1}
+                showSubmit={idx === lastQuestionIdx - 1 ? lastQuestionIdx - 1 : undefined}
               />
             }/>
           ))
