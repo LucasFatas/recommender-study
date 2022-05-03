@@ -10,6 +10,7 @@ db = mysql.connector.connect(
 
 cursor = db.cursor()
 
+
 def add_answers(answers):
     sql = """INSERT INTO Recommender.Answer(ParticipantId, QuestionNumber, Response) VALUES (%s, %s, %s)"""
     cursor.executemany(sql, answers)
@@ -33,6 +34,7 @@ def store_answer(user_id, question_number, answer):
 
     return "Success storing answer"
 
+
 def add_value(user_id, values):
     sql = "INSERT INTO Recommender.Value (ValueId, Stimulation, SelfDirection, Universalism" \
           ",Benevolence,Tradition, Conformity, SecurityVal, PowerVal, Achievement,Hedonism)" \
@@ -43,6 +45,7 @@ def add_value(user_id, values):
     db.commit()
 
     return "Success storing value"
+
 
 def add_personality(user_id, personality):
     sql = "INSERT INTO Recommender.Personality (PersonalityId, Openness, Honesty, Emotionality" \

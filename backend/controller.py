@@ -1,7 +1,7 @@
 import json
 
 from flask import Flask, request, jsonify
-from service import add_user
+from service import add_user, add_answers
 from psychology import calculations
 from spotify import get_access_token, get_top_songs, AuthorizationException
 import json
@@ -20,16 +20,22 @@ def mainConnection():
 # Get answers and save them into the database.
 @app.route("/saveAnswer", methods=["POST"])
 def save_answer():
-    variable_name = request.get_json()
-    user_id, answers, batch = variable_name['user'], variable_name['answers'], variable_name['batch']
+    data = request.get_json()
 
     # Calculations for the personality and values.
     # TODO: implement value and personality calculations
     #values, personalities = calculations(answers)
 
     # TODO: store answers into our database
-    store_answer(user_id, answers, 1)
+    answers = []
 
+    for answer, index in enumerate(data['personality_answers']):
+        answers.append(data['user'], index, answer)
+
+    for answer, index in enumerate(data['value_answers']):
+        answers.append(data['user'], index, answer)
+
+    add_answers(answers)
 
     # Process successful, return results for frontend to show to the user.
     #return jsonify(values=values, personalities=personalities)
