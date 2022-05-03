@@ -1,9 +1,3 @@
-<<<<<<< HEAD
-import { Question } from './components/Question';
-import { useState } from 'react';
-import { useEffect } from 'react';
-
-=======
 import { Page } from './components/Page';
 import {
   BrowserRouter,
@@ -11,35 +5,11 @@ import {
   Route,
   Navigate
 } from "react-router-dom";
->>>>>>> react-router
 
 import questions from './util/questions.json';
 
 const App = () => {
 
-<<<<<<< HEAD
-  const [inputQuestions, setinputQuestions] = useState([]);
-
-
-  useEffect(()=>{
-    fetch('http://localhost:5000/getQuestions',{
-      'methods':'GET',
-      headers : {
-        'Content-Type':'application/json'
-      }
-    })
-    .then(response => response.json())
-    .then(response => setinputQuestions(response))
-    .catch(error => console.log(error))
-
-  },[])
-
-  var questions = [
-    'Basic question?'
-  ] 
-  questions.push.apply(questions, inputQuestions)
-  
-=======
   const questionsList = questions.questions;
 
   const questionsPerPage = 5
@@ -49,7 +19,6 @@ const App = () => {
   }).filter(e => { return e; });
 
   const lastQuestionIdx = questionMatrix.length;
->>>>>>> react-router
 
   return (
     <BrowserRouter>
