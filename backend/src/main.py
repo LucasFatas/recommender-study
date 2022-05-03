@@ -8,7 +8,7 @@ def create_app():
     with open('../config.json', 'r') as f:
         config = json.load(f)
 
-    app.run(debug=True, port=config['port'])
+    app.run(port=config['port'])
     return app
 
 
