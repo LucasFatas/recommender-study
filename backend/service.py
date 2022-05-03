@@ -25,14 +25,22 @@ def open_connection():
     return db, cursor
 
 
+# Methode that stores all answers of a user to the database
+# Parameters: a list of tuples containing: a user id, the question number and the user's answer
+# Returns: A confirmation message
 def add_answers(answers):
     db, cursor = open_connection()
     sql = """INSERT INTO Recommender.Answer(ParticipantId, QuestionNumber, Response) VALUES (%s, %s, %s)"""
+    # The SQL statement for storing answers in the Answer table
+    sql = "INSERT INTO Recommender.Answer(UserId, QuestionNumber, Response) VALUES (%s, %s, %s)"
+
     cursor.executemany(sql, answers)
     db.commit()
     return "Success storing all Answers"
 
-
+# Methode that stores a new user to the database
+# Parameters: a batch id
+# Returns: a user id
 def add_user(batch_id):
     db, cursor = open_connection()
     cursor.execute("Insert Into Recommender.Participant(Batch) "
@@ -44,15 +52,11 @@ def add_user(batch_id):
     return participant_id
 
 
-def store_answer(user_id, question_number, answer):
-    db, cursor = open_connection()
-    cursor.execute("Insert Into Recommender.Answer(UserId, QuestionNumber, Response) Values(" + str(user_id) + "," + str(question_number) + "," + str(answer) + ")")
-    db.commit()
-
-    return "Success storing answer"
-
-
+# Methode that stores the value vector of a user to the database
+# Parameters: a user id and a value vector
+# Returns: A confirmation message
 def add_value(user_id, values):
+    # The SQL statement for storing a value in the Value table
     db, cursor = open_connection()
     sql = "INSERT INTO Recommender.Value (ValueId, Stimulation, SelfDirection, Universalism" \
           ",Benevolence,Tradition, Conformity, SecurityVal, PowerVal, Achievement,Hedonism)" \
@@ -65,7 +69,11 @@ def add_value(user_id, values):
     return "Success storing value"
 
 
+# Methode that stores the personality vector of a user to the database
+# Parameters: a user id and a personality vector
+# Returns: A confirmation message
 def add_personality(user_id, personality):
+    # The SQL statement for storing a personality in the Personality table
     db, cursor = open_connection()
     sql = "INSERT INTO Recommender.Personality (PersonalityId, Openness, Honesty, Emotionality" \
           ", Extroversion, Agreeableness, Conscientiousness VALUES (%s, %s, %s, %s, %s, %s, %s)"
