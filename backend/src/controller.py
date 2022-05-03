@@ -82,15 +82,13 @@ def spotify_log_in():
         return response, 502
 
 
-
-def create_app(config):
+def create_app():
+    with open('../config.json', 'r') as f:
+        config = json.load(f)
     app.run(debug=True, port=config['port'])
 
 
-
 if __name__ == "__main__":
-    with open('config.json', 'r') as f:
-        configuration = json.load(f)
-    create_app(configuration)
+    create_app()
 
 

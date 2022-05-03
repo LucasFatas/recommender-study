@@ -8,7 +8,7 @@ class DatabaseException(Exception):
 
 def open_connection():
 
-    with open('config.json', 'r') as f:
+    with open('../config.json', 'r') as f:
         configuration = json.load(f)
 
     if configuration['is_testing']:
