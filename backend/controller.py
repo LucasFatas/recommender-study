@@ -1,5 +1,5 @@
 from flask import Flask, request, jsonify
-from service import add_user, add_answers
+from service import add_user, add_answers, DatabaseException
 from psychology import calculations
 from spotify import get_access_token, get_top_songs, AuthorizationException
 import json
@@ -38,8 +38,13 @@ def save_answer():
     for index, answer in enumerate(data['value_answers']):
         answers.append((data['user'], len(data['personality_answers']) + index, answer))
 
-    # Add the newly formatted answers to our database.
-    add_answers(answers)
+    try:
+        # Add the newly formatted answers to our database.
+        add_answers(answers)
+    except DatabaseException as e:
+        # Exception handling in case there is an error.
+        response = jsonify({'message': str(e)})
+        return response, 502
 
     # Calculate value and personality scores.
     value, personality = calculations(data['value_answers'], data['personality_answers'])
@@ -65,10 +70,17 @@ def spotify_log_in():
         # add_songs(songs)
 
         return songs
+    
     except AuthorizationException as e:
-        # Exception handling in case there is an error.
+        # Exception handling in case there is an authorization error.
         response = jsonify({'message': str(e)})
         return response, 401
+
+    except DatabaseException as e:
+        # Exception handling in case there is a database error.
+        response = jsonify({'message': str(e)})
+        return response, 502
+
 
 
 def create_app(config):
