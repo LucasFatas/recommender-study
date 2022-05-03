@@ -1,6 +1,7 @@
 import mysql.connector
 
 db = mysql.connector.connect(
+    # Change once it is no longer hosted
     host="localhost",
     user="root",
     passwd="password",
