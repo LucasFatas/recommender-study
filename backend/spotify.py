@@ -1,7 +1,11 @@
 import requests
 
 
-app_authorization = "Basic ODA3M2VlMGYxNmE2NDc3NGJkMGU3ZjhmYTk1NWI5ZDY6MmEyNGVmM2U2NjkwNGVlYWI4MjRhODc3Mjg5MDU1M2Q="
+class AuthorizationException(Exception):
+    pass
+
+
+app_authorization = "Basic wODA3M2VlMGYxNmE2NDc3NGJkMGU3ZjhmYTk1NWI5ZDY6MmEyNGVmM2U2NjkwNGVlYWI4MjRhODc3Mjg5MDU1M2Q="
 
 
 # Retrieves access token from spotify API
@@ -17,8 +21,12 @@ def get_access_token(auth_code):
     headers = {
         "Authorization": app_authorization
     }
+    r = requests.post(spotify_auth_url, data=body, headers=headers)
 
-    return requests.post(spotify_auth_url, data=body, headers=headers).json()['access_token']
+    if r.status_code == 400:
+        raise AuthorizationException("Error requesting access token")
+
+    return r.json()['access_token']
 
 
 def get_top_songs(access_token):
@@ -27,8 +35,12 @@ def get_top_songs(access_token):
     headers = {
         "Authorization": "Bearer " + access_token
     }
+    r = requests.get(top_songs_url, headers=headers)
 
-    user_data = requests.get(top_songs_url, headers=headers).json()
+    if r.status_code == 401:
+        AuthorizationException("Error Retrieving Top Songs. Access_token could be outdated or wrong")
+
+    user_data = r.json()
 
     songs = []
 
@@ -45,8 +57,3 @@ def get_top_songs(access_token):
         })
 
     return songs
-
-
-
-
-

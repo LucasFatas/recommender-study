@@ -3,7 +3,7 @@ import json
 from flask import Flask, request, jsonify
 from service import store
 from psychology import calculations
-from spotify import get_access_token, get_top_songs
+from spotify import get_access_token, get_top_songs, AuthorizationException
 import json
 
 app = Flask(__name__)
@@ -38,8 +38,12 @@ def save_answer():
 
 @app.route('/callback')
 def spotifyLogIn():
-    access_token = get_access_token(request.args['code'])
-    return json.dumps(get_top_songs(access_token))
+    try:
+        access_token = get_access_token(request.args['code'])
+        return json.dumps(get_top_songs(access_token))
+    except AuthorizationException as e:
+        response = jsonify({'message': str(e)})
+        return response, 401
 
 
 if __name__ == "__main__":
