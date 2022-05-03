@@ -8,29 +8,51 @@ db = mysql.connector.connect(
     database="Recommender"
 )
 
-my_cursor = db.cursor()
+cursor = db.cursor()
 
-def store_answers(user_id, answers):
-    for i in range(len(answers)):
-        store_answer(user_id, i + 1, answers[i])
+def add_answers(answers):
+    sql = """INSERT INTO Recommender.Answer(ParticipantId, QuestionNumber, Response) VALUES (%s, %s, %s)"""
+    cursor.executemany(sql, answers)
+    db.commit()
     return "Success storing all Answers"
 
 
 def add_user(batch_id):
-    my_cursor.execute("Insert Into Recommender.Participant(BatchId) "
+    cursor.execute("Insert Into Recommender.Participant(BatchId) "
                       "Values(2)")
 
-    participant_id = my_cursor.lastrowid
+    participant_id = cursor.lastrowid
 
     db.commit()
     return participant_id
 
 
 def store_answer(user_id, question_number, answer):
-    my_cursor.execute("Insert Into Recommender.Answer(ParticipantId, QuestionNumber, Response) Values(" + str(user_id) + "," + str(question_number) + "," + str(answer) + ")")
+    cursor.execute("Insert Into Recommender.Answer(ParticipantId, QuestionNumber, Response) Values(" + str(user_id) + "," + str(question_number) + "," + str(answer) + ")")
     db.commit()
 
     return "Success storing answer"
 
+def add_value(user_id, values):
+    sql = "INSERT INTO Recommender.Value (ValueId, Stimulation, SelfDirection, Universalism" \
+          ",Benevolence,Tradition, Conformity, SecurityVal, PowerVal, Achievement,Hedonism)" \
+          " VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
+    val = (user_id, values[0], values[1], values[2], values[3], values[4],
+           values[5], values[6], values[7], values[8], values[9])
+    cursor.execute(sql, val)
+    db.commit()
+
+    return "Success storing value"
+
+def add_personality(user_id, personality):
+    sql = "INSERT INTO Recommender.Personality (PersonalityId, Openness, Honesty, Emotionality" \
+          ", Extroversion, Agreeableness, Conscientiousness VALUES (%s, %s, %s, %s, %s, %s, %s)"
+    val = (user_id, personality[0], personality[1], personality[2],
+           personality[3], personality[4], personality[5], personality[6])
+    cursor.execute(sql, val)
+    db.commit()
+
+    return "Success storing personality"
+
 if __name__ == '__main__':
-    store_answer(1, 1, 4)
+    add_value(2,(1,2,3,4,5,6,7,8,9,10))
