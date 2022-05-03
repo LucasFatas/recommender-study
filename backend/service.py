@@ -1,11 +1,7 @@
 import mysql.connector
 
-class FormatException(Exception):
-    pass
-
-# creates a connection to the database
 db = mysql.connector.connect(
-    # Change once it is no longer hosted locally
+    # Change once it is no longer hosted
     host="localhost",
     user="root",
     passwd="password",
@@ -24,14 +20,13 @@ def add_answers(answers):
 
     cursor.executemany(sql, answers)
     db.commit()
-
     return "Success storing all Answers"
 
 # Methode that stores a new user to the database
 # Parameters: a batch id
 # Returns: a user id
 def add_user(batch_id):
-    cursor.execute("Insert Into Recommender.Participant(BatchId) "
+    cursor.execute("Insert Into Recommender.Participant(Batch) "
                       "Values(2)")
 
     participant_id = cursor.lastrowid
