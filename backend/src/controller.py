@@ -1,11 +1,8 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, app
 from service import add_user, add_answers, DatabaseException
 from psychology import calculations
 from spotify import get_access_token, get_top_songs, AuthorizationException
 import json
-
-
-app = Flask(__name__)
 
 
 # Beginning of endpoint methods
@@ -82,13 +79,7 @@ def spotify_log_in():
         return response, 502
 
 
-def create_app():
-    with open('../config.json', 'r') as f:
-        config = json.load(f)
-    app.run(debug=True, port=config['port'])
 
 
-if __name__ == "__main__":
-    create_app()
 
 
