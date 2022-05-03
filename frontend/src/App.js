@@ -21,7 +21,7 @@ const App = () => {
     return i % questionsPerPage === 0 ? questionsArray.slice(i, i + questionsPerPage).map((e, idx) => [e, i + idx]) : null;
   }).filter(e => { return e; });
 
-  const lastQuestionIdx = questionMatrix.length;
+  const lastPageIdx = questionMatrix.length;
 
   return (
     <BrowserRouter>
@@ -33,11 +33,11 @@ const App = () => {
             <Route path={`/page${idx}`} key={idx} element={
               <QuestionnairePage 
                 pageNumber={idx}
-                numberOgPages={questionMatrix.length}
+                numberOgPages={lastPageIdx}
                 questions={questions} 
                 prevPage={idx === 0 ? undefined : idx - 1} 
-                nextPage={idx === lastQuestionIdx - 1 ? undefined : idx + 1}
-                showSubmit={idx === lastQuestionIdx - 1 ? lastQuestionIdx - 1 : undefined}
+                nextPage={idx === lastPageIdx - 1 ? undefined : idx + 1}
+                showSubmit={idx === lastPageIdx - 1 ? lastPageIdx - 1 : undefined}
               />
             }/>
           ))

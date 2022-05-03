@@ -8,7 +8,15 @@ export const Answer = (props) => {
   const inputs = [];
 
   for (let i = 1; i <= optionsPerAnswer; i++) 
-    inputs.push(<input className={inputStyle} type="radio" value={i} key={i} name={props.questionNumber}/> )
+    inputs.push(
+      <input 
+        type="radio" 
+        className={inputStyle} 
+        value={i} 
+        key={i} 
+        name={props.questionNumber}
+      /> 
+    )
 
   return (
     <div className="flex justify-center w-fit mt-5 space-x-7 ">
