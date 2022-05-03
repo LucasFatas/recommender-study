@@ -21,19 +21,23 @@ def mainConnection():
 @app.route("/saveAnswer", methods=["POST"])
 def save_answer():
     variable_name = request.get_json()
-    user_id, val_answers, pers_answers, spoti = variable_name['user'], variable_name['val_answers'], \
-                                                variable_name['pers_answers'], variable_name['spoti']
+    user_id, answers, batch = variable_name['user'], variable_name['answers'], variable_name['batch']
 
     # Calculations for the personality and values.
     # TODO: implement value and personality calculations
-    values, personalities = calculations(val_answers, pers_answers)
+    #values, personalities = calculations(answers)
 
-    # Store all of the data gathered into our database.
-    # TODO: store all data into our database
-    store(user_id, val_answers, pers_answers, values, personalities, spoti)
+    # Store the data gathered about the participant into our database.
+    # TODO: store user into DB
+    store_user(user_id, 4, 2, batch)
+
+    # TODO: store answers into our database
+    store_answer(user_id, answers, 1)
+
 
     # Process successful, return results for frontend to show to the user.
-    return jsonify(values=values, personalities=personalities)
+    #return jsonify(values=values, personalities=personalities)
+    return "It Works"
 
 
 @app.route('/callback')
