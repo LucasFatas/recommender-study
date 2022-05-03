@@ -1,24 +1,40 @@
 import mysql.connector
+import json
 
-db = mysql.connector.connect(
-    # Change once it is no longer hosted
-    host="localhost",
-    user="dani",
-    passwd="root",
-    database="Recommender"
-)
 
-cursor = db.cursor()
+def open_connection():
+
+    with open('config.json', 'r') as f:
+        configuration = json.load(f)
+
+    if configuration['is_testing']:
+        database = configuration['test_database']
+    else:
+        database = configuration['database']
+
+    db = mysql.connector.connect(
+        # Change once it is no longer hosted
+        host="localhost",
+        user="dani",
+        passwd="root",
+        database=database
+    )
+
+    cursor = db.cursor()
+
+    return db, cursor
 
 
 def add_answers(answers):
-    sql = """INSERT INTO Recommender.Answer(UserId, QuestionNumber, Response) VALUES (%s, %s, %s)"""
+    db, cursor = open_connection()
+    sql = """INSERT INTO Recommender.Answer(ParticipantId, QuestionNumber, Response) VALUES (%s, %s, %s)"""
     cursor.executemany(sql, answers)
     db.commit()
     return "Success storing all Answers"
 
 
 def add_user(batch_id):
+    db, cursor = open_connection()
     cursor.execute("Insert Into Recommender.Participant(Batch) "
                       "Values(2)")
 
@@ -29,6 +45,7 @@ def add_user(batch_id):
 
 
 def store_answer(user_id, question_number, answer):
+    db, cursor = open_connection()
     cursor.execute("Insert Into Recommender.Answer(UserId, QuestionNumber, Response) Values(" + str(user_id) + "," + str(question_number) + "," + str(answer) + ")")
     db.commit()
 
@@ -36,6 +53,7 @@ def store_answer(user_id, question_number, answer):
 
 
 def add_value(user_id, values):
+    db, cursor = open_connection()
     sql = "INSERT INTO Recommender.Value (ValueId, Stimulation, SelfDirection, Universalism" \
           ",Benevolence,Tradition, Conformity, SecurityVal, PowerVal, Achievement,Hedonism)" \
           " VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
@@ -48,6 +66,7 @@ def add_value(user_id, values):
 
 
 def add_personality(user_id, personality):
+    db, cursor = open_connection()
     sql = "INSERT INTO Recommender.Personality (PersonalityId, Openness, Honesty, Emotionality" \
           ", Extroversion, Agreeableness, Conscientiousness VALUES (%s, %s, %s, %s, %s, %s, %s)"
     val = (user_id, personality[0], personality[1], personality[2],

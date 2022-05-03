@@ -1,10 +1,9 @@
-import json
-
 from flask import Flask, request, jsonify
 from service import add_user, add_answers
 from psychology import calculations
 from spotify import get_access_token, get_top_songs, AuthorizationException
 import json
+
 
 app = Flask(__name__)
 
@@ -72,5 +71,14 @@ def spotify_log_in():
         return response, 401
 
 
+def create_app(config):
+    app.run(debug=True, port=config['port'])
+
+
+
 if __name__ == "__main__":
-    app.run(debug=True, port=3000)
+    with open('config.json', 'r') as f:
+        configuration = json.load(f)
+    create_app(configuration)
+
+
