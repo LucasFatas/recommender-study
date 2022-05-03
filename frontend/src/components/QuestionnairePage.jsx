@@ -2,8 +2,7 @@ import React from "react";
 import { Question } from './Question';
 import { Buttons } from "./Buttons";
 
-
-export const Page = (props) => {
+export const QuestionnairePage = (props) => {
     const progressPercentage = 70
     return (
 

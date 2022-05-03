@@ -1,4 +1,4 @@
-import { Page } from './components/Page';
+import { QuestionnairePage } from './components/QuestionnairePage';
 import {
   BrowserRouter,
   Routes,
@@ -10,15 +10,18 @@ import questions from './util/questions.json';
 
 const App = () => {
 
-  const questionsList = questions.questions;
-
+  const questionsArray = questions.questions;
   const questionsPerPage = 5
-  
-  const questionMatrix = questionsList.map((e, i) => {
-    return i % questionsPerPage === 0 ? questionsList.slice(i, i + questionsPerPage).map((e, idx) => [e, i + idx]) : null;
+
+  /** Splits the array of questions into a 2D array where each row is an 
+   *  array of questions that is going to appear on one page.
+   *  The number of rows always equals the number of pages in the questionnaire.
+   */
+  const questionMatrix = questionsArray.map((e, i) => {
+    return i % questionsPerPage === 0 ? questionsArray.slice(i, i + questionsPerPage).map((e, idx) => [e, i + idx]) : null;
   }).filter(e => { return e; });
 
-  const lastQuestionIdx = questionMatrix.length;
+  const lastPageIdx = questionMatrix.length;
 
   return (
     <BrowserRouter>
@@ -28,12 +31,13 @@ const App = () => {
         {
           questionMatrix.map((questions, idx) => (
             <Route path={`/page${idx}`} key={idx} element={
-              <Page 
+              <QuestionnairePage 
                 pageNumber={idx}
+                numberOgPages={lastPageIdx}
                 questions={questions} 
                 prevPage={idx === 0 ? undefined : idx - 1} 
-                nextPage={idx === lastQuestionIdx - 1 ? undefined : idx + 1}
-                showSubmit={idx === lastQuestionIdx - 1 ? lastQuestionIdx - 1 : undefined}
+                nextPage={idx === lastPageIdx - 1 ? undefined : idx + 1}
+                showSubmit={idx === lastPageIdx - 1 ? lastPageIdx - 1 : undefined}
               />
             }/>
           ))
