@@ -3,8 +3,8 @@ import mysql.connector
 db = mysql.connector.connect(
     # Change once it is no longer hosted
     host="localhost",
-    user="root",
-    passwd="password",
+    user="dani",
+    passwd="root",
     database="Recommender"
 )
 
@@ -18,7 +18,7 @@ def add_answers(answers):
 
 
 def add_user(batch_id):
-    cursor.execute("Insert Into Recommender.Participant(BatchId) "
+    cursor.execute("Insert Into Recommender.Participant(Batch) "
                       "Values(2)")
 
     participant_id = cursor.lastrowid
@@ -28,7 +28,7 @@ def add_user(batch_id):
 
 
 def store_answer(user_id, question_number, answer):
-    cursor.execute("Insert Into Recommender.Answer(ParticipantId, QuestionNumber, Response) Values(" + str(user_id) + "," + str(question_number) + "," + str(answer) + ")")
+    cursor.execute("Insert Into Recommender.Answer(UserId, QuestionNumber, Response) Values(" + str(user_id) + "," + str(question_number) + "," + str(answer) + ")")
     db.commit()
 
     return "Success storing answer"
