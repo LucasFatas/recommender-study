@@ -1,7 +1,7 @@
 import json
 
 from flask import Flask, request, jsonify
-from service import store
+from service import add_user
 from psychology import calculations
 from spotify import get_access_token, get_top_songs, AuthorizationException
 import json
@@ -27,10 +27,6 @@ def save_answer():
     # TODO: implement value and personality calculations
     #values, personalities = calculations(answers)
 
-    # Store the data gathered about the participant into our database.
-    # TODO: store user into DB
-    store_user(user_id, 4, 2, batch)
-
     # TODO: store answers into our database
     store_answer(user_id, answers, 1)
 
@@ -44,7 +40,10 @@ def save_answer():
 def spotifyLogIn():
     try:
         access_token = get_access_token(request.args['code'])
-        return json.dumps(get_top_songs(access_token))
+        songs = json.dumps(get_top_songs(access_token))
+        add_user(1) # Batch Number hardcoded for now
+        # add_songs(songs)
+        return songs
     except AuthorizationException as e:
         response = jsonify({'message': str(e)})
         return response, 401

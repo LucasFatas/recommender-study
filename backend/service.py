@@ -16,13 +16,14 @@ def store_answers(user_id, answers):
     return "Success storing all Answers"
 
 
-def store_user(user_id, values, personalities, batch):
-    my_cursor.execute("Insert Into Recommender.Participant(ParticapantId, PersonalityVectorId, ValueVectorId, BatchId) "
-                      "Values(" + str(user_id) + "," + str(user_id) + "," + str(user_id) + "," + str(batch) + ")")
+def add_user(batch_id):
+    my_cursor.execute("Insert Into Recommender.Participant(BatchId) "
+                      "Values(2)")
 
-    # TODO: store personality and value vectors of the user
+    participant_id = my_cursor.lastrowid
+
     db.commit()
-    return "Success storing user"
+    return participant_id
 
 
 def store_answer(user_id, question_number, answer):
