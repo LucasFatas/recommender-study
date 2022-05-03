@@ -29,11 +29,11 @@ def save_answer():
     # TODO: store answers into our database
     answers = []
 
-    for answer, index in enumerate(data['personality_answers']):
-        answers.append(data['user'], index, answer)
+    for index, answer in enumerate(data['personality_answers']):
+        answers.append((data['user'], index, answer))
 
-    for answer, index in enumerate(data['value_answers']):
-        answers.append(data['user'], index, answer)
+    for index, answer in enumerate(data['value_answers']):
+        answers.append((data['user'], len(data['personality_answers']) + index, answer))
 
     add_answers(answers)
 

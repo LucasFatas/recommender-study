@@ -12,7 +12,7 @@ cursor = db.cursor()
 
 
 def add_answers(answers):
-    sql = """INSERT INTO Recommender.Answer(ParticipantId, QuestionNumber, Response) VALUES (%s, %s, %s)"""
+    sql = """INSERT INTO Recommender.Answer(UserId, QuestionNumber, Response) VALUES (%s, %s, %s)"""
     cursor.executemany(sql, answers)
     db.commit()
     return "Success storing all Answers"
