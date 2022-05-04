@@ -7,14 +7,14 @@ export const QuestionnairePage = (props) => {
     return (
 
         <>
-            <div className=' relative grid place-items-center'></div>
+            
                 <div className=' sticky z-50 top-0  h-5 w-full bg-gray-300'>
                     <div
                         style={{ width: `${progressPercentage}%`}}
                         className='h-full rounded-r-lg bg-green-600'>
                     </div>
                 </div>
-            <div/>
+            
             <div className='grid place-items-center'>
                 
                 
