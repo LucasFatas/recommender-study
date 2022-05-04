@@ -3,6 +3,7 @@ import { useState, useEffect, useMemo } from "react";
 
 import { Answer } from './Answer';
 import { Buttons } from "./Buttons";
+import { ProgressBar } from "./ProgressBar";
 
 export const QuestionnairePage = (props) => {
   
@@ -32,18 +33,24 @@ export const QuestionnairePage = (props) => {
   }
 
   return (
-    <div className='grid place-items-center'>
-      {props.questions.map(([text, index]) => 
-        <div className='flex flex-col py-10 items-center' key={index}>
-          <h1 className='text-blue-500 text-center text-2xl'>{text}</h1>
-          <Answer 
-            answers={props.answers} 
-            questionNumber={index}  
-            onChange={updateAnswers}
-          />
-        </div>
-      )}
-      <Buttons {...props} answered={answered} onNext={handleNext}/>
-    </div>
+    <>
+      <ProgressBar
+        numberOfPages={props.numberOgPages}
+        pageNumber={props.pageNumber}
+      /> 
+      <div className='grid place-items-center'>
+        {props.questions.map(([text, index]) => 
+          <div className='flex flex-col py-10 items-center' key={index}>
+            <h1 className='text-blue-500 text-center text-2xl'>{text}</h1>
+            <Answer 
+              answers={props.answers} 
+              questionNumber={index}  
+              onChange={updateAnswers}
+            />
+          </div>
+        )}
+        <Buttons {...props} answered={answered} onNext={handleNext}/>
+      </div>
+    </>
   );
 }

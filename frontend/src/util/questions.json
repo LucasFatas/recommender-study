@@ -1,5 +1,5 @@
 {
-    "questionsPerPage" : 10,
+    "questionsPerPage" : 7,
     "questions" : [
         "Question 1?",
         "Question 2?",
@@ -14,11 +14,6 @@
         "Question 11?",
         "Question 12?",
         "Question 13?",
-        "Question 14?",
-        "Question 15?",
-        "Question 16?",
-        "Question 17?",
-        "Question 18?",
-        "Question 19?"
+        "Question 14?"
     ]
 }
