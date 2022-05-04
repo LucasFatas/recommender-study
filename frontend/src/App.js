@@ -1,4 +1,5 @@
 import { QuestionnairePage } from './components/questionnaire/QuestionnairePage';
+import { PageNotFound } from './components/PageNotFound';
 import {
   BrowserRouter,
   Routes,
@@ -49,6 +50,7 @@ const App = () => {
           ))
         }
 
+        <Route path="*" element={<PageNotFound redirectPath="/page1"/>} />
       </Routes>
     </BrowserRouter>
   );
