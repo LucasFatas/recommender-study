@@ -67,21 +67,21 @@ def spotify_log_in():
         songs = json.dumps(get_top_songs(access_token))
 
         # Store the user in the database.
-        add_user(1)  # Batch Number hardcoded for now
+        userId = add_user(1)  # Batch Number hardcoded for now
 
         # TODO: add songs to the database. (according to user)
         # add_songs(songs)
-        return redirect(frontend_url + "page1?userID = " + userID, 200)
+        return redirect(frontend_url + "page1?userID = " + userId, 200)
 
     except AuthorizationException as e:
         # Exception handling in case there is an authorization error.
         response = Response(str(e))
-        return redirect(frontend_url + "page1")
+        return redirect(frontend_url + "/error/login")
 
     except DatabaseException as e:
         # Exception handling in case there is a database error.
         response = Response(str(e))
-        return redirect(frontend_url + "page1")
+        return redirect(frontend_url + "/error/database")
 
 
 def create_app():
