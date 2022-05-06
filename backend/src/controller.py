@@ -3,12 +3,13 @@ from src.service import add_user, add_answers, DatabaseException
 from src.psychology import calculations
 from src.spotify import get_access_token, get_top_songs, AuthorizationException
 import json
+from flask_cors import CORS
 from werkzeug.wrappers.response import Response
 
 app = Flask(__name__)
 CORS(app)
 
-frontend_url = "http://www.localhost.com/3000/"
+frontend_url = "http://www.localhost.com/3000"
 
 
 # Beginning of endpoint methods
@@ -71,7 +72,7 @@ def spotify_log_in():
 
         # TODO: add songs to the database. (according to user)
         # add_songs(songs)
-        return redirect(frontend_url + "page1?userID = " + userId, 200)
+        return redirect(frontend_url + "/page1?userID = " + userId, 200)
 
     except AuthorizationException as e:
         # Exception handling in case there is an authorization error.
