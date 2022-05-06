@@ -1,0 +1,6 @@
+{
+    "port": 3000,
+    "database": "Recommender",
+    "test_database": "Test_Database",
+    "is_testing": false
+}
