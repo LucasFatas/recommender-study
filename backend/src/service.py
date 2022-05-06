@@ -106,5 +106,33 @@ def add_personality(user_id, personality):
         raise DatabaseException("Error connecting to database when adding personalities.")
 
 
+def get_all_values(batch):
+    try:
+        db, cursor = open_connection()
+        sql = "Select UserId, Stimulation, SelfDirection, Universalism, Benevolence," \
+              " Tradition, Conformity, SecurityVal, PowerVal, Achievement, Hedonism " \
+              "From recommender.value as v , recommender.participant as p " \
+              "Where v.ValueId = p.UserId and p.Batch = 1"
+
+        cursor.execute(sql)
+        result = cursor.fetchall()
+        return result
+    except mysql.connector.errors.Error as e:
+        raise DatabaseException("Error connecting to database when retrieving values.")
+
+def get_all_personalities(batch):
+    try:
+        db, cursor = open_connection()
+        sql = "Select UserID, Openness, Honesty, Emotionality," \
+              "Extroversion, Agreeableness, Conscientiousness " \
+              "From recommender.personality as pe , recommender.participant as pa " \
+              "Where pe.PersonalityId = pa.UserId and p.Batch = 1"
+
+        cursor.execute(sql)
+        result = cursor.fetchall()
+        return result
+
+    except mysql.connector.errors.Error as e:
+        raise DatabaseException("Error connecting to database when retrieving personalities.")
 if __name__ == '__main__':
     add_value(2,(1,2,3,4,5,6,7,8,9,10))
