@@ -1,5 +1,6 @@
 import { QuestionnairePage } from './components/questionnaire/QuestionnairePage';
 import { PageNotFound } from './components/PageNotFound';
+import { ErrorPage } from './components/ErrorPage';
 import {
   BrowserRouter,
   Routes,
@@ -34,6 +35,8 @@ const App = () => {
       <Routes>
         <Route path="/" element={<Navigate replace to="/pageLogin"/>} />
         <Route path="/pageLogin" element={<LoginPage/>} />
+        <Route path="/error/database"  element={<ErrorPage redirectPath="/page1"/>} />
+        <Route path="/error/login"  element={<ErrorPage redirectPath="/page1"/>} />
         {
   
           questionMatrix.map((questions, idx) => (
