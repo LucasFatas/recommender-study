@@ -1,5 +1,6 @@
 import mysql.connector
 import json
+from random import randrange
 
 
 class DatabaseException(Exception):
@@ -94,9 +95,23 @@ def add_personality(user_id, personality):
         # The SQL statement for storing a personality in the Personality table
         db, cursor = open_connection()
         sql = "INSERT INTO Recommender.Personality (PersonalityId, Openness, Honesty, Emotionality" \
-              ", Extroversion, Agreeableness, Conscientiousness VALUES (%s, %s, %s, %s, %s, %s, %s)"
+              ", Extroversion, Agreeableness, Conscientiousness) VALUES (%s, %s, %s, %s, %s, %s, %s)"
         val = (user_id, personality[0], personality[1], personality[2],
                personality[3], personality[4], personality[5], personality[6])
+        cursor.execute(sql, val)
+        db.commit()
+
+        return "Success storing personality"
+
+    except mysql.connector.errors.Error as e:
+        raise DatabaseException("Error connecting to database when adding personalities.")
+
+def add_matches(userId, val_user, pers_user, random_user):
+    try:
+        # The SQL statement for storing a personality in the Personality table
+        db, cursor = open_connection()
+        sql = "INSERT INTO Recommender.Match (UserId, ValId, PersId, RandId) VALUES (%s, %s, %s, %s)"
+        val = (userId, val_user, pers_user, random_user)
         cursor.execute(sql, val)
         db.commit()
 
@@ -134,5 +149,22 @@ def get_all_personalities(batch):
 
     except mysql.connector.errors.Error as e:
         raise DatabaseException("Error connecting to database when retrieving personalities.")
+
+
+def get_random_user(user1, user2, batch):
+    try:
+        db, cursor = open_connection()
+        sql = "Select UserID From recommender.participant as p " \
+              "Where p.Batch = 1 and "
+
+        cursor.execute(sql)
+        result = cursor.fetchall()
+
+        return result[randrange(len(result))]
+    except mysql.connector.errors.Error as e:
+        raise DatabaseException("Error connecting to database when retrieving users.")
+
+
+
 if __name__ == '__main__':
     add_value(2,(1,2,3,4,5,6,7,8,9,10))
