@@ -6,6 +6,7 @@ import json
 from werkzeug.wrappers.response import Response
 
 app = Flask(__name__)
+CORS(app)
 
 frontend_url = "http://www.localhost.com/3000/"
 
@@ -20,7 +21,7 @@ def main_connection():
 # Get answers and save them into the database.
 @app.route("/saveAnswer", methods=["POST"])
 def save_answer():
-    data = request.get_json()
+    data = request.get_json(force=True)
 
     # Calculations for the personality and values.
     # TODO: implement value and personality calculations
@@ -66,7 +67,7 @@ def spotify_log_in():
         songs = json.dumps(get_top_songs(access_token))
 
         # Store the user in the database.
-        userID = add_user(1)  # Batch Number hardcoded for now
+        add_user(1)  # Batch Number hardcoded for now
 
         # TODO: add songs to the database. (according to user)
         # add_songs(songs)
@@ -91,3 +92,5 @@ def create_app():
 
 if __name__ == "__main__":
     create_app()
+
+
