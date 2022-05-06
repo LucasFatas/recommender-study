@@ -1,11 +1,12 @@
 from flask import Flask, request, jsonify
+from flask_cors import CORS
 from src.service import add_user, add_answers, DatabaseException
 from src.psychology import calculations
 from src.spotify import get_access_token, get_top_songs, AuthorizationException
 import json
 
-
 app = Flask(__name__)
+CORS(app)
 
 
 # Beginning of endpoint methods
@@ -18,7 +19,7 @@ def main_connection():
 # Get answers and save them into the database.
 @app.route("/saveAnswer", methods=["POST"])
 def save_answer():
-    data = request.get_json()
+    data = request.get_json(force=True)
 
     # Calculations for the personality and values.
     # TODO: implement value and personality calculations
