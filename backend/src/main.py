@@ -9,6 +9,7 @@ def create_app():
         config = json.load(f)
 
     app.run(port=config['port'])
+
     return app
 
 
