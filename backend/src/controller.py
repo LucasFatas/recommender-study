@@ -1,7 +1,7 @@
 from flask import Flask, request, jsonify
-from service import add_user, add_answers, DatabaseException
-from psychology import calculations
-from spotify import get_access_token, get_top_songs, AuthorizationException
+from src.service import add_user, add_answers, DatabaseException
+from src.psychology import calculations
+from src.spotify import get_access_token, get_top_songs, AuthorizationException
 import json
 
 
