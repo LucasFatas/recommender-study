@@ -1,3 +1,4 @@
+from test_setup import client, app
 import jsonify
 
 
@@ -9,3 +10,5 @@ def test_save_answer(client):
     }
     response = client.post("/saveAnswer", data)
     assert jsonify(values=0, personalities=0) == response.json()
+
+
