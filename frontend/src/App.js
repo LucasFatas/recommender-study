@@ -9,6 +9,7 @@ import {
 
 import questions from './util/questions.json';
 import { useState } from 'react';
+import { LoginPage } from './components/LoginPage';
 
 const App = () => {
 
@@ -31,9 +32,10 @@ const App = () => {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Navigate replace to="/page1"/>} />
-
+        <Route path="/" element={<Navigate replace to="/pageLogin"/>} />
+        <Route path="/pageLogin" element={<LoginPage/>} />
         {
+  
           questionMatrix.map((questions, idx) => (
             <Route path={`/page${idx + 1}`} key={idx + 1} element={
               <QuestionnairePage
