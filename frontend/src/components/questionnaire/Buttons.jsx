@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import APIService from '../APIService';
+import APIService from '../../API/APIService';
 
 const buttonStyle = "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full ";
 const buttonStyleDisabled = " select-none text-transparent fonted bg-transparent hover:bg-transparent py-2 px-4 rounded-full ";
