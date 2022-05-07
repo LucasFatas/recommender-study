@@ -7,7 +7,6 @@ class DatabaseException(Exception):
 
 
 def open_connection():
-
     with open('../config.json', 'r') as f:
         configuration = json.load(f)
 
@@ -44,6 +43,7 @@ def add_answers(answers):
         return "Success storing all Answers"
 
     except mysql.connector.errors.Error as e:
+        print(e)
         raise DatabaseException("Error connecting to database when adding answers.")
 
 
@@ -61,6 +61,7 @@ def add_user(batch_id):
         return participant_id
 
     except mysql.connector.errors.Error as e:
+        print(e)
         raise DatabaseException("Error connecting to database when adding users.")
 
 
@@ -82,6 +83,7 @@ def add_value(user_id, values):
         return "Success storing value"
 
     except mysql.connector.errors.Error as e:
+        print(e)
         raise DatabaseException("Error connecting to database when adding values.")
 
 
@@ -89,7 +91,6 @@ def add_value(user_id, values):
 # Parameters: a user id and a personality vector
 # Returns: A confirmation message
 def add_personality(user_id, personality):
-
     try:
         # The SQL statement for storing a personality in the Personality table
         db, cursor = open_connection()
@@ -103,8 +104,30 @@ def add_personality(user_id, personality):
         return "Success storing personality"
 
     except mysql.connector.errors.Error as e:
+        print(e)
         raise DatabaseException("Error connecting to database when adding personalities.")
 
 
+# Method that stores the top songs of a user
+# Parameters: a userId and a list of song objects with a name, spotifyId and list of artist(s)
+# Returns: A confirmation message
+def add_top_songs(userId, songs):
+    try:
+        db, cursor = open_connection()
+        song_sql = "Insert into Recommender.song(spotifyId, userId, name) Values (%s, %s, %s)"
+        artist_sql = "Insert into recommender.Artist(spotifyId, name)  Values(%s, %s)"
+        for song in songs:
+            val = (song.spotifyId, userId, song.name)
+            cursor.execute(song_sql, val)
+            for artist in song.artists:
+                val = (song.spotifyId, artist['artist_name'])
+                cursor.execute(artist_sql, val)
+        db.commit()
+        return "Success storing of top songs"
+    except mysql.connector.errors.Error as e:
+        print(e)
+        raise DatabaseException("Error connecting to database when adding personalities.")
+
+    
 if __name__ == '__main__':
-    add_value(2,(1,2,3,4,5,6,7,8,9,10))
+    add_value(2, (1, 2, 3, 4, 5, 6, 7, 8, 9, 10))

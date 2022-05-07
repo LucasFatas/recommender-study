@@ -1,4 +1,5 @@
 import requests
+from src.Entities.Song import Song
 
 
 class AuthorizationException(Exception):
@@ -50,10 +51,7 @@ def get_top_songs(access_token):
             artists.append({
                 'artist_name': artist['name']
             })
-        songs.append({
-            'artists': artists,
-            'name': item['album']['name'],
-            'id': item['album']['id']
-        })
+
+        songs.append(Song(item['album']['id'], item['album']['name'], artists))
 
     return songs
