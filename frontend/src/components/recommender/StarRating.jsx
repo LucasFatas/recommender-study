@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 
-export const StarRating = ({starSize}) => {  
+export const StarRating = ({ startStyle, playlist, song, setRatings, ratings, setRatingsFilled }) => {  
 
-  const [rating, setRating] = useState(0);
+  const [currentRating, setCurrentRating] = useState(0);
   const [hover, setHover] = useState(0);
 
   // const setStyleStars = (hover, rating) => {
@@ -13,6 +13,18 @@ export const StarRating = ({starSize}) => {
   //   }
   // }
   // const starSize = "text-2xl "
+  console.log(ratings)
+
+  const handleRating = (idx) => {
+    if (song === undefined)
+      ratings.ratings[playlist].playlist = idx;
+    else
+      ratings.ratings[playlist].songs[song] = idx;
+
+    setRatings(ratings);
+    setCurrentRating(idx);
+    setRatingsFilled(Object.values(ratings.ratings).every(x => x.playlist !== 0))
+  }
 
   return (
     <div className="star-rating">
@@ -22,13 +34,13 @@ export const StarRating = ({starSize}) => {
           <button
             type="button"
             key={index}
-            className={ index <= (hover || rating) ? " text-black" : "text-slate-300"}
+            className={ index <= (hover || currentRating) ? " text-black" : "text-slate-300"}
 
-            onClick={() => setRating(index)}
+            onClick={() => handleRating(index)}
             onMouseEnter={() => setHover(index)}
-            onMouseLeave={() => setHover(rating)}
+            onMouseLeave={() => setHover(currentRating)}
           >
-            <span className={ starSize + " text-xl star"}>&#9733;</span>
+            <span className={ startStyle + " text-xl star"}>&#9733;</span>
           </button>
         );
       })}
