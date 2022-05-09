@@ -1,6 +1,6 @@
 import mysql.connector
 import json
-
+from src.Entities.Song import Song
 
 class DatabaseException(Exception):
     pass
@@ -110,7 +110,7 @@ def add_personality(user_id, personality):
 
 # Method that stores the top songs of a user
 # Parameters: a userId and a list of song objects with a name, spotifyId and list of artist(s)
-# Returns: A confirmation message
+# Returns: a confirmation message
 def add_top_songs(userId, songs):
     try:
         db, cursor = open_connection()
@@ -128,6 +128,39 @@ def add_top_songs(userId, songs):
         print(e)
         raise DatabaseException("Error connecting to database when adding personalities.")
 
+
+# Method that retrieves top songs of a user
+# Parameter: a userId
+# Returns: a list of song objects
+def get_top_songs(userId):
+    try:
+        db, cursor = open_connection()
+        song_sql = "Select name, spotifyId from Recommender.song Where userId=%s"
+
+        cursor.execute(song_sql, userId)
+
+        data = cursor.fetchall()
+
+        songs = []
+
+        artist_sql = "Select name from recommender.Artist Where spotifyId=%s"
+
+        for row in data:
+            cursor.execute(artist_sql, row[1])
+
+            artists = []
+
+            for artist in cursor.fetchall():
+                artists.append(artist[0])
+
+            songs.append(Song(row[1], row[0], artists))
+
+        return songs
     
+    except mysql.connector.errors.Error as e:
+        print(e)
+        raise DatabaseException("Error connecting to database when adding personalities.")
+
+
 if __name__ == '__main__':
     add_value(2, (1, 2, 3, 4, 5, 6, 7, 8, 9, 10))
