@@ -1,7 +1,9 @@
 from flask import Flask, request, jsonify, redirect
-from backend.src.service import add_user, add_answers, DatabaseException
-from backend.src.psychology import calculations
-from backend.src.spotify import get_access_token, get_top_songs, AuthorizationException
+
+from src.matching import match
+from src.service import add_user, add_answers, DatabaseException, get_value, get_personality
+from src.psychology import calculations
+from src.spotify import get_access_token, get_top_songs, AuthorizationException
 import json
 from flask_cors import CORS
 from werkzeug.wrappers import Response
@@ -23,10 +25,6 @@ def main_connection():
 @app.route("/saveAnswer", methods=["POST"])
 def save_answer():
     data = request.get_json(force=True)
-
-    # Calculations for the personality and values.
-    # TODO: implement value and personality calculations
-    # values, personalities = calculations(answers)
 
     # TODO: store answers into our database
     answers = []
@@ -50,6 +48,7 @@ def save_answer():
         response = jsonify({'message': str(e)})
         return response, 502
 
+    # TODO: implement value and personality calculations
     # Calculate value and personality scores.
     value, personality = calculations(data['value_answers'], data['personality_answers'])
 
@@ -83,6 +82,26 @@ def spotify_log_in():
         # Exception handling in case there is a database error.
         response = Response(str(e))
         return redirect(frontend_url + "/error/database")
+
+
+@app.route('match')
+def match_user():
+    data = request.get_json(force=True)
+    userId = data['user']
+
+    try:
+        # Add the newly formatted answers to our database.
+        values = get_value(userId)
+        personality = get_personality(userId)
+
+        val_user, pers_user, random_user = match(userId, values, personality, data['metric'])
+
+        lst = [get_songs[val_user], get_songs[pers_user], get_songs[random_user]]
+
+    except DatabaseException as e:
+        # Exception handling in case there is an error.
+        response = jsonify({'message': str(e)})
+        return response, 502
 
 
 def create_app():
