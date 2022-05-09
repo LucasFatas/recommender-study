@@ -2,7 +2,7 @@ import mysql.connector
 import json
 from random import randrange
 
-
+#Exception if we can not reach the DataBase
 class DatabaseException(Exception):
     pass
 
@@ -16,7 +16,7 @@ def change_database_for_testing(value):
         json.dump(data, f, indent=4)
         f.truncate()
 
-
+#Method that opens the connection to the database
 def open_connection():
 
     with open('../config.json', 'r') as f:
@@ -115,9 +115,13 @@ def add_personality(user_id, personality):
     except mysql.connector.errors.Error as e:
         raise DatabaseException("Error connecting to database when adding personalities.")
 
+
+# Method that stores a user and his matches on personality and value and a random other user
+# Parameters: a user id , a value user id, a personality user id and a random user id
+# Returns: A confirmation message
 def add_matches(userId, val_user, pers_user, random_user):
     try:
-        # The SQL statement for storing a personality in the Personality table
+        # The SQL statement for storing user id and matches in the Match table
         db, cursor = open_connection()
         sql = "INSERT INTO Recommender.Match (UserId, ValId, PersId, RandId) VALUES (%s, %s, %s, %s)"
         val = (userId, val_user, pers_user, random_user)
@@ -130,13 +134,16 @@ def add_matches(userId, val_user, pers_user, random_user):
         raise DatabaseException("Error connecting to database when adding personalities.")
 
 
+# Method that gets all the users of a certain batch and their values
+# Parameters: batch number
+# Returns: a list of tuples containing user and his values
 def get_all_values(batch):
     try:
-        db, cursor = open_connection()
+        db, cursor, database = open_connection()
         sql = "Select UserId, Stimulation, SelfDirection, Universalism, Benevolence," \
               " Tradition, Conformity, SecurityVal, PowerVal, Achievement, Hedonism " \
               "From recommender.value as v , recommender.participant as p " \
-              "Where v.ValueId = p.UserId and p.Batch = 1"
+              "Where v.ValueId = p.UserId and p.Batch = " + str(batch)
 
         cursor.execute(sql)
         result = cursor.fetchall()
@@ -144,13 +151,18 @@ def get_all_values(batch):
     except mysql.connector.errors.Error as e:
         raise DatabaseException("Error connecting to database when retrieving values.")
 
+
+# Method that gets all the users of a certain batch and their personalities
+# Parameters: batch number
+# Returns: a list of tuples containing user and his personalities
 def get_all_personalities(batch):
     try:
-        db, cursor = open_connection()
+        db, cursor, database = open_connection()
         sql = "Select UserID, Openness, Honesty, Emotionality," \
               "Extroversion, Agreeableness, Conscientiousness " \
-              "From recommender.personality as pe , recommender.participant as pa " \
-              "Where pe.PersonalityId = pa.UserId and p.Batch = 1"
+              "From " + database + ".personality as pe , " \
+              + database + ".participant as pa " \
+              "Where pe.PersonalityId = pa.UserId and p.Batch = " + str(batch)
 
         cursor.execute(sql)
         result = cursor.fetchall()
@@ -160,10 +172,13 @@ def get_all_personalities(batch):
         raise DatabaseException("Error connecting to database when retrieving personalities.")
 
 
+# Method that gets all the users of a certain batch apart from the value user and personality user
+# Parameters: batch number
+# Returns: one random user id
 def get_random_user(user1, user2, batch):
     try:
-        db, cursor = open_connection()
-        sql = "Select UserID From recommender.participant as p " \
+        db, cursor, database = open_connection()
+        sql = "Select UserID From " + database + ".participant as p " \
               "Where p.Batch = " + str(batch) +" and not (p.UserID =" + str(user1) + " or p.UserID =  " + str(user2) + ")"
 
 
