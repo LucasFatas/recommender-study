@@ -6,6 +6,16 @@ class DatabaseException(Exception):
     pass
 
 
+def change_database_for_testing(value):
+    with open('../config.json', 'r+') as f:
+        data = json.load(f)
+        data['is_testing'] = json.dumps(value)
+
+        f.seek(0)
+        json.dump(data, f, indent=4)
+        f.truncate()
+
+
 def open_connection():
 
     with open('../config.json', 'r') as f:
@@ -26,7 +36,7 @@ def open_connection():
 
     cursor = db.cursor()
 
-    return db, cursor
+    return db, cursor, database
 
 
 # Method that stores all answers of a user to the database
@@ -34,10 +44,9 @@ def open_connection():
 # Returns: A confirmation message
 def add_answers(answers):
     try:
-        db, cursor = open_connection()
-        sql = """INSERT INTO Recommender.Answer(ParticipantId, QuestionNumber, Response) VALUES (%s, %s, %s)"""
+        db, cursor, database = open_connection()
         # The SQL statement for storing answers in the Answer table
-        sql = "INSERT INTO Recommender.Answer(UserId, QuestionNumber, Response) VALUES (%s, %s, %s)"
+        sql = "INSERT INTO " + database + ".Answer(UserId, QuestionNumber, Response) VALUES (%s, %s, %s)"
 
         cursor.executemany(sql, answers)
         db.commit()
@@ -52,8 +61,8 @@ def add_answers(answers):
 # Returns: a user id
 def add_user(batch_id):
     try:
-        db, cursor = open_connection()
-        cursor.execute("Insert Into Recommender.Participant(Batch) Values(2)")
+        db, cursor, database = open_connection()
+        cursor.execute("Insert Into " + database + ".Participant(Batch) Values (" + str(batch_id) + ")")
 
         participant_id = cursor.lastrowid
 
@@ -70,8 +79,8 @@ def add_user(batch_id):
 def add_value(user_id, values):
     try:
         # The SQL statement for storing a value in the Value table
-        db, cursor = open_connection()
-        sql = "INSERT INTO Recommender.Value (ValueId, Stimulation, SelfDirection, Universalism" \
+        db, cursor, database = open_connection()
+        sql = "INSERT INTO " + database + ".Value (ValueId, Stimulation, SelfDirection, Universalism" \
               ",Benevolence,Tradition, Conformity, SecurityVal, PowerVal, Achievement,Hedonism)" \
               " VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
         val = (user_id, values[0], values[1], values[2], values[3], values[4],
@@ -92,11 +101,11 @@ def add_personality(user_id, personality):
 
     try:
         # The SQL statement for storing a personality in the Personality table
-        db, cursor = open_connection()
-        sql = "INSERT INTO Recommender.Personality (PersonalityId, Openness, Honesty, Emotionality" \
-              ", Extroversion, Agreeableness, Conscientiousness VALUES (%s, %s, %s, %s, %s, %s, %s)"
+        db, cursor, database = open_connection()
+        sql = "INSERT INTO " + database + ".Personality (PersonalityId, Openness, Honesty, Emotionality" \
+              ", Extroversion, Agreeableness, Conscientiousness) VALUES (%s, %s, %s, %s, %s, %s, %s)"
         val = (user_id, personality[0], personality[1], personality[2],
-               personality[3], personality[4], personality[5], personality[6])
+               personality[3], personality[4], personality[5])
         cursor.execute(sql, val)
         db.commit()
 
@@ -107,4 +116,4 @@ def add_personality(user_id, personality):
 
 
 if __name__ == '__main__':
-    add_value(2,(1,2,3,4,5,6,7,8,9,10))
+    change_database_for_testing(False)
