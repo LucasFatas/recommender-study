@@ -127,7 +127,7 @@ def add_top_songs(userId, songs):
         return "Success storing of top songs"
     except mysql.connector.errors.Error as e:
         print(e)
-        raise DatabaseException("Error connecting to database when adding personalities.")
+        raise DatabaseException("Error connecting to database when adding songs.")
 
 
 # Method that retrieves top songs of a user
@@ -136,18 +136,18 @@ def add_top_songs(userId, songs):
 def get_top_songs(userId):
     try:
         db, cursor = open_connection()
-        song_sql = "Select name, spotify_url from Recommender.song Where userId=%s"
+        song_sql = "Select name, spotify_url from Recommender.song Where userId=" + str(userId)
 
-        cursor.execute(song_sql, userId)
+        cursor.execute(song_sql)
 
         data = cursor.fetchall()
 
         songs = []
 
-        artist_sql = "Select name from recommender.Artist Where spotify_url=%s"
+        artist_sql = "Select distinct name from recommender.Artist Where spotify_url=%s"
 
         for row in data:
-            cursor.execute(artist_sql, row[1])
+            cursor.execute(artist_sql, (row[1], ))
 
             artists = []
 
@@ -159,7 +159,7 @@ def get_top_songs(userId):
         return songs
     except mysql.connector.errors.Error as e:
         print(e)
-        raise DatabaseException("Error connecting to database when adding personalities.")
+        raise DatabaseException("Error connecting to database when getting songs.")
 
 
 # Method that stores the recommendation ratings of a user
@@ -177,7 +177,7 @@ def add_playlist_ratings(playlists):
         return "Success storing playlist ratings"
     except mysql.connector.errors.Error as e:
         print(e)
-        raise DatabaseException("Error connecting to database when storing playlist recommendations.")
+        raise DatabaseException("Error connecting to database when storing playlist ratings.")
 
 
 # Method that stores the recommendation ratings of a user
@@ -192,10 +192,10 @@ def add_song_ratings(song_ratings):
             cursor.execute(song_sql, val)
 
         db.commit()
-        return "Success storing playlist ratings"
+        return "Success storing song ratings"
     except mysql.connector.errors.Error as e:
         print(e)
-        raise DatabaseException("Error connecting to database when storing playlist recommendations.")
+        raise DatabaseException("Error connecting to database when storing song ratings.")
 
 
 if __name__ == '__main__':
