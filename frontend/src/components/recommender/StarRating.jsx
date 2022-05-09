@@ -5,16 +5,6 @@ export const StarRating = ({ startStyle, playlist, song, setRatings, ratings, se
   const [currentRating, setCurrentRating] = useState(0);
   const [hover, setHover] = useState(0);
 
-  // const setStyleStars = (hover, rating) => {
-  //   const { active, disabled, inactive } = buttonStyles;
-  //   return { 
-  //     className : pageCondition && answerCondition ? active : (pageCondition ? inactive : disabled),
-  //     disabled : pageCondition && answerCondition === false ? true : false
-  //   }
-  // }
-  // const starSize = "text-2xl "
-  console.log(ratings)
-
   const handleRating = (idx) => {
     if (song === undefined)
       ratings.ratings[playlist].playlist = idx;
