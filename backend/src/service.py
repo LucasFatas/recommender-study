@@ -162,6 +162,41 @@ def get_top_songs(userId):
         raise DatabaseException("Error connecting to database when adding personalities.")
 
 
+# Method that stores the recommendation ratings of a user
+# Parameters: a userId and a list of three playlistRatings, each with userId, matchedUserId and rating.
+# Returns: a confirmation message
+def add_playlist_ratings(playlists):
+    try:
+        db, cursor = open_connection()
+        playlist_sql = "Insert into Recommender.PlaylistRating(userId, matchedUserId, rating) Values (%s, %s, %s)"
+        for playlist in playlists:
+            val = (playlist.userId, playlist.matchedUserId, playlist.rating)
+            cursor.execute(playlist_sql, val)
+
+        db.commit()
+        return "Success storing playlist ratings"
+    except mysql.connector.errors.Error as e:
+        print(e)
+        raise DatabaseException("Error connecting to database when storing playlist recommendations.")
+
+
+# Method that stores the recommendation ratings of a user
+# Parameters: a userId and a list of song objects with a name, spotify_url and list of artist(s)
+# Returns: a confirmation message
+def add_song_ratings(song_ratings):
+    try:
+        db, cursor = open_connection()
+        song_sql = "Insert into Recommender.SongRating(userId, matchedUserId, spotify_url, rating) Values (%s,%s,%s,%s)"
+        for song_rating in song_ratings:
+            val = (song_rating.userId, song_rating.matchedUserId, song_rating.spotify_url, song_rating.rating)
+            cursor.execute(song_sql, val)
+
+        db.commit()
+        return "Success storing playlist ratings"
+    except mysql.connector.errors.Error as e:
+        print(e)
+        raise DatabaseException("Error connecting to database when storing playlist recommendations.")
+
 
 if __name__ == '__main__':
     add_value(2, (1, 2, 3, 4, 5, 6, 7, 8, 9, 10))
