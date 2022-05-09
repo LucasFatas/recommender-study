@@ -1,10 +1,10 @@
 from flask import Flask, request, jsonify, redirect
-from src.service import add_user, add_answers, DatabaseException
-from src.psychology import calculations
-from src.spotify import get_access_token, get_top_songs, AuthorizationException
+from backend.src.service import add_user, add_answers, DatabaseException
+from backend.src.psychology import calculations
+from backend.src.spotify import get_access_token, get_top_songs, AuthorizationException
 import json
 from flask_cors import CORS
-from werkzeug.wrappers.response import Response
+from werkzeug.wrappers import Response
 
 app = Flask(__name__)
 CORS(app)
@@ -14,9 +14,9 @@ frontend_url = "http://www.localhost.com/3000"
 
 # Beginning of endpoint methods
 # Spoof endpoint to test connection.
-@app.route("/")
+@app.route("/", methods=["GET"])
 def main_connection():
-    return "Connection is working"
+    return jsonify(response="Connection is working")
 
 
 # Get answers and save them into the database.

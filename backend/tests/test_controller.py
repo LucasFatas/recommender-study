@@ -1,5 +1,10 @@
 import json
-from src.controller import app
+from backend.src.controller import app
+
+
+def test_connection():
+    response = app.test_client().get('/')
+    assert "Connection is working" == response.json['response']
 
 
 def test_save_answers():
@@ -11,4 +16,4 @@ def test_save_answers():
 
     response = app.test_client().post('/saveAnswer', json=data)
 
-    assert json.dumps({'values': 0, 'personalities': 0}) == response.text
+    assert {"personalities": 0, "values": 0} == response.json
