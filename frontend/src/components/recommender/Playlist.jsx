@@ -1,47 +1,23 @@
 import React from "react";
 import { StarRating } from "./StarRating";
+import { Track } from "./Track";
 
-export const Playlist = ({name, starSize}) => {
+export const Playlist = ({name, starSize, trackList}) => {
 
+	console.log(trackList);
 
 	return (
 		<div>
 			<h2>{ name }</h2>
-			<div>
-				<h3>Song 1</h3>
-				<StarRating
-				starSize={starSize}
-				/>
-			</div>
-			
-			<div>
-				<h3>Song 2</h3>
-				<StarRating
-				starSize={starSize}
-				/>
-			</div>
-
-			<div>
-				<h3>Song 3</h3>
-				<StarRating
-				starSize={starSize}
-				/>
-			</div>
-			<div>
-				<h3>Song 4</h3>
-				<StarRating
-				starSize={starSize}
-				/>
-			</div>
-			<div>
-				<h3>Song 5</h3>
-				<StarRating
-				starSize={starSize}
-				/>
-			</div>
+			{trackList.map((trackUrl, index) => 
+          <Track 
+					starSize={starSize}
+					trackUrl= {trackUrl}
+					/>
+        )}
 			<StarRating
 				starSize={'text-2xl text-center'}
-				/>
+			/>
 		</div>
 	)
 }
