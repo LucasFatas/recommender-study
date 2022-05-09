@@ -30,7 +30,7 @@ def get_access_token(auth_code):
     return r.json()['access_token']
 
 
-def get_top_songs(access_token):
+def get_top_songs_api(access_token):
     top_songs_url = "https://api.spotify.com/v1/me/top/tracks"
 
     headers = {

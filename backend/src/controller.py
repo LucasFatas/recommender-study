@@ -1,7 +1,7 @@
 from flask import Flask, request, jsonify, redirect
-from src.service import add_user, add_answers, DatabaseException, add_top_songs
+from src.service import add_user, add_answers, DatabaseException, get_top_songs, add_top_songs
 from src.psychology import calculations
-from src.spotify import get_access_token, get_top_songs, AuthorizationException
+from src.spotify import get_access_token, get_top_songs_api, AuthorizationException
 import json
 from flask_cors import CORS
 from werkzeug.wrappers import Response
@@ -57,6 +57,17 @@ def save_answer():
     return jsonify(values=value, personalities=personality)
 
 
+@app.route('/songs/get')
+def retrieve_top_songs():
+    try:
+        data = request.get_json(force=True)
+        top_songs = get_top_songs(data['userId'])
+        return json.dumps(top_songs)
+    except DatabaseException as e:
+        # Exception handling in case there is a database error.
+        return redirect(frontend_url + "/error/database")
+
+
 # Handle the Spotify login and access code retrieval.
 @app.route('/callback')
 def spotify_log_in():
@@ -77,12 +88,10 @@ def spotify_log_in():
 
     except AuthorizationException as e:
         # Exception handling in case there is an authorization error.
-        response = Response(str(e))
         return redirect(frontend_url + "/error/login")
 
     except DatabaseException as e:
         # Exception handling in case there is a database error.
-        response = Response(str(e))
         return redirect(frontend_url + "/error/database")
 
 
