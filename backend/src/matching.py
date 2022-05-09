@@ -1,0 +1,35 @@
+from backend.src.service import get_all_values, get_all_personalities, get_random_user
+from src.distance import manhattan_distance, euclidean_distance, camberan_distance
+
+
+def match(userId, values, personality, batch, metric):
+    batch_values = get_all_values(batch)
+    val_user = closest_user(values, batch_values, metric)
+
+    batch_personality = get_all_personalities(batch)
+    pers_user = closest_user(personality, batch_personality, metric)
+
+    random_user = get_random_user(val_user,pers_user,batch)
+    add_maches(userId, val_user, pers_user, random_user)
+    return
+
+
+
+def calculate_distance(answer, batch_answer, metric):
+    if(metric.casefold() == "manhattan".casefold()):
+        return manhattan_distance(answer, batch_answer)
+    elif(metric.casefold() == "euclidean".casefold()):
+        return euclidean_distance(answer, batch_answer)
+    else:
+        return camberan_distance(anser, batch_answer)
+
+
+def closest_user(answer, batch_answer,metric):
+    closest = -1
+    closest_distance = float("inf")
+    for x in batch_answer:
+        distance = calculate_distance(answer, x, metric)
+        if (distance < closest_distance):
+            closest_distance = distance
+            closest = x[0]
+    return closest

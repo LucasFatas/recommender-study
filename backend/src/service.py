@@ -1,5 +1,6 @@
 import mysql.connector
 import json
+from random import randrange
 
 
 class DatabaseException(Exception):
@@ -29,8 +30,8 @@ def open_connection():
     db = mysql.connector.connect(
         # Change once it is no longer hosted
         host="localhost",
-        user="dani",
-        passwd="root",
+        user="root",
+        passwd="password",
         database=database
     )
 
@@ -114,6 +115,68 @@ def add_personality(user_id, personality):
     except mysql.connector.errors.Error as e:
         raise DatabaseException("Error connecting to database when adding personalities.")
 
+def add_matches(userId, val_user, pers_user, random_user):
+    try:
+        # The SQL statement for storing a personality in the Personality table
+        db, cursor = open_connection()
+        sql = "INSERT INTO Recommender.Match (UserId, ValId, PersId, RandId) VALUES (%s, %s, %s, %s)"
+        val = (userId, val_user, pers_user, random_user)
+        cursor.execute(sql, val)
+        db.commit()
+
+        return "Success storing personality"
+
+    except mysql.connector.errors.Error as e:
+        raise DatabaseException("Error connecting to database when adding personalities.")
+
+
+def get_all_values(batch):
+    try:
+        db, cursor = open_connection()
+        sql = "Select UserId, Stimulation, SelfDirection, Universalism, Benevolence," \
+              " Tradition, Conformity, SecurityVal, PowerVal, Achievement, Hedonism " \
+              "From recommender.value as v , recommender.participant as p " \
+              "Where v.ValueId = p.UserId and p.Batch = 1"
+
+        cursor.execute(sql)
+        result = cursor.fetchall()
+        return result
+    except mysql.connector.errors.Error as e:
+        raise DatabaseException("Error connecting to database when retrieving values.")
+
+def get_all_personalities(batch):
+    try:
+        db, cursor = open_connection()
+        sql = "Select UserID, Openness, Honesty, Emotionality," \
+              "Extroversion, Agreeableness, Conscientiousness " \
+              "From recommender.personality as pe , recommender.participant as pa " \
+              "Where pe.PersonalityId = pa.UserId and p.Batch = 1"
+
+        cursor.execute(sql)
+        result = cursor.fetchall()
+        return result
+
+    except mysql.connector.errors.Error as e:
+        raise DatabaseException("Error connecting to database when retrieving personalities.")
+
+
+def get_random_user(user1, user2, batch):
+    try:
+        db, cursor = open_connection()
+        sql = "Select UserID From recommender.participant as p " \
+              "Where p.Batch = " + str(batch) +" and not (p.UserID =" + str(user1) + " or p.UserID =  " + str(user2) + ")"
+
+
+        cursor.execute(sql)
+        result = cursor.fetchall()
+
+        return result[randrange(0, len(result))]
+    except mysql.connector.errors.Error as e:
+        raise DatabaseException("Error connecting to database when retrieving users.")
+
+
 
 if __name__ == '__main__':
     change_database_for_testing(False)
+
+    get_random_user(2,6,1)
