@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-export const StarRating = () => {  
+export const StarRating = ({starSize}) => {  
 
   const [rating, setRating] = useState(0);
   const [hover, setHover] = useState(0);
@@ -12,6 +12,7 @@ export const StarRating = () => {
   //     disabled : pageCondition && answerCondition === false ? true : false
   //   }
   // }
+  // const starSize = "text-2xl "
 
   return (
     <div className="star-rating">
@@ -27,7 +28,7 @@ export const StarRating = () => {
             onMouseEnter={() => setHover(index)}
             onMouseLeave={() => setHover(rating)}
           >
-            <span className="star">&#9733;</span>
+            <span className={ starSize + " text-xl star"}>&#9733;</span>
           </button>
         );
       })}
