@@ -20,8 +20,8 @@ def open_connection():
     db = mysql.connector.connect(
         # Change once it is no longer hosted
         host="localhost",
-        user="dani",
-        passwd="root",
+        user="root",
+        passwd="password",
         database=database
     )
 
@@ -155,16 +155,17 @@ def get_random_user(user1, user2, batch):
     try:
         db, cursor = open_connection()
         sql = "Select UserID From recommender.participant as p " \
-              "Where p.Batch = 1 and "
+              "Where p.Batch = " + str(batch) +" and not (p.UserID =" + str(user1) + " or p.UserID =  " + str(user2) + ")"
+
 
         cursor.execute(sql)
         result = cursor.fetchall()
 
-        return result[randrange(len(result))]
+        return result[randrange(0, len(result))]
     except mysql.connector.errors.Error as e:
         raise DatabaseException("Error connecting to database when retrieving users.")
 
 
 
 if __name__ == '__main__':
-    add_value(2,(1,2,3,4,5,6,7,8,9,10))
+    get_random_user(2,6,1)

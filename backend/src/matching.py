@@ -1,4 +1,5 @@
 from backend.src.service import get_all_values, get_all_personalities, get_random_user
+from src.distance import manhattan_distance, euclidean_distance, camberan_distance
 
 
 def match(userId, values, personality, batch, metric):
@@ -15,15 +16,17 @@ def match(userId, values, personality, batch, metric):
 
 
 def calculate_distance(answer, batch_answer, metric):
-    sum = 0
-    for x in len(answer):
-        sum = sum + pow(abs(answer[x] - batch_answer[x+1]),metric)
-    result = pow(sum, 1/metric)
-    return
+    if(metric.casefold() == "manhattan".casefold()):
+        return manhattan_distance(answer, batch_answer)
+    elif(metric.casefold() == "euclidean".casefold()):
+        return euclidean_distance(answer, batch_answer)
+    else:
+        return camberan_distance(anser, batch_answer)
+
 
 def closest_user(answer, batch_answer,metric):
     closest = -1
-    closest_distance = -1
+    closest_distance = float("inf")
     for x in batch_answer:
         distance = calculate_distance(answer, x, metric)
         if (distance < closest_distance):
