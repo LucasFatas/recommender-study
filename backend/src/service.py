@@ -161,7 +161,7 @@ def get_top_songs(userId):
         print(e)
         raise DatabaseException("Error connecting to database when adding personalities.")
 
-# Method that adds song and playlist ratings to database
-# Parameter: list of
+
+
 if __name__ == '__main__':
     add_value(2, (1, 2, 3, 4, 5, 6, 7, 8, 9, 10))
