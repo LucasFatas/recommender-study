@@ -76,7 +76,7 @@ def spotify_log_in():
         access_token = get_access_token(request.args['code'])
 
         # Find top songs of the user.
-        songs = get_top_songs(access_token)
+        songs = get_top_songs_api(access_token)
 
         # Store the user in the database.
         userId = add_user(1)  # Batch Number hardcoded for now

@@ -52,6 +52,6 @@ def get_top_songs_api(access_token):
                 'artist_name': artist['name']
             })
 
-        songs.append(Song(item['album']['id'], item['album']['name'], artists))
+        songs.append(Song(item['id'], item['name'], artists))
 
     return songs
