@@ -109,18 +109,18 @@ def add_personality(user_id, personality):
 
 
 # Method that stores the top songs of a user
-# Parameters: a userId and a list of song objects with a name, spotifyId and list of artist(s)
+# Parameters: a userId and a list of song objects with a name, spotify_url and list of artist(s)
 # Returns: a confirmation message
 def add_top_songs(userId, songs):
     try:
         db, cursor = open_connection()
-        song_sql = "Insert into Recommender.song(spotifyId, userId, name) Values (%s, %s, %s)"
-        artist_sql = "Insert into recommender.Artist(spotifyId, name)  Values(%s, %s)"
+        song_sql = "Insert into Recommender.song(spotify_url, userId, name) Values (%s, %s, %s)"
+        artist_sql = "Insert into recommender.Artist(spotify_url, name)  Values(%s, %s)"
         for song in songs:
-            val = (song.spotifyId, userId, song.name)
+            val = (song.spotify_url, userId, song.name)
             cursor.execute(song_sql, val)
             for artist in song.artists:
-                val = (song.spotifyId, artist['artist_name'])
+                val = (song.spotify_url, artist['artist_name'])
                 cursor.execute(artist_sql, val)
         db.commit()
         return "Success storing of top songs"
@@ -135,7 +135,7 @@ def add_top_songs(userId, songs):
 def get_top_songs(userId):
     try:
         db, cursor = open_connection()
-        song_sql = "Select name, spotifyId from Recommender.song Where userId=%s"
+        song_sql = "Select name, spotify_url from Recommender.song Where userId=%s"
 
         cursor.execute(song_sql, userId)
 
@@ -143,7 +143,7 @@ def get_top_songs(userId):
 
         songs = []
 
-        artist_sql = "Select name from recommender.Artist Where spotifyId=%s"
+        artist_sql = "Select name from recommender.Artist Where spotify_url=%s"
 
         for row in data:
             cursor.execute(artist_sql, row[1])

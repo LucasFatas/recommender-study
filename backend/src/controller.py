@@ -1,10 +1,10 @@
 from flask import Flask, request, jsonify, redirect
-from src.service import add_user, add_answers, DatabaseException
+from src.service import add_user, add_answers, DatabaseException, add_top_songs
 from src.psychology import calculations
 from src.spotify import get_access_token, get_top_songs, AuthorizationException
 import json
 from flask_cors import CORS
-from werkzeug.wrappers.response import Response
+from werkzeug.wrappers import Response
 
 app = Flask(__name__)
 CORS(app)
@@ -65,14 +65,15 @@ def spotify_log_in():
         access_token = get_access_token(request.args['code'])
 
         # Find top songs of the user.
-        songs = json.dumps(get_top_songs(access_token))
+        songs = get_top_songs(access_token)
 
         # Store the user in the database.
         userId = add_user(1)  # Batch Number hardcoded for now
 
-        # TODO: add songs to the database. (according to user)
-        # add_songs(songs)
-        return redirect(frontend_url + "/page1?userID = " + userId, 200)
+        add_top_songs(userId, songs)
+
+        # Redirect to first page of the questionnaire
+        return redirect(frontend_url + "/page1?userID = " + str(userId), 200)
 
     except AuthorizationException as e:
         # Exception handling in case there is an authorization error.

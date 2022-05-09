@@ -1,8 +1,8 @@
 class Song:
 
-    def __init__(self, spotifyId, name, artists):
+    def __init__(self, spotify_url, name, artists):
         self.artists = artists
         self.name = name
-        self.spotifyId = spotifyId
+        self.spotify_url = spotify_url
 
 
