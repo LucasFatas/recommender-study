@@ -1,20 +1,20 @@
 import React from "react";
 import { useState } from "react";
+
 import { Playlist } from "./Playlist";
+import { sendRatings } from "../../API/Recommender";
 
 export const Recommender = () => {
 
+	const defaultValues = Array(5).fill(0);
+
+	const [comment, setComment] = useState("");
 	const [ratingsFilled, setRatingsFilled] = useState(false);
 	const [ratings, setRatings] = useState({
-		ratings : {
-			random : { playlist: 0, songs: [0, 0, 0, 0, 0] },
-			personality : { playlist: 0, songs: [0, 0, 0, 0, 0] },
-			values : { playlist: 0, songs: [0, 0, 0, 0, 0] },
-		},
-		comment : ""
+		random : { playlist: 0, songs: defaultValues },
+		personality : { playlist: 0, songs: defaultValues },
+		values : { playlist: 0, songs: defaultValues },
 	})
-	//TODO add textbox content to object comment
-
 
 	//TODO extract button styles somewhere else and use them for the questionnaire button too
 	const buttonStyles = {
@@ -23,13 +23,12 @@ export const Recommender = () => {
 		inactive : "select-none bg-blue-300 text-white font-bold py-2 px-4 rounded-full "
 	}
 
-	const arr = Array(5).fill("https://open.spotify.com/embed/track/3IrPSIZXepPwIoKLQ4ADad");
+	const arr = Array(5).fill("https://p.scdn.co/mp3-preview/77266f8ff27e18fa575df0721323dec1509b314d?cid=8073ee0f16a64774bd0e7f8fa955b9d6%27");
 	const trackLists = [
 		{name : "random", list : arr},
 		{name : "personality", list : arr},
 		{name : "values", list : arr},
 	]
-
 
 	return (
 		<div className='grid place-items-center'>
@@ -45,8 +44,22 @@ export const Recommender = () => {
 					/>
 				))}
 			</div>
-			<textarea className='mt-10 border-2 border-sky-500' placeholder="type your message" maxLength="180" cols="50" rows="6" wrap="hard"/>
-			<button className={ratingsFilled ? buttonStyles.active : buttonStyles.inactive} disabled={!ratingsFilled}>Submit</button>
+			<textarea 
+				className='mt-10 border-2 border-sky-500' 
+				placeholder="type your message" 
+				maxLength="180" 
+				cols="50" 
+				rows="6" 
+				wrap="hard"
+				onChange={(e) => setComment(e.target.value)}
+			/>
+			<button 
+				className={ratingsFilled ? buttonStyles.active : buttonStyles.inactive} 
+				disabled={!ratingsFilled}
+				onClick={() => sendRatings({"ratings" : ratings, "comment" : comment})}
+			>
+				Submit
+			</button>
 		</div>
 	)
 }

@@ -7,13 +7,13 @@ export const StarRating = ({ startStyle, playlist, song, setRatings, ratings, se
 
   const handleRating = (idx) => {
     if (song === undefined)
-      ratings.ratings[playlist].playlist = idx;
+      ratings[playlist].playlist = idx;
     else
-      ratings.ratings[playlist].songs[song] = idx;
+      ratings[playlist].songs[song] = idx;
 
     setRatings(ratings);
     setCurrentRating(idx);
-    setRatingsFilled(Object.values(ratings.ratings).every(x => x.playlist !== 0))
+    setRatingsFilled(Object.values(ratings).every(x => x.playlist !== 0))
   }
 
   return (

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import APIService from '../../API/APIService';
+import { sendAnswer } from '../../API/Questionnaire';
 
 
 const buttonStyles = {
@@ -27,7 +27,7 @@ export const Buttons = ({ prevPage, showSubmit, nextPage, answered, answers, onN
         </button> 
       </Link>
       
-      <button {...setStyleAndDisabled(showSubmit, answered)} onClick={() => APIService.sendAnswer(answers)} >
+      <button {...setStyleAndDisabled(showSubmit, answered)} onClick={() => sendAnswer(answers)} >
         Submit
       </button>
 
