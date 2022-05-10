@@ -15,7 +15,7 @@ def pers_calc(val_answers):
     return 0
 
 
-# Connecting method, called from controller.py. Includes both previous methods.
+# Connecting method, called from QuestionnaireController.py. Includes both previous methods.
 # Parameters: answers related to value theory, answers related to personality.
 # Returns a tuple consisting of calculated value and personality scores, in that order.
 def calculations(val_answers, pers_answers):

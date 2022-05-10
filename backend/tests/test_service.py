@@ -1,5 +1,5 @@
 import json
-from src.service import add_top_songs, get_top_songs, add_song_ratings, add_playlist_ratings, add_user
+from src.Services.database_config import add_top_songs, get_top_songs, add_song_ratings, add_playlist_ratings, add_user
 from src.Entities.Song import Song
 from src.Entities.PlaylistRating import PlaylistRating
 from src.Entities.SongRating import SongRating
@@ -138,14 +138,14 @@ def test_add_personality():
 def test_change_database_for_testing():
     value = 0
     change_database_for_testing(False)
-    with open('../config.json', 'r+') as f:
+    with open('../src/config.json', 'r+') as f:
         data = json.load(f)
         value = data['is_testing']
 
     assert not json.loads(value)
 
     change_database_for_testing(True)
-    with open('../config.json', 'r+') as f:
+    with open('../src/config.json', 'r+') as f:
         data = json.load(f)
         value = data['is_testing']
 
