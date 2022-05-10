@@ -1,4 +1,5 @@
 import requests
+from src.Entities.Song import Song
 
 
 class AuthorizationException(Exception):
@@ -29,7 +30,7 @@ def get_access_token(auth_code):
     return r.json()['access_token']
 
 
-def get_top_songs(access_token):
+def get_top_songs_api(access_token):
     top_songs_url = "https://api.spotify.com/v1/me/top/tracks"
 
     headers = {
@@ -50,10 +51,7 @@ def get_top_songs(access_token):
             artists.append({
                 'artist_name': artist['name']
             })
-        songs.append({
-            'artists': artists,
-            'name': item['album']['name'],
-            'id': item['album']['id']
-        })
+
+        songs.append(Song(item['id'], item['name'], artists))
 
     return songs
