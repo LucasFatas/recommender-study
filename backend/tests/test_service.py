@@ -1,5 +1,7 @@
 import json
-from src.Services.database_config import add_top_songs, get_top_songs, add_song_ratings, add_playlist_ratings, add_user
+
+from src.Services.QuestionnairController import add_value, add_answers
+from src.Services.database_config import change_database_for_testing
 from src.Entities.Song import Song
 from src.Entities.PlaylistRating import PlaylistRating
 from src.Entities.SongRating import SongRating
