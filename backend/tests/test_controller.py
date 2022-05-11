@@ -1,5 +1,5 @@
 import json
-from backend.src.controller import app
+from src.main import app
 
 
 def test_connection():

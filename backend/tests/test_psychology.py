@@ -1,4 +1,4 @@
-from src.psychology import val_calc
+from src.Computation.psychology import val_calc
 
 
 def test_val_calc():

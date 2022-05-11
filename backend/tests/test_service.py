@@ -1,6 +1,7 @@
 import json
 
-from src.Services.QuestionnaireService import add_value, add_answers
+from src.Services.QuestionnaireService import add_value, add_answers, add_user, add_personality
+from src.Services.SongService import add_top_songs, get_top_songs, add_playlist_ratings, add_song_ratings
 from src.Services.database_config import change_database_for_testing
 from src.Entities.Song import Song
 from src.Entities.PlaylistRating import PlaylistRating
