@@ -19,7 +19,7 @@ export const sendAnswer = async (body) => {
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify(mapToObject),
+            body: JSON.stringify(obj),
         });
         console.log(response);
     } catch (error) {
