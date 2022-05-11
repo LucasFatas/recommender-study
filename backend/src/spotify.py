@@ -6,6 +6,10 @@ class AuthorizationException(Exception):
     pass
 
 
+class InvalidAccountException(Exception):
+    pass
+
+
 app_authorization = "Basic ODA3M2VlMGYxNmE2NDc3NGJkMGU3ZjhmYTk1NWI5ZDY6MmEyNGVmM2U2NjkwNGVlYWI4MjRhODc3Mjg5MDU1M2Q="
 
 
@@ -17,7 +21,7 @@ def get_access_token(auth_code):
     body = {
         'grant_type': "authorization_code",
         'code': auth_code,
-        'redirect_uri': "http://localhost:3000/callback"
+        'redirect_uri': "http://localhost:3000/spotify/callback"
     }
     headers = {
         "Authorization": app_authorization
@@ -31,7 +35,7 @@ def get_access_token(auth_code):
 
 
 def get_top_songs_api(access_token):
-    top_songs_url = "https://api.spotify.com/v1/me/top/tracks"
+    top_songs_url = "https://api.spotify.com/v1/me/top/tracks?limit=5"
 
     headers = {
         "Authorization": "Bearer " + access_token
@@ -39,19 +43,21 @@ def get_top_songs_api(access_token):
     r = requests.get(top_songs_url, headers=headers)
 
     if r.status_code == 401:
-        AuthorizationException("Error Retrieving Top Songs. Access_token could be outdated or wrong")
+        raise AuthorizationException("Error Retrieving Top Songs. Access_token could be outdated or wrong")
 
     user_data = r.json()
 
+    if len(user_data['items']) < 5:
+        raise InvalidAccountException("Not enough top tracks")
     songs = []
 
     for item in user_data['items']:
         artists = []
-        for artist in item['album']['artists']:
+        for artist in item['artists']:
             artists.append({
                 'artist_name': artist['name']
             })
 
-        songs.append(Song(item['id'], item['name'], artists))
+        songs.append(Song(item['preview_url'], item['name'], artists))
 
     return songs

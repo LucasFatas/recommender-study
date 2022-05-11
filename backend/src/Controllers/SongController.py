@@ -6,7 +6,7 @@ from src.Entities.SongRating import SongRating
 from src.Services.QuestionnaireService import add_user
 from src.Services.database_config import DatabaseException
 from src.Services.SongService import get_top_songs, add_top_songs, add_playlist_ratings, add_song_ratings
-from src.spotify import get_access_token, get_top_songs_api, AuthorizationException
+from src.spotify import get_access_token, get_top_songs_api, AuthorizationException, InvalidAccountException
 
 songs = Blueprint('songs', __name__)
 frontend_url = "http://www.localhost.com/3000"
@@ -66,6 +66,10 @@ def spotify_log_in():
     except AuthorizationException as e:
         # Exception handling in case there is an authorization error.
         return redirect(frontend_url + "/error/login")
+
+    except InvalidAccountException as e:
+        # Exception handling in case there is an authorization error.
+        return redirect(frontend_url + "/error/invalid_account")
 
     except DatabaseException as e:
         # Exception handling in case there is a database error.
