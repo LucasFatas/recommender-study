@@ -18,7 +18,7 @@ export const QuestionnairePage = (props) => {
 
   const updateAnswers = (e, setSelected, questionNumber, value) => {
     //Set solution in answers map
-    props.setAnswers(props.answers.set(questionNumber + 1, e.target.value));
+    props.setAnswers(props.answers.set(questionNumber + 1, parseInt(e.target.value)));
     
     //Set selected radio button in answer
     setSelected(props.answers.get(questionNumber + 1) === value);
