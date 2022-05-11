@@ -23,7 +23,8 @@ export const Recommender = () => {
 		inactive : "select-none bg-blue-300 text-white font-bold py-2 px-4 rounded-full "
 	}
 
-	const arr = Array(5).fill("https://p.scdn.co/mp3-preview/77266f8ff27e18fa575df0721323dec1509b314d?cid=8073ee0f16a64774bd0e7f8fa955b9d6%27");
+	const arr = Array(5).fill(
+		{songName : "Despacito", artist : "Eminem", albumName : "The dark side of the moon", url : "https://p.scdn.co/mp3-preview/77266f8ff27e18fa575df0721323dec1509b314d?cid=8073ee0f16a64774bd0e7f8fa955b9d6%27"});
 	const trackLists = [
 		{name : "random", list : arr},
 		{name : "personality", list : arr},
@@ -32,7 +33,7 @@ export const Recommender = () => {
 
 	return (
 		<div className='grid place-items-center'>
-			<div className="flex justify-center w-fit mt-10 space-x-7 ">
+			<div className="flex justify-center w-fit mt-10 space-x-5 ">
 				{trackLists.map((trackList, idx) => (
 					<Playlist
 						name={trackList.name}
@@ -45,11 +46,12 @@ export const Recommender = () => {
 				))}
 			</div>
 			<textarea 
-				className='mt-10 border-2 border-sky-500' 
-				placeholder="type your message" 
-				maxLength="180" 
-				cols="50" 
-				rows="6" 
+				className=' rounded-[2px] my-5 mt-10 border-4 border-green-500 resize-none' 
+			
+				placeholder="type your feedback" 
+				maxLength="30" 
+				cols="70" 
+				rows="4" 
 				wrap="hard"
 				onChange={(e) => setComment(e.target.value)}
 			/>

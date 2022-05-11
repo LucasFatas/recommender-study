@@ -6,15 +6,17 @@ export const Playlist = (props) => {
 
 	return (
 		<div>
-			<h2>{ props.name }</h2>
-			<div>
+			<h2 className="text-center">{ props.name }</h2>
+			<div className=" rounded-[20px] border-solid border-8 border-green-300 bg-gray-900 hover:border-green-500">
 				{props.trackList.map((e, idx) => (
 					<div key={idx}>
-						<h3>Song {idx + 1}</h3>
 						<Track 
-							trackUrl= {e}
+							trackUrl= {e.url}
 							playlist={props.name} 
 							song={idx} 
+							songName={e.songName}
+							artist={e.artist}
+							albumName={e.albumName}
 							idx={idx}
 							key={idx}
 							{...props}
@@ -23,7 +25,7 @@ export const Playlist = (props) => {
 				))}
 			</div>
 			
-			<StarRating startStyle='text-2xl text-center' playlist={props.name} {...props}/>
+			<StarRating startStyle='text-4xl text-center' playlist={props.name} {...props}/>
 		</div>
 	)
 }
