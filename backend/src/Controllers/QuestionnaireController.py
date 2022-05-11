@@ -3,7 +3,7 @@ from flask import request, jsonify, Blueprint
 from src.Computation.psychology import calculations
 from src.Services.database_config import DatabaseException
 
-from src.Services.QuestionnairController import add_answers
+from src.Services.QuestionnaireService import add_answers
 
 questionnaire = Blueprint("questionnaire", __name__)
 

@@ -1,4 +1,4 @@
-from src.Services.QuestionnairController import get_all_values, get_all_personalities, get_random_user, add_matches
+from src.Services.QuestionnaireService import get_all_values, get_all_personalities, get_random_user, add_matches
 from src.Computation.distance import manhattan_distance, euclidean_distance, camberan_distance
 
 

@@ -1,6 +1,6 @@
 import json
 
-from src.Services.QuestionnairController import add_value, add_answers
+from src.Services.QuestionnaireService import add_value, add_answers
 from src.Services.database_config import change_database_for_testing
 from src.Entities.Song import Song
 from src.Entities.PlaylistRating import PlaylistRating
