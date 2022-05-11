@@ -1,4 +1,4 @@
-  import React from "react";
+import React from "react";
 import { useState, useEffect } from "react";
 
 import  spotifyLogo from "../assets/spotifyLogo.svg"
@@ -6,6 +6,7 @@ import  spotifyLogo from "../assets/spotifyLogo.svg"
 const callback = 'http://localhost:5000/callback&scope=user-top-read';
 const SpotifyUrl = `https://accounts.spotify.com/authorize?response_type=code&client_id=8073ee0f16a64774bd0e7f8fa955b9d6&redirect_uri=${callback}`;
 
+//TODO use port and url in json file
 
 export const LoginPage = () => {
     
