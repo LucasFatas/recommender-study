@@ -1,43 +1,6 @@
 import mysql.connector
-import json
 from random import randrange
-
-#Exception if we can not reach the DataBase
-class DatabaseException(Exception):
-    pass
-
-
-def change_database_for_testing(value):
-    with open('../config.json', 'r+') as f:
-        data = json.load(f)
-        data['is_testing'] = json.dumps(value)
-
-        f.seek(0)
-        json.dump(data, f, indent=4)
-        f.truncate()
-
-#Method that opens the connection to the database
-def open_connection():
-
-    with open('../config.json', 'r') as f:
-        configuration = json.load(f)
-
-    if configuration['is_testing']:
-        database = configuration['test_database']
-    else:
-        database = configuration['database']
-
-    db = mysql.connector.connect(
-        # Change once it is no longer hosted
-        host="localhost",
-        user="root",
-        passwd="password",
-        database=database
-    )
-
-    cursor = db.cursor()
-
-    return db, cursor, database
+from src.Services.database_config import DatabaseException, open_connection
 
 
 # Method that stores all answers of a user to the database
@@ -82,8 +45,8 @@ def add_value(user_id, values):
         # The SQL statement for storing a value in the Value table
         db, cursor, database = open_connection()
         sql = "INSERT INTO " + database + ".Value (ValueId, Stimulation, SelfDirection, Universalism" \
-              ",Benevolence,Tradition, Conformity, SecurityVal, PowerVal, Achievement,Hedonism)" \
-              " VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
+                                          ",Benevolence,Tradition, Conformity, SecurityVal, PowerVal, Achievement,Hedonism)" \
+                                          " VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
         val = (user_id, values[0], values[1], values[2], values[3], values[4],
                values[5], values[6], values[7], values[8], values[9])
         cursor.execute(sql, val)
@@ -99,12 +62,11 @@ def add_value(user_id, values):
 # Parameters: a user id and a personality vector
 # Returns: A confirmation message
 def add_personality(user_id, personality):
-
     try:
         # The SQL statement for storing a personality in the Personality table
         db, cursor, database = open_connection()
         sql = "INSERT INTO " + database + ".Personality (PersonalityId, Openness, Honesty, Emotionality" \
-              ", Extroversion, Agreeableness, Conscientiousness) VALUES (%s, %s, %s, %s, %s, %s, %s)"
+                                          ", Extroversion, Agreeableness, Conscientiousness) VALUES (%s, %s, %s, %s, %s, %s, %s)"
         val = (user_id, personality[0], personality[1], personality[2],
                personality[3], personality[4], personality[5])
         cursor.execute(sql, val)

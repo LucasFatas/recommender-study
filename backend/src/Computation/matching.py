@@ -1,6 +1,5 @@
-from src.service import get_all_values, get_all_personalities, get_random_user
-from src.distance import manhattan_distance, euclidean_distance, camberan_distance
-from src.service import add_matches
+from src.Services.QuestionnaireService import get_all_values, get_all_personalities, get_random_user, add_matches
+from src.Computation.distance import manhattan_distance, euclidean_distance, camberan_distance
 
 
 def match(userId, values, personality, batch, metric):
@@ -17,9 +16,9 @@ def match(userId, values, personality, batch, metric):
 
 
 def calculate_distance(answer, batch_answer, metric):
-    if(metric.casefold() == "manhattan".casefold()):
+    if metric.casefold() == "manhattan".casefold():
         return manhattan_distance(answer, batch_answer)
-    elif(metric.casefold() == "euclidean".casefold()):
+    elif metric.casefold() == "euclidean".casefold():
         return euclidean_distance(answer, batch_answer)
     else:
         return camberan_distance(answer, batch_answer)
