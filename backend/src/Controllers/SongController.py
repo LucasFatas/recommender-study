@@ -53,12 +53,12 @@ def spotify_log_in():
         access_token = get_access_token(request.args['code'])
 
         # Find top songs of the user.
-        songs = get_top_songs_api(access_token)
+        top_songs = get_top_songs_api(access_token)
 
         # Store the user in the database.
         userId = add_user(1)  # Batch Number hardcoded for now
 
-        add_top_songs(userId, songs)
+        add_top_songs(userId, top_songs)
 
         # Redirect to first page of the questionnaire
         return redirect(frontend_url + "/page1?userID = " + str(userId), 200)
