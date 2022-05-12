@@ -22,6 +22,27 @@ def retrieve_top_songs():
         # Exception handling in case there is a database error.
         return redirect(frontend_url + "/error/database")
 
+@app.route('match')
+def match_user():
+    data = request.get_json(force=True)
+    userId = data['user']
+
+    try:
+        # Add the newly formatted answers to our database.
+        values = get_value(userId)
+        personality = get_personality(userId)
+
+        val_user, pers_user, random_user = match(userId, values, personality, data['metric'])
+
+        lst = [get_songs[val_user], get_songs[pers_user], get_songs[random_user]]
+
+        # TODO return list as a json
+        return
+
+    except DatabaseException as e:
+        # Exception handling in case there is an error.
+        response = jsonify({'message': str(e)})
+        return response, 502
 
 @songs.route('/ratings/add', methods=["POST"])
 def save_ratings():
