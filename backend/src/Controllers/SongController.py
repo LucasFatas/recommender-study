@@ -1,12 +1,13 @@
 import json
 
-from flask import request, redirect, Blueprint
+from flask import request, redirect, Blueprint, jsonify
 
 from src.Entities.SongRating import SongRating
-from src.Services.QuestionnaireService import add_user
+from src.Services.QuestionnaireService import add_user, get_personality, get_songs,get_value
 from src.Services.database_config import DatabaseException
 from src.Services.SongService import get_top_songs, add_top_songs, add_playlist_ratings, add_song_ratings
 from src.spotify import get_access_token, get_top_songs_api, AuthorizationException, InvalidAccountException
+from src.Computation.matching import match
 
 songs = Blueprint('songs', __name__)
 frontend_url = "http://www.localhost.com/3000"
@@ -22,22 +23,22 @@ def retrieve_top_songs():
         # Exception handling in case there is a database error.
         return redirect(frontend_url + "/error/database")
 
-@app.route('match')
+
+@songs.route('/match')
 def match_user():
     data = request.get_json(force=True)
     userId = data['user']
 
     try:
         # Add the newly formatted answers to our database.
-        values = get_value(userId)
+        #values = get_value(userId)
         personality = get_personality(userId)
-
-        val_user, pers_user, random_user = match(userId, values, personality, data['metric'])
-
-        lst = [get_songs[val_user], get_songs[pers_user], get_songs[random_user]]
+        values = "balls"
+        val_user, pers_user, random_user = match(userId, values, personality, 1, data['metric'])
+        lst = [get_top_songs(val_user), get_top_songs(pers_user), get_top_songs(random_user)]
 
         # TODO return list as a json
-        return
+        return json.dumps(lst)
 
     except DatabaseException as e:
         # Exception handling in case there is an error.

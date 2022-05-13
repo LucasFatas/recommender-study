@@ -1,5 +1,5 @@
 import mysql.connector
-from random import randrange
+from random import randint
 from src.Services.database_config import DatabaseException, open_connection
 
 
@@ -96,15 +96,15 @@ def get_value(userId):
 def get_personality(userId):
     try:
         db, cursor, database = open_connection()
-        sql = "Select UserID, Openness, Honesty, Emotionality," \
+        sql = "Select PersonalityID, Openness, Honesty, Emotionality," \
               "Extroversion, Agreeableness, Conscientiousness " \
               "From " + database + ".personality as pe Where pe.PersonalityId = " + str(userId)
         cursor.execute(sql)
-        db.commit()
         result = cursor.fetchall()
         return result
 
     except mysql.connector.errors.Error as e:
+        print(e)
         raise DatabaseException("Error connecting to database when trying to retrieve personality.")
 
 
@@ -114,7 +114,7 @@ def get_personality(userId):
 def add_matches(userId, val_user, pers_user, random_user):
     try:
         # The SQL statement for storing user id and matches in the Match table
-        db, cursor = open_connection()
+        db, cursor, database = open_connection()
         sql = "INSERT INTO Recommender.Match (UserId, ValId, PersId, RandId) VALUES (%s, %s, %s, %s)"
         val = (userId, val_user, pers_user, random_user)
         cursor.execute(sql, val)
@@ -154,13 +154,14 @@ def get_all_personalities(batch):
               "Extroversion, Agreeableness, Conscientiousness " \
               "From " + database + ".personality as pe , " \
               + database + ".participant as pa " \
-              "Where pe.PersonalityId = pa.UserId and p.Batch = " + str(batch)
+              "Where pe.PersonalityId = pa.UserId and pa.Batch = " + str(batch)
 
         cursor.execute(sql)
         result = cursor.fetchall()
         return result
 
     except mysql.connector.errors.Error as e:
+        print(e)
         raise DatabaseException("Error connecting to database when retrieving personalities.")
 
 
@@ -177,7 +178,7 @@ def get_random_user(user1, user2, batch):
         cursor.execute(sql)
         result = cursor.fetchall()
 
-        return result[randrange(0, len(result))]
+        return result[randint(0, len(result))][0]
     except mysql.connector.errors.Error as e:
         raise DatabaseException("Error connecting to database when retrieving users.")
 
@@ -194,8 +195,3 @@ def get_songs(userId):
     except mysql.connector.errors.Error as e:
         raise DatabaseException("Error connecting to database when retrieving songs.")
 
-
-if __name__ == '__main__':
-    change_database_for_testing(False)
-
-    get_random_user(2,6,1)

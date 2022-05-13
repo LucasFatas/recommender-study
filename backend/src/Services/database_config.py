@@ -19,22 +19,15 @@ def change_database_for_testing(value):
 
 # Method that opens the connection to the database
 def open_connection():
-    with open('config.json', 'r') as f:
-        configuration = json.load(f)
-
-    if configuration['is_testing']:
-        database = configuration['test_database']
-    else:
-        database = configuration['database']
 
     db = mysql.connector.connect(
         # Change once it is no longer hosted
         host="localhost",
         user="root",
         passwd="password",
-        database=database
+        database="recommender"
     )
 
     cursor = db.cursor()
 
-    return db, cursor, database
+    return db, cursor,"recommender"
