@@ -1,11 +1,14 @@
 import React from "react";
 import { useState } from "react";
-
+import { useNavigate } from 'react-router-dom';
 import { Playlist } from "./Playlist";
 import { sendRatings } from "../../API/Recommender";
 
 export const Recommender = () => {
 
+	const navigate = useNavigate();
+
+	
 	const defaultValues = Array(5).fill(0);
 
 	const [comment, setComment] = useState("");
@@ -30,6 +33,11 @@ export const Recommender = () => {
 		{name : "personality", list : arr},
 		{name : "values", list : arr},
 	]
+
+	const handleSubmit = () => {
+		sendRatings({"ratings" : ratings, "comment" : comment});
+		navigate('/thanks');
+	}
 
 	return (
 		<div className='grid place-items-center'>
@@ -58,7 +66,7 @@ export const Recommender = () => {
 			<button 
 				className={ratingsFilled ? buttonStyles.active : buttonStyles.inactive} 
 				disabled={!ratingsFilled}
-				onClick={() => sendRatings({"ratings" : ratings, "comment" : comment})}
+				onClick={handleSubmit}
 			>
 				Submit
 			</button>
