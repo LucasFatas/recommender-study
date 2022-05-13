@@ -4,7 +4,7 @@ const inputStyle = "appearance-none rounded-full h-4 w-4 border border-gray-300 
 
 export const RadioButton = ({ answers, value, questionNumber, onChange }) => {
 
-  const checkPreviousAnswers = () => answers.get(questionNumber + 1) === value.toString();
+  const checkPreviousAnswers = () => answers.get(questionNumber + 1) === value;
   
   const [selected, setSelected] = useState(checkPreviousAnswers());
 
