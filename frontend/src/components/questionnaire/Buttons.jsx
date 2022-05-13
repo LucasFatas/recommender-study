@@ -17,6 +17,8 @@ export const Buttons = ({ prevPage, showSubmit, nextPage, answered, answers, onN
 
   const handleSubmit = () => {
     sendAnswer(answers);
+    //for the moment, the participant is direcly redirected tp the recommender, 
+    // Later on, he/she will be redirected first to the result and loading page 
     navigate('/recommender');
   }
 
