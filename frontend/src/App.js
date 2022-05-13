@@ -2,6 +2,8 @@ import { Questionnaire } from './components/questionnaire/Questionnaire';
 import { PageNotFound } from './components/errors/PageNotFound';
 import { ErrorRouter } from './components/errors/ErrorRouter';
 import { Recommender } from './components/recommender/Recommender';
+import { Thanks } from './components/Thanks';
+import { ResultPage } from './components/ResultPage';
 import {
   BrowserRouter,
   Routes,
@@ -26,7 +28,9 @@ const App = () => {
 
         <Route path="/loginPage" element={<LoginPage defaultPage={defaultPage}/>} />
         <Route path="/questionnaire/*" element={<Questionnaire questions={questions} defaultPage={defaultPage} />} />
-        <Route path="/recommender" element={<Recommender defaultPage={defaultPage}/>} />
+        <Route path="/recommender" element={<Recommender/>} />
+        <Route path="/resultPage" element={<ResultPage/>} />
+        <Route path="/thanks" element={<Thanks/>} />
 
       </Routes>
     </BrowserRouter>
