@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { sendAnswer } from '../../API/Questionnaire';
 
 
@@ -9,7 +9,18 @@ const buttonStyles = {
   inactive : "select-none bg-blue-300 text-white font-bold py-2 px-4 rounded-full "
 }
 
+
+
 export const Buttons = ({ prevPage, showSubmit, nextPage, answered, answers, onNext }) => {
+
+  const navigate = useNavigate();
+
+  const handleSubmit = () => {
+    sendAnswer(answers);
+    //for the moment, the participant is direcly redirected tp the recommender, 
+    // Later on, he/she will be redirected first to the result and loading page 
+    navigate('/recommender');
+  }
 
   const setStyleAndDisabled = (pageCondition, answerCondition) => {
     const { active, disabled, inactive } = buttonStyles;
@@ -27,7 +38,7 @@ export const Buttons = ({ prevPage, showSubmit, nextPage, answered, answers, onN
         </button> 
       </Link>
       
-      <button {...setStyleAndDisabled(showSubmit, answered)} onClick={() => sendAnswer(answers)} >
+      <button {...setStyleAndDisabled(showSubmit, answered)} onClick={handleSubmit}>
         Submit
       </button>
 
