@@ -6,11 +6,14 @@ export const StarRating = ({ startStyle, playlist, song, setRatings, ratings, se
   const [hover, setHover] = useState(0);
 
   const handleRating = (idx) => {
+    
     if (song === undefined)
       ratings[playlist].playlist = idx;
-    else
+    else{
+      console.log(playlist)
       ratings[playlist].songs[song] = idx;
-
+    }
+    
     setRatings(ratings);
     setCurrentRating(idx);
     setRatingsFilled(Object.values(ratings).every(x => x.playlist !== 0))

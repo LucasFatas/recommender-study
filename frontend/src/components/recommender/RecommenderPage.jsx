@@ -1,11 +1,9 @@
 import { Playlist } from "./Playlist"
+import { Buttons } from "./Buttons"
 
 export const RecommenderPage = (props) => {
 
 
-  const handleSubmit = () => {
-
-  }
 
   
   //TODO extract button styles somewhere else and use them for the questionnaire button too
@@ -15,11 +13,16 @@ export const RecommenderPage = (props) => {
     inactive : "select-none bg-blue-300 text-white font-bold py-2 px-4 rounded-full "
   }
 
+  const handleNext = () => {
+    // const nextQuestionsNumber = questionsNumber.map(x => x + questionsNumber.length);
+    // setAnswered(nextQuestionsNumber.every(x => props.answers.has(x)))
+  }
+
   return (
 		<div className='grid place-items-center'>
 			<div className="flex justify-center w-fit mt-10 space-x-5 ">
 					<Playlist
-						name={props.name}
+						name={props.playlistName}
 						setRatings={props.setRatings}
 						ratings={props.ratings}
 						key={props.playlistKey}
@@ -37,13 +40,15 @@ export const RecommenderPage = (props) => {
 				wrap="hard"
 				onChange={(e) => props.setComment(e.target.value)}
 			/>
-			<button 
+
+      <Buttons {...props} answered={props.ratingsFilled} onNext={handleNext}/>
+			{/* <button 
 				className={props.ratingsFilled ? buttonStyles.active : buttonStyles.inactive} 
 				disabled={!props.ratingsFilled}
 				onClick={handleSubmit}
 			>
 				Submit
-			</button>
+			</button> */}
 		</div>
 	)
 

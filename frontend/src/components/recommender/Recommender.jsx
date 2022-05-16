@@ -1,14 +1,12 @@
 import React from "react";
 import { useState } from "react";
-import { useNavigate } from 'react-router-dom';
-import { sendRatings } from "../../API/Recommender";
 import { RecommenderPage } from "./RecommenderPage";
 import { Routes, Route, Navigate } from "react-router-dom";
 import { PageNotFound } from "../errors/PageNotFound";
 
 export const Recommender = ({defaultPage}) => {
 
-	const navigate = useNavigate();
+
 
 	
 	const defaultValues = Array(5).fill(0);
@@ -31,23 +29,24 @@ export const Recommender = ({defaultPage}) => {
 		{name : "values", list : arr},
 	]
 
-	const handleSubmit = () => {
-		sendRatings({"ratings" : ratings, "comment" : comment});
-		navigate('/thanks');
-	}
+
 
 	const currentPage = (trackList, idx) => (
 		<RecommenderPage
 		playlistName={trackList.name}
-		setRatings={setRatings}
 		ratings={ratings}
+		setRatings={setRatings}
 		PlaylisyKey={idx}
 		ratingsFilled={ratingsFilled}
 		setRatingsFilled={setRatingsFilled}
 		trackList={trackList.list}
 
+		comment={comment}
 		setComment={setComment}
-	
+		pageNumber={idx + 1}
+    prevPage={idx + 1 === 1 ? false : idx} 
+    nextPage={idx + 1 === 3 ? false : idx + 2}
+  	showSubmit={idx + 1 === 3 ? 3 : false}
 		/>
 	)
 
