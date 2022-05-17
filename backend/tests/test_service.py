@@ -1,5 +1,4 @@
 import json
-
 from src.Services.QuestionnaireService import add_value, add_answers, add_user, add_personality
 from src.Services.SongService import add_top_songs, get_top_songs, add_playlist_ratings, add_song_ratings
 from src.Services.database_config import change_database_for_testing
@@ -11,28 +10,28 @@ from src.Entities.SongRating import SongRating
 def test_add_song_ratings():
     tup = [
         Song(
-            "2hSBhzE4hbWRWl4PLMiJsu",
+            "https://p.scdn.co/mp3-preview/754ac47c66968d7bed8072e826cb9eb239457e11?cid=8073ee0f16a64774bd0e7f8fa955b9d6",
             "JOVEN PARA SIEMPRE",
             [{"artist_name": "Funzo y Baby Loud"}]
         ),
         Song(
-            "1p0ZOyfoywejbepwfUyQAG",
+            "https://p.scdn.co/mp3-preview/ab9f4d3741dffa1c41ce156f523e440f7d288d5d?cid=8073ee0f16a64774bd0e7f8fa955b9d6",
             "Dale",
             [{"artist_name": "Pole"}, {"artist_name": "Hens"}]
 
         ),
         Song(
-            "6COq76th7tzFFi2wlcD6xj",
+            "https://p.scdn.co/mp3-preview/cf4be4c14b31037207998ebc190973f56cf5dd4c?cid=8073ee0f16a64774bd0e7f8fa955b9d6",
             "Vuelve",
             [{"artist_name": "Azel"}]
         ),
         Song(
-            "03J7yqJA8a4eSjnFUSfCbp",
+            "https://p.scdn.co/mp3-preview/e851e103d110d4c1b0002346c47d344da1b1945d?cid=8073ee0f16a64774bd0e7f8fa955b9d6",
             "Amanecer",
             [{"artist_name": "Azel"}]
         ),
         Song(
-            "0LUwBqSMzszqZA7td5TjpK",
+            "https://p.scdn.co/mp3-preview/6bbc122d01a67f9aeac6c659455ee83478149c69?cid=8073ee0f16a64774bd0e7f8fa955b9d6",
             "Loca",
             [{"artist_name": "Azel"}]
         )
@@ -43,6 +42,8 @@ def test_add_song_ratings():
 def test_add_answers():
     tup = [(1, 1, 1), (1, 2, 3)]
     assert "Success storing all Answers" == add_answers(tup)
+
+
 def test_get_top_songs():
     tup = [
         Song(
@@ -115,10 +116,6 @@ def test_add_song_ratings():
     ]
 
     assert add_song_ratings(song_ratings) == "Success storing song ratings"
-
-
-
-
 
 
 def test_add_user():

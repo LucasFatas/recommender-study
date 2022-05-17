@@ -9,7 +9,7 @@ from src.Entities.Song import Song
 def add_top_songs(userId, songs):
     try:
         db, cursor, database = open_connection()
-        song_sql = "Insert into Recommender.song(spotify_url, userId, name) Values (%s, %s, %s)"
+        song_sql = "Insert into " + database + ".song(spotify_url, userId, name) Values (%s, %s, %s)"
         artist_sql = "Insert into recommender.Artist(spotify_url, name)  Values(%s, %s)"
         for song in songs:
             val = (song.spotify_url, userId, song.name)
@@ -30,7 +30,7 @@ def add_top_songs(userId, songs):
 def get_top_songs(userId):
     try:
         db, cursor, database = open_connection()
-        song_sql = "Select name, spotify_url from Recommender.song Where userId = " + str(userId)
+        song_sql = "Select name, spotify_url from " + database + ".song Where userId = " + str(userId)
 
         cursor.execute(song_sql)
 
@@ -39,9 +39,8 @@ def get_top_songs(userId):
         songs = []
 
         for row in data:
-            artist_sql = "Select name from recommender.Artist Where spotify_url = %(url)s"
+            artist_sql = "Select distinct name from " + database + ".Artist Where spotify_url = %(url)s"
 
-            print(row[1])
             cursor.execute(artist_sql, {'url': str(row[1])})
 
             artists = []
@@ -62,8 +61,8 @@ def get_top_songs(userId):
 # Returns: a confirmation message
 def add_playlist_ratings(playlists):
     try:
-        db, cursor = open_connection()
-        playlist_sql = "Insert into Recommender.PlaylistRating(userId, matchedUserId, rating) Values (%s, %s, %s)"
+        db, cursor, database = open_connection()
+        playlist_sql = "Insert into " + database + ".PlaylistRating(userId, matchedUserId, rating) Values (%s, %s, %s)"
         for playlist in playlists:
             val = (playlist.userId, playlist.matchedUserId, playlist.rating)
             cursor.execute(playlist_sql, val)
@@ -80,8 +79,8 @@ def add_playlist_ratings(playlists):
 # Returns: a confirmation message
 def add_song_ratings(song_ratings):
     try:
-        db, cursor = open_connection()
-        song_sql = "Insert into Recommender.SongRating(userId, matchedUserId, spotify_url, rating) Values (%s,%s,%s,%s)"
+        db, cursor, database = open_connection()
+        song_sql = "Insert into " + database + ".SongRating(userId, matchedUserId, spotify_url, rating) Values (%s,%s,%s,%s)"
         for song_rating in song_ratings:
             val = (song_rating.userId, song_rating.matchedUserId, song_rating.spotify_url, song_rating.rating)
             cursor.execute(song_sql, val)
