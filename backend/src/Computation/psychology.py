@@ -5,7 +5,6 @@ import numpy as np
 # Parameters: answers related to value theory.
 # Returns an array of floats representing the personality scores.
 def val_calc(val_answers):
-
     mrat = np.mean(val_answers)
     a = val_answers[1]
 
@@ -22,7 +21,7 @@ def val_calc(val_answers):
 
         # Universalism - 3,8,19,23,29,40
         np.mean([val_answers[2], val_answers[7], val_answers[18],
-                         val_answers[22], val_answers[28], val_answers[39]]),
+                 val_answers[22], val_answers[28], val_answers[39]]),
 
         # Self-Direction - 1,11,22,34
         np.mean([val_answers[0], val_answers[10], val_answers[21], val_answers[33]]),
@@ -45,7 +44,6 @@ def val_calc(val_answers):
 
     meaned_values = values - mrat
     return values
-
 
 
 # Calculates personality scores of a user given the answers to the quiz.
