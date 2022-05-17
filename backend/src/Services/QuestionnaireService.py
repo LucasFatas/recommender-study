@@ -83,7 +83,7 @@ def get_value(userId):
         db, cursor, database = open_connection()
         sql = "Select Stimulation, SelfDirection, Universalism, Benevolence," \
               " Tradition, Conformity, SecurityVal, PowerVal, Achievement, Hedonism " \
-              "From" + database + ".value as v Where v.ValueId = " + str(userId)
+              "From " + database + ".value as v Where v.ValueId = " + str(userId)
         cursor.execute(sql)
         db.commit()
         result = cursor.fetchall()

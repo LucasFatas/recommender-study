@@ -13,15 +13,9 @@ questionnaire = Blueprint("questionnaire", __name__)
 def save_answer():
     data = request.get_json(force=True)
 
-    # Calculations for the personality and values.
-    # TODO: implement value and personality calculations
-    # values, personalities = calculations(answers)
-
-    # TODO: store answers into our database
-    answers = []
-
-    # Format answers retrieved from frontend into our database format.
+    # Format answers retrieved from frontend into our database format to store the data.
     # Format: UserId, question number, answer.
+    answers = []
 
     # Personality answers formatting
     for index, answer in enumerate(data['personality_answers']):

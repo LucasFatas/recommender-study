@@ -2,6 +2,7 @@ import json
 
 from flask import request, redirect, Blueprint, jsonify
 
+from src.Entities.Match import Match
 from src.Entities.PlaylistRating import PlaylistRating
 from src.Entities.SongRating import SongRating
 from src.Services.QuestionnaireService import add_user, get_personality, get_songs,get_value
@@ -18,7 +19,11 @@ frontend_url = "http://www.localhost.com/3000"
 def retrieve_top_songs():
     try:
         data = request.get_json(force=True)
+
+        # Given the user id, retrieve top songs from database.
         top_songs = get_top_songs(data['userId'])
+
+        # Return JSON object with such a song list.
         return jsonify(songs=[song.__dict__ for song in top_songs])
     except DatabaseException as e:
         # Exception handling in case there is a database error.
@@ -34,17 +39,20 @@ def match_user():
         # Add the newly formatted answers to our database.
         # values = get_value(userId)
         personality = get_personality(userId)
-        values = "balls"
+        values = get_value(userId)
+
+        # Find IDs of the users more similar to the given user id
         val_user, pers_user, random_user = match(userId, values, personality, 1, data['metric'])
 
         # TODO: Return ID of the matched users as well
-        lst = [get_top_songs(val_user), get_top_songs(pers_user), get_top_songs(random_user)]
+        lst = [Match(val_user, get_top_songs(val_user)), Match(pers_user, get_top_songs(pers_user)), Match(random_user, get_top_songs(random_user))]
 
+        # Format song list into a jsonifiable object
+        #
         jsonifiable = []
-        matched = []
-        for match_list in lst:
-            for song in match_list:
-                matched.append(song.__dict__)
+        for single_match in lst:
+            matched = {"user_id": single_match.userId, "songs" : [song.__dict__ for song in single_match.songs]}
+
             jsonifiable.append(matched)
 
         return jsonify(match=jsonifiable)
@@ -59,18 +67,29 @@ def match_user():
 def save_ratings():
     try:
         data = request.get_json(force=True)
+
+        # Retrieve the user id from the user.
         userId = data['userId']
+
+        # Add song ratings into our database.
+        # In order to do that, we need to format the data retrieved. We use a helper Entity SongRating
+        # SongRating(user id, matched user, spotify preview url, rating)
         songRatings = []
         for songRating in data['songRatings']:
             songRatings.append(SongRating(userId, songRating['matchedUserId'], songRating['spotify_url'],
                                           songRating['rating']))
         add_song_ratings(songRatings),
 
+        # Add playlist ratings into our database.
+        # In order to do that, we need to format the data retrieved. We use a helper Entity PlaylistRating
+        # PlaylistRating(user id, matched user, spotify preview url, rating)
         playlistRatings = []
         for playlistRating in data['playlistRatings']:
             playlistRatings.append(PlaylistRating(userId, playlistRating['matchedUserId'], playlistRating['rating']))
 
         add_playlist_ratings(playlistRatings)
+
+        # Everything has been successfully stored, return success message.
         return jsonify("Success")
     except DatabaseException as e:
         # Exception handling in case there is a database error.
@@ -90,6 +109,7 @@ def spotify_log_in():
         # Store the user in the database.
         userId = add_user(1)  # Batch Number hardcoded for now
 
+        # Store top songs into our database.
         add_top_songs(userId, top_songs)
 
         # Redirect to first page of the questionnaire
@@ -100,7 +120,7 @@ def spotify_log_in():
         return redirect(frontend_url + "/error/login")
 
     except InvalidAccountException as e:
-        # Exception handling in case there is an authorization error.
+        # Exception handling in case there is an Invalid account error.
         return redirect(frontend_url + "/error/invalid_account")
 
     except DatabaseException as e:
