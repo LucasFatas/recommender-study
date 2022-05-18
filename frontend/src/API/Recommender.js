@@ -5,7 +5,7 @@ const { serverUrl, port } = server;
 export const sendRatings = async (ratings) => {
     console.log(ratings);
     try {
-        const response = await fetch(`${serverUrl}:${port}/ratings/add`, {
+        const response = await fetch(`${serverUrl}:${port}/spotify/ratings/add`, {
             method: 'POST',
             mode: 'no-cors',
             headers: {

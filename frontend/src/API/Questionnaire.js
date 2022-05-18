@@ -13,7 +13,7 @@ export const sendAnswer = async (body) => {
     }
 
     try {
-        const response = await fetch(`${serverUrl}:${port}/saveAnswer`, {
+        const response = await fetch(`${serverUrl}:${port}/questionnaire/answer/add`, {
             method: 'POST',
             mode: 'no-cors',
             headers: {

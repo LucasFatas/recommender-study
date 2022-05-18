@@ -1,9 +1,10 @@
 import React from "react";
 import { useState, useEffect } from "react";
+import * as data from '../util/API.json'
 
 import  spotifyLogo from "../assets/spotifyLogo.svg"
 
-const callback = 'http://localhost:5000/callback&scope=user-top-read';
+const callback =  data.serverUrl + ':' + data.port + '/callback&scope=user-top-read';
 const SpotifyUrl = `https://accounts.spotify.com/authorize?response_type=code&client_id=8073ee0f16a64774bd0e7f8fa955b9d6&redirect_uri=${callback}`;
 
 //TODO use port and url in json file
