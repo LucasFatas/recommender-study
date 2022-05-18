@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 
-export const StarRating = ({ startStyle, playlist, song, setRatings, ratings, setRatingsFilled }) => {  
+export const StarRating = ({ startStyle, playlist, song, setRatings, ratings, setRatingsFilled, initialRating }) => {  
 
-  const [currentRating, setCurrentRating] = useState(0);
+  const [currentRating, setCurrentRating] = useState(initialRating);
   const [hover, setHover] = useState(0);
 
   const handleRating = (idx) => {

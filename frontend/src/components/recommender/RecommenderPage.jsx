@@ -4,7 +4,7 @@ import { Buttons } from "./Buttons"
 export const RecommenderPage = (props) => {
 
 
-
+  const playlistRated = (0 !== props.ratings[props.playlistName].playlist)
   
   //TODO extract button styles somewhere else and use them for the questionnaire button too
   const buttonStyles = {
@@ -38,10 +38,12 @@ export const RecommenderPage = (props) => {
 				cols="70" 
 				rows="4" 
 				wrap="hard"
-				onChange={(e) => props.setComment(e.target.value)}
+				onChange={(e) => 
+                    { props.comment.playlistName = e.target.value
+                      props.setComment(props.comment)}}
 			/>
 
-      <Buttons {...props} answered={props.ratingsFilled} onNext={handleNext}/>
+      <Buttons {...props} answered={playlistRated} onNext={handleNext}/>
 			{/* <button 
 				className={props.ratingsFilled ? buttonStyles.active : buttonStyles.inactive} 
 				disabled={!props.ratingsFilled}

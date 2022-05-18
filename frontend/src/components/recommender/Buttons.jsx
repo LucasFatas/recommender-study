@@ -11,7 +11,9 @@ const buttonStyles = {
 
 
 
-export const Buttons = ({ prevPage, showSubmit, nextPage, answered, ratings, comment, onNext }) => {
+export const Buttons = ({ prevPage, showSubmit, nextPage, answered, ratings, comment, onNext, playlistName }) => {
+
+  const Playlistrated = 0 !== ratings[playlistName].playlist
 
   const navigate = useNavigate();
 
@@ -42,7 +44,7 @@ export const Buttons = ({ prevPage, showSubmit, nextPage, answered, ratings, com
       </button>
 
       <Link to={ `/recommender/page${ nextPage }` } className={ nextPage ? "" : "pointer-events-none"}>
-        <button {...setStyleAndDisabled(nextPage, answered)} onClick={ onNext }>
+        <button {...setStyleAndDisabled(nextPage, Playlistrated)} onClick={ onNext }>
           Next
         </button>
       </Link>

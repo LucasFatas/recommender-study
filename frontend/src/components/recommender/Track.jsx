@@ -11,7 +11,7 @@ export const Track = (props) => {
       </div>
       
       <audio className="text-xl" controls src={props.trackUrl}/>
-      <StarRating startStyle="text-xl"  {...props} />
+      <StarRating startStyle="text-xl" initialRating={props.ratings[props.name].songs[props.song]}  {...props} />
 		</div>
   )
 }

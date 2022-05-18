@@ -11,7 +11,11 @@ export const Recommender = ({defaultPage}) => {
 	
 	const defaultValues = Array(5).fill(0);
 
-	const [comment, setComment] = useState("");
+	const [comment, setComment] = useState({
+		random : "",
+		personality : "",
+		values : "",
+	});
 	const [ratingsFilled, setRatingsFilled] = useState(false);
 	const [ratings, setRatings] = useState({
 		random : { playlist: 0, songs: defaultValues },
