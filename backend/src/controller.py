@@ -1,7 +1,7 @@
 from flask import Flask, request, jsonify, redirect
-from backend.src.service import add_user, add_answers, DatabaseException
-from backend.src.psychology import calculations
-from backend.src.spotify import get_access_token, get_top_songs, AuthorizationException
+from service import add_user, add_answers, DatabaseException
+from psychology import calculations
+from spotify import get_access_token, get_top_songs, AuthorizationException
 import json
 from flask_cors import CORS
 from werkzeug.wrappers import Response
@@ -63,7 +63,7 @@ def spotify_log_in():
     try:
         # Retrieve the access token after user is logged in.
         access_token = get_access_token(request.args['code'])
-
+        print(access_token)
         # Find top songs of the user.
         songs = json.dumps(get_top_songs(access_token))
 

@@ -29,8 +29,8 @@ def open_connection():
     db = mysql.connector.connect(
         # Change once it is no longer hosted
         host="localhost",
-        user="dani",
-        passwd="root",
+        user="root",
+        passwd="dolphin",
         database=database
     )
 
@@ -53,6 +53,7 @@ def add_answers(answers):
         return "Success storing all Answers"
 
     except mysql.connector.errors.Error as e:
+        print(e)
         raise DatabaseException("Error connecting to database when adding answers.")
 
 

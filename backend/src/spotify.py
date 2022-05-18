@@ -13,10 +13,11 @@ app_authorization = "Basic ODA3M2VlMGYxNmE2NDc3NGJkMGU3ZjhmYTk1NWI5ZDY6MmEyNGVmM
 # return access_token(str): access token needed to retrieve user data
 def get_access_token(auth_code):
     spotify_auth_url = "https://accounts.spotify.com/api/token"
+    print(auth_code)
     body = {
         'grant_type': "authorization_code",
         'code': auth_code,
-        'redirect_uri': "http://localhost:3000/callback"
+        'redirect_uri': "http://localhost:3000/questionnaire"
     }
     headers = {
         "Authorization": app_authorization
