@@ -3,7 +3,6 @@ import { Buttons } from "./Buttons"
 
 export const RecommenderPage = (props) => {
 
-
   const playlistRated = (0 !== props.ratings[props.playlistName].playlist)
   
   //TODO extract button styles somewhere else and use them for the questionnaire button too
@@ -38,19 +37,13 @@ export const RecommenderPage = (props) => {
 				cols="70" 
 				rows="4" 
 				wrap="hard"
-				onChange={(e) => 
-                    { props.comment.playlistName = e.target.value
-                      props.setComment(props.comment)}}
+				onChange={(e) => { 
+					props.comment.playlistName = e.target.value;
+					props.setComment(props.comment);
+				}}
 			/>
 
       <Buttons {...props} answered={playlistRated} onNext={handleNext}/>
-			{/* <button 
-				className={props.ratingsFilled ? buttonStyles.active : buttonStyles.inactive} 
-				disabled={!props.ratingsFilled}
-				onClick={handleSubmit}
-			>
-				Submit
-			</button> */}
 		</div>
 	)
 

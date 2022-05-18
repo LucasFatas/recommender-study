@@ -3,7 +3,7 @@ import { RadioButton } from "./RadioButton";
 
 export const Answer = (props) => {
   
-  const optionsPerAnswer = 5;
+  const optionsPerAnswer = 6;
   const inputs = [];
   
   for (let i = 1; i <= optionsPerAnswer; i++)
