@@ -39,7 +39,7 @@ def match_user():
         # Add the newly formatted answers to our database.
         # values = get_value(userId)
         personality = get_personality(userId)
-        values = get_value(userId)
+        values = {1,1,1,1,1,1}
 
         # Find IDs of the users more similar to the given user id
         val_user, pers_user, random_user = match(userId, values, personality, 1, data['metric'])

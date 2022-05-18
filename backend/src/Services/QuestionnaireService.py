@@ -96,7 +96,7 @@ def get_value(userId):
 def get_personality(userId):
     try:
         db, cursor, database = open_connection()
-        sql = "Select PersonalityID, Openness, Honesty, Emotionality," \
+        sql = "Select Openness, Honesty, Emotionality," \
               "Extroversion, Agreeableness, Conscientiousness " \
               "From " + database + ".personality as pe Where pe.PersonalityId = " + str(userId)
         cursor.execute(sql)
@@ -147,7 +147,7 @@ def get_all_values(batch):
 # Method that gets all the users of a certain batch and their personalities
 # Parameters: batch number
 # Returns: a list of tuples containing user and his personalities
-def get_all_personalities(batch):
+def get_all_personalities(batch, userid):
     try:
         db, cursor, database = open_connection()
         sql = "Select UserID, Openness, Honesty, Emotionality," \
