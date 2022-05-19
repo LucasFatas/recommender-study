@@ -1,18 +1,17 @@
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from "react-router-dom";
 
 import { Playlist } from "./Playlist"
-import { Buttons } from "../global/Buttons"
-import { sendRatings } from "../../API/Recommender"
+
+const buttonStyles = {
+  active : "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full ",
+  inactive : "select-none bg-blue-300 text-white font-bold py-2 px-4 rounded-full pointer-events-none"
+}
 
 export const RecommenderPage = (props) => {
   
 	const {trackLists, ratings, setRatings, ratingsFilled, setRatingsFilled } = props;
 
-  const handleNext = () => {
-		console.log('next');
-    // const nextQuestionsNumber = questionsNumber.map(x => x + questionsNumber.length);
-    // setAnswered(nextQuestionsNumber.every(x => props.answers.has(x)))
-  }
+	setRatingsFilled(Object.values(ratings).every(x => x.playlist !== 0));
 
   return (
 		<div className='grid place-items-center'>
@@ -29,16 +28,12 @@ export const RecommenderPage = (props) => {
 					))}
 			</div>
 
-			<Buttons
-				pathOnSubmit="/thanks"
-				currentPath="/recommender"
-				ratings={ratings}
-				setRatings={setRatings}
-				setRatingsFilled={setRatingsFilled}			
-				submitFunction={sendRatings} 
-				answered={ratingsFilled} 
-				onNext={handleNext}
-			/>
+			
+			<Link to="/recommender/page2" className="mt-5">
+        <button className={ratingsFilled ? buttonStyles.active : buttonStyles.inactive}>
+          Next
+        </button> 
+      </Link>
 		</div>
 	)
 

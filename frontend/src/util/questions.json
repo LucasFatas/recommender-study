@@ -44,6 +44,13 @@
         "It is important to him to be humble and modest. He tries not to draw attention to himself",
         "He always wants to be the one who makes the decisions. He likes to be the leader",
         "It is important to him to adapt to nature and to fit into it. He believes that people should not change nature"
+    ],
+    "feedbackQuestions" : [
+        "Question 1?",
+        "Question 2?",
+        "Question 3?",
+        "Question 4?",
+        "Question 5?"
     ]
 
 }

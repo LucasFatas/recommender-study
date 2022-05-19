@@ -28,7 +28,7 @@ const App = () => {
 
         <Route path="/loginPage" element={<LoginPage defaultPage={defaultPage}/>} />
         <Route path="/questionnaire/*" element={<Questionnaire questions={questions} defaultPage={defaultPage} />} />
-        <Route path="/recommender/*" element={<Recommender defaultPage={defaultPage}/>} />
+        <Route path="/recommender/*" element={<Recommender questions={questions.feedbackQuestions} defaultPage={defaultPage}/>} />
         <Route path="/resultPage" element={<ResultPage/>} />
         <Route path="/thanks" element={<Thanks/>} />
 

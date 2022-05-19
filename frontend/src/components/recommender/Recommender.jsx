@@ -5,7 +5,7 @@ import { PlaylistPage } from "./PlaylistPage";
 import { Routes, Route, Navigate } from "react-router-dom";
 import { PageNotFound } from "../errors/PageNotFound";
 
-export const Recommender = ({ defaultPage }) => {
+export const Recommender = ({ defaultPage, questions }) => {
 
 	const ratingsRange = 5;
 
@@ -43,6 +43,7 @@ export const Recommender = ({ defaultPage }) => {
 			ratingsFilled={ratingsFilled}
 			setRatingsFilled={setRatingsFilled}
 			trackList={trackList.list}
+			questions={questions}
 
 			comment={comment}
 			setComment={setComment}
@@ -66,10 +67,10 @@ export const Recommender = ({ defaultPage }) => {
 	return (
 		<Routes>
 			<Route path="*" element={<PageNotFound redirect={defaultPage} />}/>
-			<Route path="/" element={<Navigate replace to="main"/>} />
+			<Route path="/" element={<Navigate replace to="page1"/>} />
 			<Route path="page1" element={recommenderPage} />
 			{trackLists.map((tracklist, idx) => (
-				<Route path={`page${idx + 2}`} key={idx + 2} element={currentPage(tracklist, idx)}/>
+				<Route path={`page${idx + 2}`} key={idx + 2} element={currentPage(tracklist, idx)} />
 			))}
 		</Routes>
 	)
