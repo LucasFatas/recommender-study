@@ -6,7 +6,6 @@ import numpy as np
 # Returns an array of floats representing the personality scores.
 def val_calc(val_answers):
     mrat = np.mean(val_answers)
-    a = val_answers[1]
 
     # Tuple with the 10 value fields.
     values = np.array([
@@ -59,9 +58,3 @@ def pers_calc(val_answers):
 # Returns a tuple consisting of calculated value and personality scores, in that order.
 def calculations(val_answers, pers_answers):
     return val_calc(val_answers), pers_calc(pers_answers)
-
-
-# TODO: maybe delete this method because not needed anymore
-def split_data(answers):
-    # TODO: split received answers from frontend
-    return 0, 0
