@@ -32,9 +32,9 @@ def match_user():
 
     try:
         # Add the newly formatted answers to our database.
-        # values = get_value(userId)
+        values = get_value(userId)
         personality = get_personality(userId)
-        values = "balls"
+
         val_user, pers_user, random_user = match(userId, values, personality, 1, data['metric'])
 
         # TODO: Return ID of the matched users as well
@@ -74,7 +74,8 @@ def save_ratings():
         return jsonify("Success")
     except DatabaseException as e:
         # Exception handling in case there is a database error.
-        return redirect(frontend_url + "/error/database")
+        response = jsonify({'message': str(e)})
+        return response, 502
 
 
 # Handle the Spotify login and access code retrieval.
@@ -93,7 +94,7 @@ def spotify_log_in():
         add_top_songs(userId, top_songs)
 
         # Redirect to first page of the questionnaire
-        return redirect(frontend_url + "/page1?userID = " + str(userId), 200)
+        return redirect(frontend_url + "/questionnaire/page1?userID = " + str(userId), 302)
 
     except AuthorizationException as e:
         # Exception handling in case there is an authorization error.
