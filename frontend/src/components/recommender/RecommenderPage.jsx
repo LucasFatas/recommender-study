@@ -1,18 +1,15 @@
+import { Link, useNavigate } from 'react-router-dom';
+
 import { Playlist } from "./Playlist"
-import { Buttons } from "./Buttons"
+import { Buttons } from "../global/Buttons"
+import { sendRatings } from "../../API/Recommender"
 
 export const RecommenderPage = (props) => {
-
-  const playlistRated = (0 !== props.ratings[props.playlistName].playlist)
   
-  //TODO extract button styles somewhere else and use them for the questionnaire button too
-  const buttonStyles = {
-    active : "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full ",
-    disabled : "select-none text-transparent fonted bg-transparent hover:bg-transparent py-2 px-4 rounded-full",
-    inactive : "select-none bg-blue-300 text-white font-bold py-2 px-4 rounded-full "
-  }
+	const {trackLists, ratings, setRatings, ratingsFilled, setRatingsFilled } = props;
 
   const handleNext = () => {
+		console.log('next');
     // const nextQuestionsNumber = questionsNumber.map(x => x + questionsNumber.length);
     // setAnswered(nextQuestionsNumber.every(x => props.answers.has(x)))
   }
@@ -20,30 +17,28 @@ export const RecommenderPage = (props) => {
   return (
 		<div className='grid place-items-center'>
 			<div className="flex justify-center w-fit mt-10 space-x-5 ">
-					<Playlist
-						name={props.playlistName}
-						setRatings={props.setRatings}
-						ratings={props.ratings}
-						key={props.playlistKey}
-						setRatingsFilled={props.setRatingsFilled}
-						trackList={props.trackList}
-					/>
+					{trackLists.map((e, i) => (
+						<Playlist
+							name={e.name}
+							setRatings={setRatings}
+							ratings={ratings}
+							key={i}
+							setRatingsFilled={setRatingsFilled}
+							trackList={e.list}
+						/>
+					))}
 			</div>
-			<textarea 
-				className=' rounded-[2px] my-5 mt-10 border-4 border-green-500 resize-none' 
-			
-				placeholder="type your feedback" 
-				maxLength="30" 
-				cols="70" 
-				rows="4" 
-				wrap="hard"
-				onChange={(e) => { 
-					props.comment.playlistName = e.target.value;
-					props.setComment(props.comment);
-				}}
-			/>
 
-      <Buttons {...props} answered={playlistRated} onNext={handleNext}/>
+			<Buttons
+				pathOnSubmit="/thanks"
+				currentPath="/recommender"
+				ratings={ratings}
+				setRatings={setRatings}
+				setRatingsFilled={setRatingsFilled}			
+				submitFunction={sendRatings} 
+				answered={ratingsFilled} 
+				onNext={handleNext}
+			/>
 		</div>
 	)
 

@@ -2,8 +2,9 @@ import React from "react";
 import { useState, useEffect, useMemo } from "react";
 
 import { Answer } from './Answer';
-import { Buttons } from "./Buttons";
+import { Buttons } from "../global/Buttons";
 import { ProgressBar } from "./ProgressBar";
+import { sendAnswer } from '../../API/Questionnaire';
 
 export const QuestionnairePage = (props) => {
   
@@ -49,7 +50,15 @@ export const QuestionnairePage = (props) => {
             />
           </div>
         )}
-        <Buttons {...props} answered={answered} onNext={handleNext}/>
+        <Buttons 
+          {...props} 
+          data={props.answers}
+          currentPath="/questionnaire"
+          pathOnSubmit="/recommender"
+          submitFunction={sendAnswer}
+          answered={answered} 
+          onNext={handleNext}
+        />
       </div>
     </>
   );

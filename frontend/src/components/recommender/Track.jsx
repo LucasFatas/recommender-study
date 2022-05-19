@@ -1,7 +1,7 @@
-import React from "react";
 import { StarRating } from "./StarRating";
 
 export const Track = (props) => {
+
   return (
     <div className=" px-3">
       <div className="grid pt-5 pb-2 px-2 text-white" >
@@ -11,7 +11,11 @@ export const Track = (props) => {
       </div>
       
       <audio className="text-xl" controls src={props.trackUrl}/>
-      <StarRating startStyle="text-xl" initialRating={props.ratings[props.name].songs[props.song]}  {...props} />
+      <StarRating 
+        {...props}
+        starStyle="text-xl" 
+        initialRating={props.ratings[props.name].songs[props.song]} 
+      />
 		</div>
   )
 }

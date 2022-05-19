@@ -1,10 +1,11 @@
 import React from "react";
 import { useState } from "react";
 import { RecommenderPage } from "./RecommenderPage";
+import { PlaylistPage } from "./PlaylistPage";
 import { Routes, Route, Navigate } from "react-router-dom";
 import { PageNotFound } from "../errors/PageNotFound";
 
-export const Recommender = ({defaultPage}) => {
+export const Recommender = ({ defaultPage }) => {
 
 	const ratingsRange = 5;
 
@@ -22,6 +23,8 @@ export const Recommender = ({defaultPage}) => {
 		values : { playlist: 0, songs: Array(ratingsRange).fill(0) },
 	});
 
+	console.log(ratings);
+
 	const arr = Array(5).fill({songName : "Despacito", artist : "Eminem", albumName : "The dark side of the moon", url : "https://p.scdn.co/mp3-preview/77266f8ff27e18fa575df0721323dec1509b314d?cid=8073ee0f16a64774bd0e7f8fa955b9d6%27"});
 
 	const trackLists = [
@@ -32,7 +35,7 @@ export const Recommender = ({defaultPage}) => {
 
 
 	const currentPage = (trackList, idx) => (
-		<RecommenderPage
+		<PlaylistPage
 			playlistName={trackList.name}
 			ratings={ratings}
 			setRatings={setRatings}
@@ -50,12 +53,23 @@ export const Recommender = ({defaultPage}) => {
 		/>
 	);
 
+	const recommenderPage = (
+		<RecommenderPage 
+			trackLists={trackLists} 
+			ratings={ratings}
+			setRatings={setRatings}
+			ratingsFilled={ratingsFilled}
+			setRatingsFilled={setRatingsFilled}			
+		/>
+	)
+
 	return (
 		<Routes>
 			<Route path="*" element={<PageNotFound redirect={defaultPage} />}/>
-			<Route path="/" element={<Navigate replace to="page1"/>} />
+			<Route path="/" element={<Navigate replace to="main"/>} />
+			<Route path="page1" element={recommenderPage} />
 			{trackLists.map((tracklist, idx) => (
-				<Route path={`page${idx + 1}`} key={idx + 1} element={currentPage(tracklist, idx)}/>
+				<Route path={`page${idx + 2}`} key={idx + 2} element={currentPage(tracklist, idx)}/>
 			))}
 		</Routes>
 	)

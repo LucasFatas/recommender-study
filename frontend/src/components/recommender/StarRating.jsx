@@ -1,27 +1,27 @@
 import React, { useState } from "react";
 
-export const StarRating = ({ startStyle, playlist, song, setRatings, ratings, setRatingsFilled, initialRating }) => {  
+export const StarRating = ({ starStyle, playlist, song, setRatings, ratings, setRatingsFilled, initialRating }) => {  
 
-  const [currentRating, setCurrentRating] = useState(initialRating);
   const [hover, setHover] = useState(0);
+  const [currentRating, setCurrentRating] = useState(initialRating);
 
   const handleRating = (idx) => {
     
-    if (song === undefined)
+    if (song === undefined) {
       ratings[playlist].playlist = idx;
+      setRatingsFilled(true);
+    }
     else
       ratings[playlist].songs[song] = idx;
-    
-    console.log(ratings);
 
     setRatings(ratings);
     setCurrentRating(idx);
-    setRatingsFilled(Object.values(ratings).every(x => x.playlist !== 0))
   }
 
   return (
     <div className="star-rating text-center pt-2">
       {[...Array(5)].map((star, index) => {
+
         index += 1;
         return (
           <button
@@ -33,7 +33,7 @@ export const StarRating = ({ startStyle, playlist, song, setRatings, ratings, se
             onMouseEnter={() => setHover(index)}
             onMouseLeave={() => setHover(currentRating)}
           >
-            <span className={ startStyle + " text-2xl star"}>&#9733;</span>
+            <span className={ starStyle + " text-2xl star"}>&#9733;</span>
           </button>
         );
       })}

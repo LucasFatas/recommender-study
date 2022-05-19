@@ -1,7 +1,5 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { sendRatings } from "../../API/Recommender";
-
 
 const buttonStyles = {
   active : "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full ",
@@ -9,18 +7,28 @@ const buttonStyles = {
   inactive : "select-none bg-blue-300 text-white font-bold py-2 px-4 rounded-full "
 }
 
+export const Buttons = (props) => {
 
+  const { 
+    prevPage, 
+    showSubmit, 
+    nextPage, 
+    answered,  
+    onNext, 
+    data, 
+    pathOnSubmit, 
+    submitFunction, 
+    currentPath 
+  } = props;
 
-export const Buttons = ({ prevPage, showSubmit, nextPage, answered, ratings, comment, onNext, playlistName }) => {
-
-  const Playlistrated = 0 !== ratings[playlistName].playlist
+  //data recommender : ratings, comment,  playlistName
+  //data questionnaire : answers
 
   const navigate = useNavigate();
 
   const handleSubmit = () => {
-
-    sendRatings({"ratings" : ratings, "comment" : comment});
-		navigate('/thanks');
+    submitFunction(data);
+    navigate(pathOnSubmit);
   }
 
   const setStyleAndDisabled = (pageCondition, answerCondition) => {
@@ -33,7 +41,8 @@ export const Buttons = ({ prevPage, showSubmit, nextPage, answered, ratings, com
   
   return (
     <div className="flex justify-center w-fit mt-5 space-x-7 ">
-      <Link to={ `/recommender/page${ prevPage }`} className={ prevPage ? "" : "pointer-events-none"}>
+
+      <Link to={ `${currentPath}/page${ prevPage }`} className={ prevPage ? "" : "pointer-events-none"}>
         <button {...setStyleAndDisabled(prevPage, true)}>
           Previous
         </button> 
@@ -43,11 +52,12 @@ export const Buttons = ({ prevPage, showSubmit, nextPage, answered, ratings, com
         Submit
       </button>
 
-      <Link to={ `/recommender/page${ nextPage }` } className={ nextPage ? "" : "pointer-events-none"}>
-        <button {...setStyleAndDisabled(nextPage, Playlistrated)} onClick={ onNext }>
+      <Link to={ `${currentPath}/page${ nextPage }` } className={ nextPage ? "" : "pointer-events-none"}>
+        <button {...setStyleAndDisabled(nextPage, answered)} onClick={ onNext }>
           Next
         </button>
       </Link>
+
     </div>
   );
 }   
