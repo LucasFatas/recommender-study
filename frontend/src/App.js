@@ -13,6 +13,7 @@ import {
 
 import questions from './util/questions.json';
 import { LoginPage } from './components/LoginPage';
+import * as data from './util/API.json'
 
 const App = () => {
 
@@ -26,7 +27,7 @@ const App = () => {
         <Route path="*" element={<PageNotFound redirect={defaultPage} />}/>
 
 
-        <Route path="/loginPage" element={<LoginPage defaultPage={defaultPage}/>} />
+        <Route path="/loginPage"  element={<LoginPage data={data} defaultPage={defaultPage}/>} />
         <Route path="/questionnaire/*" element={<Questionnaire questions={questions} defaultPage={defaultPage} />} />
         <Route path="/recommender" element={<Recommender/>} />
         <Route path="/resultPage" element={<ResultPage/>} />
