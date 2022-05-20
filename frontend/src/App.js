@@ -1,39 +1,8 @@
-import { Questionnaire } from './components/questionnaire/Questionnaire';
-import { PageNotFound } from './components/errors/PageNotFound';
-import { ErrorRouter } from './components/errors/ErrorRouter';
-import { Recommender } from './components/recommender/Recommender';
-import { Thanks } from './components/Thanks';
-import { ResultPage } from './components/ResultPage';
-import {
-  BrowserRouter,
-  Routes,
-  Route,
-  Navigate
-} from "react-router-dom";
-
-import questions from './util/questions.json';
-import { LoginPage } from './components/LoginPage';
-
 const App = () => {
-
-  const defaultPage = '/loginPage';
-
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Navigate replace to={defaultPage}/>} />
-        <Route path="/error/*" element={<ErrorRouter defaultPage={defaultPage} />} />
-        <Route path="*" element={<PageNotFound redirect={defaultPage} />}/>
-
-
-        <Route path="/loginPage" element={<LoginPage defaultPage={defaultPage}/>} />
-        <Route path="/questionnaire/*" element={<Questionnaire questions={questions} defaultPage={defaultPage} />} />
-        <Route path="/recommender" element={<Recommender/>} />
-        <Route path="/resultPage" element={<ResultPage/>} />
-        <Route path="/thanks" element={<Thanks/>} />
-
-      </Routes>
-    </BrowserRouter>
+    <>
+     <h1 className="text-red-500">Hello World!</h1>
+    </>
   );
 }
 
