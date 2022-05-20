@@ -1,12 +1,17 @@
 import React from "react";
 
+import { optionsPerAnswer } from "../../controller/recommenderController";
+
 const inputStyle = "appearance-none rounded-full h-4 w-4 border border-gray-300 bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer";
-const optionsPerAnswer = 5;
 
 export const Feedback = (props) => {
 
   const questions = [];
 
+  /* 
+    TODO: extract this functionality to a component
+    or refactor radiobutton component to be in global 
+  */
   props.questions.forEach((e, i) => {
 
     const inputs = [];
@@ -24,9 +29,6 @@ export const Feedback = (props) => {
     )
   })
 
-
-  
-
   return (
     <div className="flex flex-col items-center content-center">
       {questions}
@@ -36,7 +38,7 @@ export const Feedback = (props) => {
         placeholder="type your feedback" 
         maxLength="80" 
         cols="50" 
-        rows="10"
+        rows="5"
         wrap="hard"
         onChange={(e) => { 
           props.comment.playlistName = e.target.value;

@@ -10,26 +10,30 @@ const buttonStyles = {
 
 export const RecommenderPage = (props) => {
   
-	const {trackLists, ratings, setRatings, ratingsFilled, setRatingsFilled} = props;
+	const {
+		trackLists, 
+		ratings, 
+		setRatings, 
+		ratingsFilled, 
+		setRatingsFilled
+	} = props;
 
 	useEffect(() => setRatingsFilled(Object.values(ratings).every(x => x.playlist !== 0)), [ratings])
 
   return (
 		<div className='grid place-items-center'>
 			<div className="flex justify-center w-fit h-fit mt-5 space-x-5 ">
-					{trackLists.map((e, i) => (
-						<Playlist
-							name={e.name}
-							setRatings={setRatings}
-							ratings={ratings}
-							key={i}
-							setRatingsFilled={setRatingsFilled}
-							trackList={e.list}
-						/>
-					))}
+				{trackLists.map((e, i) => (
+					<Playlist
+						playlistName={e.name}
+						setRatings={setRatings}
+						ratings={ratings}
+						key={i}
+						setRatingsFilled={setRatingsFilled}
+						trackList={e.list}
+					/>
+				))}
 			</div>
-
-			
 			<Link to="/recommender/page2" className="mt-5">
         <button className={ratingsFilled ? buttonStyles.active : buttonStyles.inactive}>
           Next

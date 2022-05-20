@@ -1,9 +1,10 @@
 import React from "react";
+
 import { RadioButton } from "./RadioButton";
+import { optionsPerAnswer } from "../../controller/questionnaireController";
 
 export const Answer = (props) => {
-  
-  const optionsPerAnswer = 6;
+
   const inputs = [];
   
   for (let i = 1; i <= optionsPerAnswer; i++)

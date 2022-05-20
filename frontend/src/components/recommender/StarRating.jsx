@@ -1,36 +1,23 @@
 import React, { useEffect, useState } from "react";
 
-export const StarRating = ({ starStyle, name, song, setRatings, ratings, setRatingsFilled, initialRating }) => {  
+import { handleRating } from "../../controller/recommenderController";
+
+export const StarRating = ({ starStyle, playlistName, song, setRatings, ratings, setRatingsFilled, initialRating }) => {  
 
   const [hover, setHover] = useState(0);
   const [currentRating, setCurrentRating] = useState(0);
 
-  useEffect(() => 
-    {
+  useEffect(() => {
       if (song === undefined) 
-        setCurrentRating(ratings[name].playlist);
+        setCurrentRating(ratings[playlistName].playlist);
       else 
-        setCurrentRating(ratings[name].songs[song]);
+        setCurrentRating(ratings[playlistName].songs[song]);
     }
   );
-
-  const handleRating = (idx) => {
-    
-    if (song === undefined) {
-      ratings[name].playlist = idx;
-      setRatingsFilled(true);
-    }
-    else
-      ratings[name].songs[song] = idx;
-
-    setRatings(ratings);
-    setCurrentRating(idx);
-  }
 
   return (
     <div className="star-rating text-center pt-2">
       {[...Array(5)].map((star, index) => {
-
         index += 1;
         return (
           <button
@@ -38,7 +25,7 @@ export const StarRating = ({ starStyle, name, song, setRatings, ratings, setRati
             key={index}
             className={ index <= (hover || currentRating) ? " text-yellow-500" : "text-slate-300"}
 
-            onClick={() => handleRating(index)}
+            onClick={() => handleRating(index, ratings, song, playlistName, setRatingsFilled, setRatings, setCurrentRating)}
             onMouseEnter={() => setHover(index)}
             onMouseLeave={() => setHover(currentRating)}
           >

@@ -10,7 +10,7 @@ export const PlaylistPage = (props) => {
 		<div className="flex flex-col items-center content-center">
 			<div className='grid grid-cols-2 grid-rows-1 place-items-center mt-5'>
 				<Playlist
-					name={props.name}
+					playlistName={props.playlistName}
 					setRatings={props.setRatings}
 					ratings={props.ratings}
 					key={props.playlistKey}
@@ -28,5 +28,4 @@ export const PlaylistPage = (props) => {
 			/>
 		</div>
 	)
-
 }

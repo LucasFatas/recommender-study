@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { Route, Routes, Navigate } from 'react-router-dom';
 import { QuestionnairePage } from './QuestionnairePage';
 import { PageNotFound } from "../errors/PageNotFound";
+import { splitArrayIntoMatrix } from "../../controller/questionnaireController";
 
 export const Questionnaire = ({ questions, defaultPage }) => {
 
@@ -11,14 +12,7 @@ export const Questionnaire = ({ questions, defaultPage }) => {
   const questionsArray = questions.questions;
   const questionsPerPage = questions.questionsPerPage;
 
-  /** 
-   * Splits the array of questions into a 2D array where each row is an 
-   * array of questions that is going to appear on one page.
-   * The number of rows always equals the number of pages in the questionnaire.
-   */
-  const questionMatrix = questionsArray.map((e, i) => {
-      return i % questionsPerPage === 0 ? questionsArray.slice(i, i + questionsPerPage).map((e, idx) => [e, i + idx]) : null;
-  }).filter(e => { return e; });
+  const questionMatrix = splitArrayIntoMatrix(questionsArray, questionsPerPage);
 
   const lastPageIdx = questionMatrix.length;
 
@@ -41,11 +35,9 @@ export const Questionnaire = ({ questions, defaultPage }) => {
       <Routes>
         <Route path="*" element={<PageNotFound redirect={defaultPage} />}/>
         <Route path="/" element={<Navigate replace to="page1"/>} />
-        {
-          questionMatrix.map((questions, idx) => (
-            <Route path={`page${idx + 1}`} key={idx + 1} element={currentPage(questions, idx)}/>
-          ))
-        }
+        {questionMatrix.map((questions, idx) => (
+          <Route path={`page${idx + 1}`} key={idx + 1} element={currentPage(questions, idx)}/>
+        ))}
       </Routes>
     )
 }

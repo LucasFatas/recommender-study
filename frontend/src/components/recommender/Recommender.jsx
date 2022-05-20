@@ -4,9 +4,9 @@ import { RecommenderPage } from "./RecommenderPage";
 import { PlaylistPage } from "./PlaylistPage";
 import { Routes, Route, Navigate } from "react-router-dom";
 import { PageNotFound } from "../errors/PageNotFound";
+import { initialRatingsObj, initialCommentObj } from "../../controller/recommenderController";
 
-const ratingsRange = 5;
-
+//TODO : remove once we can retrieve songs from user
 const arr = Array(5).fill({songName : "Despacito", artist : "Eminem", albumName : "The dark side of the moon", url : "https://p.scdn.co/mp3-preview/77266f8ff27e18fa575df0721323dec1509b314d?cid=8073ee0f16a64774bd0e7f8fa955b9d6%27"});
 
 const trackLists = [
@@ -19,28 +19,16 @@ const lastPageIdx = trackLists.length + 1;
 
 export const Recommender = ({ defaultPage, questions }) => {
 
-
 	const [ratingsFilled, setRatingsFilled] = useState(false);
-
-	const [comment, setComment] = useState({
-		random : "",
-		personality : "",
-		values : "",
-	});
-
-	const [ratings, setRatings] = useState({
-		random : { playlist: 0, songs: Array(ratingsRange).fill(0) },
-		personality : { playlist: 0, songs: Array(ratingsRange).fill(0) },
-		values : { playlist: 0, songs: Array(ratingsRange).fill(0) },
-	});
-
+	const [comment, setComment] = useState(initialCommentObj);
+	const [ratings, setRatings] = useState(initialRatingsObj);
 
 	const currentPage = (trackList, idx) => {
-		idx += 2;
-		
+		idx += 2; //Accounts for pages starting at 1 and the first page being RecommenderPage
+
 		return (
 			<PlaylistPage
-				name={trackList.name}
+				playlistName={trackList.name}
 				ratings={ratings}
 				setRatings={setRatings}
 				PlaylisyKey={idx}
