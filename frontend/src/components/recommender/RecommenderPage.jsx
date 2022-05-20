@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { Link } from "react-router-dom";
 
 import { Playlist } from "./Playlist"
@@ -9,13 +10,13 @@ const buttonStyles = {
 
 export const RecommenderPage = (props) => {
   
-	const {trackLists, ratings, setRatings, ratingsFilled, setRatingsFilled } = props;
+	const {trackLists, ratings, setRatings, ratingsFilled, setRatingsFilled} = props;
 
-	setRatingsFilled(Object.values(ratings).every(x => x.playlist !== 0));
+	useEffect(() => setRatingsFilled(Object.values(ratings).every(x => x.playlist !== 0)), [ratings])
 
   return (
 		<div className='grid place-items-center'>
-			<div className="flex justify-center w-fit mt-10 space-x-5 ">
+			<div className="flex justify-center w-fit h-fit mt-5 space-x-5 ">
 					{trackLists.map((e, i) => (
 						<Playlist
 							name={e.name}

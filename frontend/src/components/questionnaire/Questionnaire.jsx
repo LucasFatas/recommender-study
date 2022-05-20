@@ -22,18 +22,20 @@ export const Questionnaire = ({ questions, defaultPage }) => {
 
   const lastPageIdx = questionMatrix.length;
 
-  const currentPage = (questions, idx) => (
-    <QuestionnairePage
+  const currentPage = (questions, idx) => {
+    idx += 1;
+    
+    return (<QuestionnairePage
       answers={answers} 
       setAnswers={setAnswers}
       numberOgPages={lastPageIdx}
       questions={questions} 
-      pageNumber={idx + 1}
-      prevPage={idx + 1 === 1 ? false : idx} 
-      nextPage={idx + 1 === lastPageIdx ? false : idx + 2}
-      showSubmit={idx + 1 === lastPageIdx ? lastPageIdx : false}
-    />
-  )
+      pageNumber={idx}
+      prevPage={idx === 1 ? false : idx - 1} 
+      nextPage={idx === lastPageIdx ? false : idx + 1}
+      showSubmit={idx === lastPageIdx ? lastPageIdx : false}
+    />)
+  }
 
     return (
       <Routes>

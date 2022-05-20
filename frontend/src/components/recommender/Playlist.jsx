@@ -27,9 +27,7 @@ export const Playlist = (props) => {
 			
 			<StarRating 
 				{...props}
-				starStyle='text-4xl text-center' 
-				playlist={props.name} 
-				initialRating={props.ratings[props.name].playlist} 
+				starStyle='text-4xl text-center'
 			/>
 		</div>
 	)

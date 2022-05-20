@@ -1,18 +1,27 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
-export const StarRating = ({ starStyle, playlist, song, setRatings, ratings, setRatingsFilled, initialRating }) => {  
+export const StarRating = ({ starStyle, name, song, setRatings, ratings, setRatingsFilled, initialRating }) => {  
 
   const [hover, setHover] = useState(0);
-  const [currentRating, setCurrentRating] = useState(initialRating);
+  const [currentRating, setCurrentRating] = useState(0);
+
+  useEffect(() => 
+    {
+      if (song === undefined) 
+        setCurrentRating(ratings[name].playlist);
+      else 
+        setCurrentRating(ratings[name].songs[song]);
+    }
+  );
 
   const handleRating = (idx) => {
     
     if (song === undefined) {
-      ratings[playlist].playlist = idx;
+      ratings[name].playlist = idx;
       setRatingsFilled(true);
     }
     else
-      ratings[playlist].songs[song] = idx;
+      ratings[name].songs[song] = idx;
 
     setRatings(ratings);
     setCurrentRating(idx);

@@ -14,7 +14,7 @@ export const Track = (props) => {
       <StarRating 
         {...props}
         starStyle="text-xl" 
-        initialRating={props.ratings[props.name].songs[props.song]} 
+        /* initialRating={props.ratings[props.name].songs[props.song]}  */
       />
 		</div>
   )
