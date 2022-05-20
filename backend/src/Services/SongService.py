@@ -20,7 +20,6 @@ def add_top_songs(userId, songs):
         db.commit()
         return "Success storing of top songs"
     except mysql.connector.errors.Error as e:
-        print(e)
         raise DatabaseException("Error connecting to database when adding songs.")
 
 
@@ -52,7 +51,6 @@ def get_top_songs(userId):
 
         return songs
     except mysql.connector.errors.Error as e:
-        print(e)
         raise DatabaseException("Error connecting to database when getting songs.")
 
 

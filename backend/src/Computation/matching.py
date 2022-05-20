@@ -23,6 +23,7 @@ def match(userId, values, personality, batch, metric):
     return userId, pers_user, random_user
 
 
+# Calculates Distance of two vectors based on a defined metric
 def calculate_distance(answer, batch_answer, metric):
     if metric.casefold() == "manhattan".casefold():
         return manhattan_distance(answer, batch_answer)

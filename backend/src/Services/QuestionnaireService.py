@@ -77,7 +77,7 @@ def add_personality(user_id, personality):
     except mysql.connector.errors.Error as e:
         raise DatabaseException("Error connecting to database when adding personalities.")
 
-
+# Returns user's value score and takes userId is input
 def get_value(userId):
     try:
         db, cursor, database = open_connection()
@@ -92,7 +92,7 @@ def get_value(userId):
     except mysql.connector.errors.Error as e:
         raise DatabaseException("Error connecting to database when trying to retrieve values.")
 
-
+# Returns user's personality score and takes userId as input
 def get_personality(userId):
     try:
         db, cursor, database = open_connection()
@@ -161,7 +161,6 @@ def get_all_personalities(batch, userid):
         return result
 
     except mysql.connector.errors.Error as e:
-        print(e)
         raise DatabaseException("Error connecting to database when retrieving personalities.")
 
 
@@ -174,7 +173,6 @@ def get_random_user(user1, user2, batch):
         sql = "Select UserID From " + database + ".participant as p " \
               "Where p.Batch = " + str(batch) +" and not (p.UserID =" + str(user1) + " or p.UserID =  " + str(user2) + ")"
 
-
         cursor.execute(sql)
         result = cursor.fetchall()
 
@@ -182,16 +180,4 @@ def get_random_user(user1, user2, batch):
     except mysql.connector.errors.Error as e:
         raise DatabaseException("Error connecting to database when retrieving users.")
 
-
-def get_songs(userId):
-    try:
-        db, cursor, database = open_connection()
-        sql = "Select spotify_url From" + database + ".Song as s Where s.userId = " + str(userId)
-
-        cursor.execute(sql)
-        result = cursor.fetchall()
-        return result
-
-    except mysql.connector.errors.Error as e:
-        raise DatabaseException("Error connecting to database when retrieving songs.")
 
