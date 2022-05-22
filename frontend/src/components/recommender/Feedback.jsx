@@ -1,23 +1,43 @@
 import React from "react";
 
 import { optionsPerAnswer } from "../../controller/recommenderController";
-
-const inputStyle = "appearance-none rounded-full h-4 w-4 border border-gray-300 bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer";
+import { RadioButton } from "../global/RadioButton";
 
 export const Feedback = (props) => {
 
   const questions = [];
+  const currentFeedback = props.feedback[props.playlistName];
 
-  /* 
-    TODO: extract this functionality to a component
-    or refactor radiobutton component to be in global 
-  */
+  const onAnswerChange = (e, setSelected, questionNumber, value) => {
+
+    const questionsMap = currentFeedback.questions;
+    const elementValue = e.target.value;
+    const currentNumber = questionNumber + 1;
+
+    setSelected(questionsMap.get(currentNumber) === value);
+    
+    questionsMap.set(currentNumber, parseInt(elementValue));
+    console.log(props.feedback);
+    props.setFeedback(props.feedback);
+  }
+
+
   props.questions.forEach((e, i) => {
 
     const inputs = [];
+    const currentAnswer = currentFeedback.questions[i];
 
     for (let j = 1; j <= optionsPerAnswer; j++)
-      inputs.push(<input type="radio" className={inputStyle} value={j} name={i} key={j}/>)
+      inputs.push(
+        <RadioButton 
+          value={j} 
+          name={i}
+          onChange={onAnswerChange} 
+          key={j}
+          questionNumber={i}
+          answers={currentFeedback.questions}
+        />);
+
 
     questions.push(
       <div key={i} className="p-8">
@@ -41,8 +61,8 @@ export const Feedback = (props) => {
         rows="5"
         wrap="hard"
         onChange={(e) => { 
-          props.comment.playlistName = e.target.value;
-          props.setComment(props.comment);
+          currentFeedback.comment = e.target.value;
+          props.setFeedback({...props.feedback, [props.playlistName] : { ...currentFeedback}});
         }}
         />
     </div>

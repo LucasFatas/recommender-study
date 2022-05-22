@@ -2,10 +2,11 @@ import React, { useEffect, useState } from "react";
 
 import { handleRating } from "../../controller/recommenderController";
 
-export const StarRating = ({ starStyle, playlistName, song, setRatings, ratings, setRatingsFilled, initialRating }) => {  
+export const StarRating = ({ starStyle, playlistName, song, setRatings, ratings, setRatingsFilled }) => {  
 
+  //Hover caused issues with the code. Might be reimplemented later on.
   const [hover, setHover] = useState(0);
-  const [currentRating, setCurrentRating] = useState(0);
+  const [currentRating, setCurrentRating] = useState(song === undefined ? ratings[playlistName].playlist : ratings[playlistName].songs[song]);
 
   useEffect(() => {
       if (song === undefined) 
@@ -23,7 +24,7 @@ export const StarRating = ({ starStyle, playlistName, song, setRatings, ratings,
           <button
             type="button"
             key={index}
-            className={ index <= (hover || currentRating) ? " text-yellow-500" : "text-slate-300"}
+            className={ index <= currentRating ? " text-yellow-500" : "text-slate-300"}
 
             onClick={() => handleRating(index, ratings, song, playlistName, setRatingsFilled, setRatings, setCurrentRating)}
             onMouseEnter={() => setHover(index)}

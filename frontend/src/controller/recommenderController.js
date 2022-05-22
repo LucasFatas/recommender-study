@@ -1,10 +1,19 @@
 export const optionsPerAnswer = 6;
 export const ratingRange = 5;
 
-export const initialCommentObj = {
-    random : "",
-    personality : "",
-    values : "",
+export const initialFeedbackObj = {
+    random : {
+        questions : new Map(),
+        comment : ""
+    },
+    personality : {
+        questions : new Map(),
+        comment : ""
+    },
+    values : {
+        questions : new Map(),
+        comment : ""
+    }
 }
 
 const ratingsRange = 5;
@@ -18,7 +27,7 @@ export const initialRatingsObj = {
 export const handleRating = (idx, ratings, song, playlistName, setRatingsFilled, setRatings, setCurrentRating) => {
     if (song === undefined) {
         ratings[playlistName].playlist = idx;
-        setRatingsFilled(true);
+        setRatingsFilled(Object.values(ratings).every(x => x.playlist !== 0));
     }
  
     else

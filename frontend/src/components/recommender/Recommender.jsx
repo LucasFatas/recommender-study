@@ -4,7 +4,7 @@ import { RecommenderPage } from "./RecommenderPage";
 import { PlaylistPage } from "./PlaylistPage";
 import { Routes, Route, Navigate } from "react-router-dom";
 import { PageNotFound } from "../errors/PageNotFound";
-import { initialRatingsObj, initialCommentObj } from "../../controller/recommenderController";
+import { initialRatingsObj, initialFeedbackObj } from "../../controller/recommenderController";
 
 //TODO : remove once we can retrieve songs from user
 const arr = Array(5).fill({songName : "Despacito", artist : "Eminem", albumName : "The dark side of the moon", url : "https://p.scdn.co/mp3-preview/77266f8ff27e18fa575df0721323dec1509b314d?cid=8073ee0f16a64774bd0e7f8fa955b9d6%27"});
@@ -20,7 +20,7 @@ const lastPageIdx = trackLists.length + 1;
 export const Recommender = ({ defaultPage, questions }) => {
 
 	const [ratingsFilled, setRatingsFilled] = useState(false);
-	const [comment, setComment] = useState(initialCommentObj);
+	const [feedback, setFeedback] = useState(initialFeedbackObj);
 	const [ratings, setRatings] = useState(initialRatingsObj);
 
 	const currentPage = (trackList, idx) => {
@@ -34,9 +34,10 @@ export const Recommender = ({ defaultPage, questions }) => {
 				PlaylisyKey={idx}
 				trackList={trackList.list}
 				questions={questions}
+				setRatingsFilled={setRatingsFilled}
 
-				comment={comment}
-				setComment={setComment}
+				feedback={feedback}
+				setFeedback={setFeedback}
 				pageNumber={idx}
 				prevPage={idx === 1 ? false : idx - 1} 
 				nextPage={idx === lastPageIdx ? false : idx + 1}

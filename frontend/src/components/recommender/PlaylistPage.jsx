@@ -15,6 +15,7 @@ export const PlaylistPage = (props) => {
 					ratings={props.ratings}
 					key={props.playlistKey}
 					trackList={props.trackList}
+					setRatingsFilled={props.setRatingsFilled}
 				/>
 				<Feedback {...props} />
 			</div>

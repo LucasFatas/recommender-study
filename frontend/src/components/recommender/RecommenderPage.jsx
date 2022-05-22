@@ -5,7 +5,7 @@ import { Playlist } from "./Playlist"
 
 const buttonStyles = {
   active : "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full ",
-  inactive : "select-none bg-blue-300 text-white font-bold py-2 px-4 rounded-full pointer-events-none"
+  inactive : "select-none bg-blue-300 text-white font-bold py-2 px-4 rounded-full"
 }
 
 export const RecommenderPage = (props) => {
@@ -34,7 +34,7 @@ export const RecommenderPage = (props) => {
 					/>
 				))}
 			</div>
-			<Link to="/recommender/page2" className="mt-5">
+			<Link to="/recommender/page2" className={ratingsFilled ? "mt-5" : "mt-5 pointer-events-none"}>
         <button className={ratingsFilled ? buttonStyles.active : buttonStyles.inactive}>
           Next
         </button> 

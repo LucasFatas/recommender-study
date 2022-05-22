@@ -16,7 +16,7 @@ export const QuestionnairePage = (props) => {
   useEffect(() => 
     setAnswered(checkEveryElementIsInMap(questionsNumberArr, props.answers)),
     [questionsNumberArr, props.answers] //parameters that, if changed, trigger the function above
-    );
+  );
     
   const updateAnswers = (e, setSelected, questionNumber, value) => 
     updateAnswersLogic(e, setSelected, questionNumber, value, props.answers, questionsNumberArr, setAnswered, props.setAnswers);
