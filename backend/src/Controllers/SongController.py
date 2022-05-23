@@ -5,8 +5,7 @@ from flask import request, redirect, Blueprint, jsonify
 from src.Entities.Match import Match
 from src.Entities.PlaylistRating import PlaylistRating
 from src.Entities.SongRating import SongRating
-from src.Services.FeedbackService import add_open_feedback, add_feedback_questions
-from src.Services.QuestionnaireService import add_user, get_personality, get_value
+from src.Services.QuestionnaireService import add_user, get_personality, get_songs,get_value
 from src.Services.database_config import DatabaseException
 from src.Services.SongService import get_top_songs, add_top_songs, add_playlist_ratings, add_song_ratings
 from src.spotify import get_access_token, get_top_songs_api, AuthorizationException, InvalidAccountException
@@ -68,11 +67,6 @@ def save_ratings():
     try:
         data = request.get_json(force=True)
 
-        ratings = []
-        ratings.append(data['values'])
-        ratings.append(data['personality'])
-        ratings.append(data['random'])
-
         # Retrieve the user id from the user.
         userId = data['userId']
 
@@ -80,21 +74,19 @@ def save_ratings():
         # In order to do that, we need to format the data retrieved. We use a helper Entity SongRating
         # SongRating(user id, matched user, spotify preview url, rating)
         songRatings = []
-        for rating in ratings:
-            matchedUserId = rating["matchedUserId"]
+        for songRating in data['songRatings']:
+            songRatings.append(SongRating(userId, songRating['matchedUserId'], songRating['spotify_url'],
+                                          songRating['rating']))
+        add_song_ratings(songRatings),
 
-            for i, songRating in enumerate(rating["songsRatings"]):
-                if songRating != 0:
-                    songRatings.append(SongRating(userId, matchedUserId, rating["songUrls"][i], songRating))
+        # Add playlist ratings into our database.
+        # In order to do that, we need to format the data retrieved. We use a helper Entity PlaylistRating
+        # PlaylistRating(user id, matched user, spotify preview url, rating)
+        playlistRatings = []
+        for playlistRating in data['playlistRatings']:
+            playlistRatings.append(PlaylistRating(userId, playlistRating['matchedUserId'], playlistRating['rating']))
 
-            add_song_ratings(songRatings)
-
-            add_playlist_ratings(PlaylistRating(userId, matchedUserId, rating["playlistRating"]))
-
-            if rating["comment"] != "":
-                add_open_feedback(userId, matchedUserId, rating["comment"])
-
-            add_feedback_questions(userId, matchedUserId, rating["questionFeedback"])
+        add_playlist_ratings(playlistRatings)
 
         # Everything has been successfully stored, return success message.
         return jsonify("Success")
