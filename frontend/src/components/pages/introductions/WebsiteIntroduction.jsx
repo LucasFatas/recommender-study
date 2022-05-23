@@ -13,8 +13,7 @@ export const WebsiteIntroduction = ({data}) => {
   const [clicked, setClicked] = useState(false);
 
   const buttonStyleActive = "bg-green-500 hover:bg-green-700 text-lg text-white font-bold py-2 px-4 rounded-full";
-  const buttonStyleDisabled = "bg-gray-300 text-lg text-white font-bold py-2 px-4 rounded-full";
-
+  
   useEffect(() => {
     if (clicked) {
       // do something meaningful, Promises, if/else, whatever, and then
