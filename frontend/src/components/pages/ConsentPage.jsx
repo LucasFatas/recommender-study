@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom';
 
 //TODO use port and url in json file
 
-export const LoginPage = () => {
+export const ConsentPage = () => {
   
 
   const [checked, setChecked] = useState(false);
