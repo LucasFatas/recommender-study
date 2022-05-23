@@ -14,7 +14,7 @@ def open_connection():
         # Change once it is no longer hosted
         host="localhost",
         user="root",
-        passwd="password",
+        password="azaz1818",
         database="recommender"
     )
 

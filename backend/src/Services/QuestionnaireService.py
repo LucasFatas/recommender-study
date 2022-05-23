@@ -17,6 +17,7 @@ def add_answers(answers):
         return "Success storing all Answers"
 
     except mysql.connector.errors.Error as e:
+        print(e)
         raise DatabaseException("Error connecting to database when adding answers.")
 
 
@@ -34,6 +35,7 @@ def add_user(batch_id):
         return participant_id
 
     except mysql.connector.errors.Error as e:
+        print(e)
         raise DatabaseException("Error connecting to database when adding users.")
 
 
@@ -55,6 +57,7 @@ def add_value(user_id, values):
         return "Success storing value"
 
     except mysql.connector.errors.Error as e:
+        print(e)
         raise DatabaseException("Error connecting to database when adding values.")
 
 
@@ -77,20 +80,22 @@ def add_personality(user_id, personality):
     except mysql.connector.errors.Error as e:
         raise DatabaseException("Error connecting to database when adding personalities.")
 
+
 # Returns user's value score and takes userId is input
 def get_value(userId):
     try:
         db, cursor, database = open_connection()
         sql = "Select Stimulation, SelfDirection, Universalism, Benevolence," \
               " Tradition, Conformity, SecurityVal, PowerVal, Achievement, Hedonism " \
-              "From " + database + ".value as v Where v.ValueId = " + str(userId)
-        cursor.execute(sql)
-        db.commit()
+              "From " + database + ".value as v Where v.ValueId =%s"
+        cursor.execute(sql, (userId,))
         result = cursor.fetchall()
         return result
 
     except mysql.connector.errors.Error as e:
+        print(e)
         raise DatabaseException("Error connecting to database when trying to retrieve values.")
+
 
 # Returns user's personality score and takes userId as input
 def get_personality(userId):
@@ -171,12 +176,12 @@ def get_random_user(user1, user2, batch):
     try:
         db, cursor, database = open_connection()
         sql = "Select UserID From " + database + ".participant as p " \
-              "Where p.Batch = " + str(batch) +" and not (p.UserID =" + str(user1) + " or p.UserID =  " + str(user2) + ")"
+              "Where p.Batch = " + str(batch) + " and not (p.UserID =" \
+              + str(user1) + " or p.UserID =  " + str(user2) + ")"
 
         cursor.execute(sql)
         result = cursor.fetchall()
-
-        return result[randint(0, len(result))][0]
+        return result[randint(0, len(result)-1)][0]
     except mysql.connector.errors.Error as e:
         raise DatabaseException("Error connecting to database when retrieving users.")
 

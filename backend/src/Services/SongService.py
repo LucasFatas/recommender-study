@@ -1,4 +1,4 @@
-from src.Services.database_config import DatabaseException, open_connection, change_database_for_testing
+from src.Services.database_config import DatabaseException, open_connection
 import mysql.connector
 from src.Entities.Song import Song
 
@@ -20,6 +20,7 @@ def add_top_songs(userId, songs):
         db.commit()
         return "Success storing of top songs"
     except mysql.connector.errors.Error as e:
+        print(e)
         raise DatabaseException("Error connecting to database when adding songs.")
 
 

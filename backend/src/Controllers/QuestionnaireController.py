@@ -3,7 +3,7 @@ from flask import request, jsonify, Blueprint
 from src.Computation.psychology import calculations
 from src.Services.database_config import DatabaseException
 
-from src.Services.QuestionnaireService import add_answers
+from src.Services.QuestionnaireService import add_answers, add_value, add_personality
 
 questionnaire = Blueprint("questionnaire", __name__)
 
@@ -35,6 +35,10 @@ def save_answer():
 
     # Calculate value and personality scores.
     value, personality = calculations(data['value_answers'], data['personality_answers'])
+
+    add_value(data['user'], value)
+
+    add_personality(data['user'], personality)
 
     # Process successful, return results for frontend to show to the user.
     return jsonify(values=value, personalities=personality)

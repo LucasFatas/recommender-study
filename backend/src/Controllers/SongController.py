@@ -5,7 +5,7 @@ from flask import request, redirect, Blueprint, jsonify
 from src.Entities.Match import Match
 from src.Entities.PlaylistRating import PlaylistRating
 from src.Entities.SongRating import SongRating
-from src.Services.QuestionnaireService import add_user, get_personality, get_songs,get_value
+from src.Services.QuestionnaireService import add_user, get_personality, get_value
 from src.Services.database_config import DatabaseException
 from src.Services.SongService import get_top_songs, add_top_songs, add_playlist_ratings, add_song_ratings
 from src.spotify import get_access_token, get_top_songs_api, AuthorizationException, InvalidAccountException
@@ -40,12 +40,11 @@ def match_user():
         values = get_value(userId)
         personality = get_personality(userId)
 
-        #values = {1,1,1,1,1,1}
-
         # Find IDs of the users more similar to the given user id
         val_user, pers_user, random_user = match(userId, values, personality, 1, data['metric'])
 
-        lst = [Match(val_user, get_top_songs(val_user)), Match(pers_user, get_top_songs(pers_user)), Match(random_user, get_top_songs(random_user))]
+        lst = [Match(val_user, get_top_songs(val_user)), Match(pers_user, get_top_songs(pers_user)), Match(random_user,
+                    get_top_songs(userId))]
 
         # Format song list into a jsonifiable object
         data = []

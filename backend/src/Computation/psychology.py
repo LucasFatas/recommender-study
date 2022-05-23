@@ -50,7 +50,7 @@ def val_calc(val_answers):
 # Returns an array of floats representing the personality scores.
 def pers_calc(val_answers):
     # TODO: Implement logic with HEXACO questions
-    return 0
+    return [1, 2, 3, 3, 4, 5, 6]
 
 
 # Connecting method, called from QuestionnaireController.py. Includes both previous methods.
