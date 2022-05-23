@@ -2,9 +2,9 @@ import mysql.connector
 from src.Services.database_config import DatabaseException, open_connection
 
 
-# Method that gets all the users of a certain batch and their personalities
+# Method that gets all the users of a certain batch and their questionnaire scores
 # Parameters: batch number
-# Returns: a list of tuples containing user and his personalities
+# Returns: a list of tuples containing userId and their scores
 def get_all_scores(batch):
     try:
         db, cursor, database = open_connection()
@@ -21,3 +21,23 @@ def get_all_scores(batch):
     except mysql.connector.errors.Error as e:
         print(e)
         raise DatabaseException("Error connecting to database when retrieving Scores.")
+
+
+# Method that gets all the answers of users of a certain batch
+# Parameters: batch number
+# Returns: a list of tuples containing userId, question number, answer
+def get_all_answers(batch):
+    try:
+        db, cursor, database = open_connection()
+        sql = "Select p.UserId, QuestionNumber, Response from recommender.Answer as a Left Join recommender.participant" \
+              " as p on a.UserId=p.UserId Where p.Batch = %s"
+        cursor.execute(sql, (batch,))
+        result = cursor.fetchall()
+        return result
+
+    except mysql.connector.errors.Error as e:
+        print(e)
+        raise DatabaseException("Error connecting to database when retrieving Scores.")
+
+
+
