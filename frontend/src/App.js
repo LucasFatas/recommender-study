@@ -2,8 +2,8 @@ import { Questionnaire } from './components/questionnaire/Questionnaire';
 import { PageNotFound } from './components/errors/PageNotFound';
 import { ErrorRouter } from './components/errors/ErrorRouter';
 import { Recommender } from './components/recommender/Recommender';
-import { Thanks } from './components/Thanks';
-import { ResultPage } from './components/ResultPage';
+import { Thanks } from './components/pages/Thanks';
+import { ResultPage } from './components/pages/ResultPage';
 import {
   BrowserRouter,
   Routes,
@@ -12,8 +12,9 @@ import {
 } from "react-router-dom";
 
 import questions from './util/questions.json';
-import { LoginPage } from './components/LoginPage';
+import { LoginPage } from './components/pages/LoginPage';
 import * as data from './util/API.json'
+import { WebsiteIntroduction } from './components/pages/introductions/WebsiteIntroduction';
 
 const App = () => {
 
@@ -26,8 +27,8 @@ const App = () => {
         <Route path="/error/*" element={<ErrorRouter defaultPage={defaultPage} />} />
         <Route path="*" element={<PageNotFound redirect={defaultPage} />}/>
 
-
-        <Route path="/loginPage"  element={<LoginPage data={data} defaultPage={defaultPage}/>} />
+        <Route path="/websiteIntroduction" element={<WebsiteIntroduction data={data}/>} />
+        <Route path="/loginPage"  element={<LoginPage defaultPage={defaultPage}/>} />
         <Route path="/questionnaire/*" element={<Questionnaire questions={questions} defaultPage={defaultPage} />} />
         <Route path="/recommender" element={<Recommender/>} />
         <Route path="/resultPage" element={<ResultPage/>} />
