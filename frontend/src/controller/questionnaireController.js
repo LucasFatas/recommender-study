@@ -15,17 +15,13 @@ export const splitArrayIntoMatrix = (array, rowSize) => {
 
 export const checkEveryElementIsInMap = (array, map) => array.every(x => map.has(x));
 
-export const updateAnswersLogic = (element, setSelected, questionNumber, 
-    value, answers, questionsNumberArr, setAnswered, setAnswers) => {
+export const updateAnswersLogic = (element, questionNumber, answers, questionsNumberArr, setAnswered, setAnswers) => {
 
     const elementValue = element.target.value;
     const currentNumber = questionNumber + 1;
 
     //Set solution in answers map
     setAnswers(answers.set(currentNumber, parseInt(elementValue)));
-    
-    //Set selected radio button in answer
-    setSelected(answers.get(currentNumber) === value);
     
     //Enable button to next page if all questions are answered
     setAnswered(questionsNumberArr.every(x => answers.has(x)));

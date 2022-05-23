@@ -6,16 +6,23 @@ const optionsPerAnswer = 5;
 
 export const Answer = (props) => {
 
+  const {
+    answers,
+    onAnswerChange,
+    playlistName,
+    questionNumber
+  } = props;
+
   const inputs = [];
 
   for (let i = 1; i <= optionsPerAnswer; i++)
     inputs.push(
       <RadioButton
-        answers={props.answers} 
+        answers={answers} 
         value={i}
-        onChange={props.onAnswerChange} 
-        key={i}
-        questionNumber={props.questionNumber}
+        onChange={onAnswerChange} 
+        key={i + playlistName}
+        questionNumber={questionNumber}
       />);
 
   return (

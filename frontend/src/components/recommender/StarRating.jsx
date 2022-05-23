@@ -2,7 +2,16 @@ import React, { useEffect, useState } from "react";
 
 import { handleRating } from "../../controller/recommenderController";
 
-export const StarRating = ({ starStyle, playlistName, song, setRatings, ratings, setRatingsFilled }) => {  
+export const StarRating = (props) => {  
+
+  const { 
+    starStyle, 
+    playlistName, 
+    song, 
+    setRatings, 
+    ratings, 
+    setRatingsFilled 
+  } = props;
 
   //Hover caused issues with the code. Might be reimplemented later on.
   //const [hover, setHover] = useState(0);

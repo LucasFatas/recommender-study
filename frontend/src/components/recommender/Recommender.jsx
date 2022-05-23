@@ -17,11 +17,16 @@ const trackLists = [
 
 const lastPageIdx = trackLists.length + 1;
 
-export const Recommender = ({ defaultPage, questions }) => {
+export const Recommender = (props) => {
 
 	const [ratingsFilled, setRatingsFilled] = useState(false);
 	const [feedback, setFeedback] = useState(initialFeedbackObj);
 	const [ratings, setRatings] = useState(initialRatingsObj);
+
+	const {
+		defaultPage,
+		questions
+	} = props;
 
 	const currentPage = (trackList, idx) => {
 		idx += 2; //Accounts for pages starting at 1 and the first page being RecommenderPage

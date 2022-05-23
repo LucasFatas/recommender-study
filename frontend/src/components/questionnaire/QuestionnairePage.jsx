@@ -18,8 +18,8 @@ export const QuestionnairePage = (props) => {
     [questionsNumberArr, props.answers] //parameters that, if changed, trigger the function above
   );
     
-  const updateAnswers = (e, setSelected, questionNumber, value) => 
-    updateAnswersLogic(e, setSelected, questionNumber, value, props.answers, questionsNumberArr, setAnswered, props.setAnswers);
+  const updateAnswers = (e, questionNumber) => 
+    updateAnswersLogic(e, questionNumber, props.answers, questionsNumberArr, setAnswered, props.setAnswers);
 
   const handleNext = () => {
     const nextQuestionsNumber = questionsNumberArr.map(x => x + questionsNumberArr.length);
