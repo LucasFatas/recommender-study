@@ -6,6 +6,9 @@ from src.Services.DashboardService import get_all_scores, get_all_answers, get_a
 dashboard = Blueprint('dashboard', __name__)
 
 
+# Method that gets all the users of a certain batch and their questionnaire scores
+# Parameters: batch number
+# Returns: a list of tuples containing userId and their scores
 @dashboard.route("/scores")
 def retrieve_scores():
     batchId = request.get_json(force=True)['batchId']
@@ -27,6 +30,9 @@ def retrieve_scores():
     return output
 
 
+# Method that gets all the answers of users of a certain batch
+# Parameters: batch number
+# Returns: a list of tuples containing userId, question number, answer
 @dashboard.route("/answers")
 def retrieve_answers():
     batchId = request.get_json(force=True)['batchId']
@@ -46,6 +52,9 @@ def retrieve_answers():
     return output
 
 
+# Method that gets all the songs of users of a certain batch
+# Parameters: batch number
+# Returns: a csv of tuples containing userId, spotify_url
 @dashboard.route("/songs")
 def retrieve_songs_from_batch():
     batchId = request.get_json(force=True)['batchId']
