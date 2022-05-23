@@ -4,9 +4,7 @@ const inputStyle = "appearance-none rounded-full h-4 w-4 border border-gray-300 
 
 export const RadioButton = ({ answers, value, questionNumber, onChange }) => {
 
-  const checkPreviousAnswers = () => answers.get(questionNumber + 1) === value;
-  
-  const [selected, setSelected] = useState(checkPreviousAnswers());
+  const [selected, setSelected] = useState(answers.get(questionNumber + 1) === value);
 
   return (
     <input 
@@ -15,7 +13,7 @@ export const RadioButton = ({ answers, value, questionNumber, onChange }) => {
       value={value}
       name={questionNumber}
       onChange={e => onChange(e, setSelected, questionNumber, value.toString())}
-      defaultChecked={selected}
+      defaultChecked={answers.get(questionNumber + 1) === value}
     /> 
   )
 }

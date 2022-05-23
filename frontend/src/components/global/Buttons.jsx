@@ -52,7 +52,7 @@ export const Buttons = (props) => {
         Submit
       </button>
 
-      <Link to={ `${currentPath}/page${ nextPage }` } className={ nextPage ? "" : "pointer-events-none"}>
+      <Link to={ `${currentPath}/page${ nextPage }` } className={ nextPage && answered ? "" : "pointer-events-none"}>
         <button {...setStyleAndDisabled(nextPage, answered)} onClick={ onNext }>
           Next
         </button>

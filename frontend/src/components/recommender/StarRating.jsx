@@ -5,7 +5,7 @@ import { handleRating } from "../../controller/recommenderController";
 export const StarRating = ({ starStyle, playlistName, song, setRatings, ratings, setRatingsFilled }) => {  
 
   //Hover caused issues with the code. Might be reimplemented later on.
-  const [hover, setHover] = useState(0);
+  //const [hover, setHover] = useState(0);
   const [currentRating, setCurrentRating] = useState(song === undefined ? ratings[playlistName].playlist : ratings[playlistName].songs[song]);
 
   useEffect(() => {
@@ -13,7 +13,7 @@ export const StarRating = ({ starStyle, playlistName, song, setRatings, ratings,
         setCurrentRating(ratings[playlistName].playlist);
       else 
         setCurrentRating(ratings[playlistName].songs[song]);
-    }
+    }, [song, ratings, playlistName]
   );
 
   return (
@@ -27,8 +27,8 @@ export const StarRating = ({ starStyle, playlistName, song, setRatings, ratings,
             className={ index <= currentRating ? " text-yellow-500" : "text-slate-300"}
 
             onClick={() => handleRating(index, ratings, song, playlistName, setRatingsFilled, setRatings, setCurrentRating)}
-            onMouseEnter={() => setHover(index)}
-            onMouseLeave={() => setHover(currentRating)}
+            /* onMouseEnter={() => setHover(index)} */
+            /* onMouseLeave={() => setHover(currentRating)} */
           >
             <span className={ starStyle + " text-2xl star"}>&#9733;</span>
           </button>

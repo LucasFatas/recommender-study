@@ -34,6 +34,7 @@ export const Recommender = ({ defaultPage, questions }) => {
 				PlaylisyKey={idx}
 				trackList={trackList.list}
 				questions={questions}
+				answers={feedback[trackList.name].questions}
 				setRatingsFilled={setRatingsFilled}
 
 				feedback={feedback}
@@ -62,7 +63,7 @@ export const Recommender = ({ defaultPage, questions }) => {
 			<Route path="/" element={<Navigate replace to="page1"/>} />
 			<Route path="page1" element={recommenderPage} />
 			{trackLists.map((tracklist, idx) => (
-				<Route path={`page${idx + 2}`} key={idx + 2} element={currentPage(tracklist, idx)} />
+				<Route path={`page${idx + 2}`} exact key={idx + 2} element={currentPage(tracklist, idx)} />
 			))}
 		</Routes>
 	)

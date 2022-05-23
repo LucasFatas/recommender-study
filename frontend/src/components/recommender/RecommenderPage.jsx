@@ -18,7 +18,7 @@ export const RecommenderPage = (props) => {
 		setRatingsFilled
 	} = props;
 
-	useEffect(() => setRatingsFilled(Object.values(ratings).every(x => x.playlist !== 0)), [ratings])
+	useEffect(() => setRatingsFilled(Object.values(ratings).every(x => x.playlist !== 0)), [ratings, setRatingsFilled])
 
   return (
 		<div className='grid place-items-center'>

@@ -27,6 +27,6 @@ export const updateAnswersLogic = (element, setSelected, questionNumber,
     //Set selected radio button in answer
     setSelected(answers.get(currentNumber) === value);
     
-    //Change boolean value
+    //Enable button to next page if all questions are answered
     setAnswered(questionsNumberArr.every(x => answers.has(x)));
 }
