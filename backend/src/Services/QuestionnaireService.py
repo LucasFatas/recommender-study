@@ -152,7 +152,7 @@ def get_all_values(batch):
 # Method that gets all the users of a certain batch and their personalities
 # Parameters: batch number
 # Returns: a list of tuples containing user and his personalities
-def get_all_personalities(batch, userid):
+def get_all_personalities(batch):
     try:
         db, cursor, database = open_connection()
         sql = "Select UserID, Openness, Honesty, Emotionality," \
@@ -172,12 +172,12 @@ def get_all_personalities(batch, userid):
 # Method that gets all the users of a certain batch apart from the value user and personality user
 # Parameters: batch number
 # Returns: one random user id
-def get_random_user(user1, user2, batch):
+def get_random_user(user1, user2, user3, batch):
     try:
         db, cursor, database = open_connection()
         sql = "Select UserID From " + database + ".participant as p " \
               "Where p.Batch = " + str(batch) + " and not (p.UserID =" \
-              + str(user1) + " or p.UserID =  " + str(user2) + ")"
+              + str(user1) + " or p.UserID =  " + str(user2) + " or p.UserID =  " + str(user3) + ")"
 
         cursor.execute(sql)
         result = cursor.fetchall()

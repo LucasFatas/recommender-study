@@ -16,11 +16,14 @@ def match(userId, values, personality, batch, metric):
     # add_matches(userId, val_user, pers_user, random_user)
     return val_user, pers_user, random_user
     """
-    batch_personality = get_all_personalities(batch,userId)
-    pers_user = closest_user(personality, batch_personality, metric)
+    batch_personality = get_all_personalities(batch)
+    batch_values = get_all_values(batch)
 
-    random_user = get_random_user(userId, pers_user, batch)
-    return userId, pers_user, random_user
+    pers_user = closest_user(personality, batch_personality, metric)
+    val_user = closest_user(values, batch_values, metric)
+
+    random_user = get_random_user(userId, pers_user, val_user, batch)
+    return val_user, pers_user, random_user
 
 
 # Calculates Distance of two vectors based on a defined metric
@@ -34,7 +37,7 @@ def calculate_distance(answer, batch_answer, metric):
 
 
 def closest_user(answer, batch_answer, metric):
-    print(answer)
+
     closest = -1
     closest_distance = float("inf")
     for x in batch_answer:

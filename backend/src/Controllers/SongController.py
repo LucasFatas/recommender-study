@@ -44,7 +44,7 @@ def match_user():
         val_user, pers_user, random_user = match(userId, values, personality, 1, data['metric'])
 
         lst = [Match(val_user, get_top_songs(val_user)), Match(pers_user, get_top_songs(pers_user)), Match(random_user,
-                    get_top_songs(userId))]
+                    get_top_songs(random_user))]
 
         # Format song list into a jsonifiable object
         data = []
