@@ -77,6 +77,7 @@ def add_personality(user_id, personality):
     except mysql.connector.errors.Error as e:
         raise DatabaseException("Error connecting to database when adding personalities.")
 
+
 # Returns user's value score and takes userId is input
 def get_value(userId):
     try:
@@ -91,6 +92,7 @@ def get_value(userId):
 
     except mysql.connector.errors.Error as e:
         raise DatabaseException("Error connecting to database when trying to retrieve values.")
+
 
 # Returns user's personality score and takes userId as input
 def get_personality(userId):
@@ -135,7 +137,8 @@ def get_all_values(batch):
         sql = "Select UserId, Stimulation, SelfDirection, Universalism, Benevolence," \
               " Tradition, Conformity, SecurityVal, PowerVal, Achievement, Hedonism " \
               "From " + database + ".value as v , " + database + ".participant as p " \
-              "Where v.ValueId = p.UserId and p.Batch = " + str(batch)
+                                                                 "Where v.ValueId = p.UserId and p.Batch = " + str(
+            batch)
 
         cursor.execute(sql)
         result = cursor.fetchall()
@@ -154,7 +157,7 @@ def get_all_personalities(batch, userid):
               "Extroversion, Agreeableness, Conscientiousness " \
               "From " + database + ".personality as pe , " \
               + database + ".participant as pa " \
-              "Where pe.PersonalityId = pa.UserId and pa.Batch = " + str(batch)
+                           "Where pe.PersonalityId = pa.UserId and pa.Batch = " + str(batch)
 
         cursor.execute(sql)
         result = cursor.fetchall()
@@ -171,7 +174,8 @@ def get_random_user(user1, user2, batch):
     try:
         db, cursor, database = open_connection()
         sql = "Select UserID From " + database + ".participant as p " \
-              "Where p.Batch = " + str(batch) +" and not (p.UserID =" + str(user1) + " or p.UserID =  " + str(user2) + ")"
+                                                 "Where p.Batch = " + str(batch) + " and not (p.UserID =" + str(
+            user1) + " or p.UserID =  " + str(user2) + ")"
 
         cursor.execute(sql)
         result = cursor.fetchall()
@@ -179,5 +183,3 @@ def get_random_user(user1, user2, batch):
         return result[randint(0, len(result))][0]
     except mysql.connector.errors.Error as e:
         raise DatabaseException("Error connecting to database when retrieving users.")
-
-

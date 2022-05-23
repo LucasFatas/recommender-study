@@ -5,7 +5,7 @@ from flask import request, redirect, Blueprint, jsonify
 from src.Entities.Match import Match
 from src.Entities.PlaylistRating import PlaylistRating
 from src.Entities.SongRating import SongRating
-from src.Services.QuestionnaireService import add_user, get_personality, get_songs,get_value
+from src.Services.QuestionnaireService import add_user, get_personality, get_value
 from src.Services.database_config import DatabaseException
 from src.Services.SongService import get_top_songs, add_top_songs, add_playlist_ratings, add_song_ratings
 from src.spotify import get_access_token, get_top_songs_api, AuthorizationException, InvalidAccountException
