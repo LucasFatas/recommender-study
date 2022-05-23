@@ -13,7 +13,7 @@ def open_connection():
     db = mysql.connector.connect(
         # Change once it is no longer hosted
         host="localhost",
-        user="root",
+        user="temp_user",
         passwd="password",
         database="recommender"
     )

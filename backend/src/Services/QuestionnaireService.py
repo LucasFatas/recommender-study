@@ -34,6 +34,7 @@ def add_user(batch_id):
         return participant_id
 
     except mysql.connector.errors.Error as e:
+        print(e)
         raise DatabaseException("Error connecting to database when adding users.")
 
 
@@ -150,7 +151,7 @@ def get_all_values(batch):
 # Method that gets all the users of a certain batch and their personalities
 # Parameters: batch number
 # Returns: a list of tuples containing user and his personalities
-def get_all_personalities(batch, userid):
+def get_all_personalities(batch):
     try:
         db, cursor, database = open_connection()
         sql = "Select UserID, Openness, Honesty, Emotionality," \

@@ -9,7 +9,7 @@ from src.Entities.Song import Song
 def add_top_songs(userId, songs):
     try:
         db, cursor, database = open_connection()
-        song_sql = "Insert into " + database + ".song(preview_url, userId, name, spotify_url) Values (%s, %s, %s)"
+        song_sql = "Insert into " + database + ".song(preview_url, userId, name, spotify_url) Values (%s, %s, %s, %s)"
         artist_sql = "Insert into recommender.Artist(spotify_url, name)  Values(%s, %s)"
         for song in songs:
             val = (song.preview_url, userId, song.name, song.spotify_url)
@@ -20,6 +20,7 @@ def add_top_songs(userId, songs):
         db.commit()
         return "Success storing of top songs"
     except mysql.connector.errors.Error as e:
+        print(e)
         raise DatabaseException("Error connecting to database when adding songs.")
 
 
