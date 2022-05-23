@@ -40,4 +40,20 @@ def get_all_answers(batch):
         raise DatabaseException("Error connecting to database when retrieving Scores.")
 
 
+# Method that gets all the songs of users of a certain batch
+# Parameters: batch number
+# Returns: a list of tuples containing userId, spotify_url
+def get_all_songs(batch):
+    try:
+        db, cursor, database = open_connection()
+        sql = "Select p.UserId, spotify_url from recommender.song as s Left Join recommender.participant" \
+              " as p on s.UserId=p.UserId Where p.Batch = %s"
+        cursor.execute(sql, (batch,))
+        result = cursor.fetchall()
+        return result
+
+    except mysql.connector.errors.Error as e:
+        print(e)
+        raise DatabaseException("Error connecting to database when retrieving Scores.")
+
 
