@@ -22,7 +22,7 @@ import * as playlistIntro from './util/playlistIntroduction.json'
 
 const App = () => {
 
-  const defaultPage = '/loginPage';
+  const defaultPage = '/consentPage';
 
   return (
     <BrowserRouter>
