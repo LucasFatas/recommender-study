@@ -3,8 +3,11 @@ import { useState, useEffect } from "react";
 import  spotifyLogo from "../../../assets/spotifyLogo.svg"
 
 
-export const WebsiteIntroduction = ({data}) => {
+export const WebsiteIntroduction = (props) => {
 
+  const {
+    data
+  } = props;
 
 
   const callback =  data.serverUrl + ':' + data.port + '/callback&scope=user-top-read';

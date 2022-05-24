@@ -6,8 +6,13 @@ import { useNavigate } from 'react-router-dom';
 
 //TODO use port and url in json file
 
-export const Introduction = ({intro, nextpage}) => {
+export const Introduction = (props) => {
   
+
+  const {
+    intro,
+    nextpage
+  } = props;
 
   const navigate = useNavigate();
 
