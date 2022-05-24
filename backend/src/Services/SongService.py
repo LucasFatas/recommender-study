@@ -58,13 +58,13 @@ def get_top_songs(userId):
 # Method that stores the recommendation ratings of a user
 # Parameters: a userId and a list of three playlistRatings, each with userId, matchedUserId and rating.
 # Returns: a confirmation message
-def add_playlist_ratings(playlists):
+def add_playlist_ratings(playlist):
     try:
         db, cursor, database = open_connection()
         playlist_sql = "Insert into " + database + ".PlaylistRating(userId, matchedUserId, rating) Values (%s, %s, %s)"
-        for playlist in playlists:
-            val = (playlist.userId, playlist.matchedUserId, playlist.rating)
-            cursor.execute(playlist_sql, val)
+
+        val = (playlist.userId, playlist.matchedUserId, playlist.rating)
+        cursor.execute(playlist_sql, val)
 
         db.commit()
         return "Success storing playlist ratings"
@@ -90,5 +90,6 @@ def add_song_ratings(song_ratings):
     except mysql.connector.errors.Error as e:
         print(e)
         raise DatabaseException("Error connecting to database when storing song ratings.")
+
 
 
