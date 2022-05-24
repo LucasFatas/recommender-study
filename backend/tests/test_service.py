@@ -1,4 +1,4 @@
-import json
+from tests.test_fixtures import set_up
 from src.Services.QuestionnaireService import add_value, add_answers, add_user, add_personality
 from src.Services.SongService import add_top_songs, get_top_songs, add_playlist_ratings, add_song_ratings
 from src.Entities.Song import Song
@@ -6,7 +6,9 @@ from src.Entities.PlaylistRating import PlaylistRating
 from src.Entities.SongRating import SongRating
 
 
-def test_add_song_ratings():
+def test_add_song_ratings(set_up):
+    db, cursor, database = set_up
+
     tup = [
         Song(
             "https://p.scdn.co/mp3-preview/754ac47c66968d7bed8072e826cb9eb239457e11?cid=8073ee0f16a64774bd0e7f8fa955b9d6",
@@ -35,15 +37,19 @@ def test_add_song_ratings():
             [{"artist_name": "Azel"}]
         )
     ]
-    assert "Success storing of top songs" == add_top_songs(add_user(1), tup)
+    assert "Success storing of top songs" == add_top_songs(add_user(1), tup, db, cursor, database)
 
 
-def test_add_answers():
+def test_add_answers(set_up):
+    db, cursor, database = set_up
+
     tup = [(1, 1, 1), (1, 2, 3)]
-    assert "Success storing all Answers" == add_answers(tup)
+    assert "Success storing all Answers" == add_answers(tup, db, cursor, database)
 
 
-def test_get_top_songs():
+def test_get_top_songs(set_up):
+    db, cursor, database = set_up
+
     tup = [
         Song(
             "2hSBhzE4hbWRWl4PLMiJsu",
@@ -81,9 +87,9 @@ def test_get_top_songs():
         tup_art.append(temp)
         temp = []
 
-    user_id = add_user(1)
-    add_top_songs(user_id, tup)
-    actual = get_top_songs(user_id)
+    user_id = add_user(1, db, cursor, database)
+    add_top_songs(user_id, tup, db, cursor, database)
+    actual = get_top_songs(user_id, db, cursor, database)
 
     for i, song in enumerate(actual):
         assert song.spotify_url == tup[i].spotify_url and \
@@ -92,45 +98,54 @@ def test_get_top_songs():
             assert artist == tup_art[i][j]
 
 
-def test_add_playlist_ratings():
+def test_add_playlist_ratings(set_up):
+    db, cursor, database = set_up
 
-    matched_user_id = add_user(2)
+    matched_user_id = add_user(2, db, cursor, database)
 
     playlist_ratings = [
-        PlaylistRating(matched_user_id, add_user(1), 3),
-        PlaylistRating(matched_user_id, add_user(1), 2),
-        PlaylistRating(matched_user_id, add_user(1), 5)
+        PlaylistRating(matched_user_id, add_user(1, db, cursor, database), 3),
+        PlaylistRating(matched_user_id, add_user(1, db, cursor, database), 2),
+        PlaylistRating(matched_user_id, add_user(1, db, cursor, database), 5)
     ]
 
-    assert add_playlist_ratings(playlist_ratings) == "Success storing playlist ratings"
+    assert add_playlist_ratings(playlist_ratings, db, cursor, database) == "Success storing playlist ratings"
 
 
-def test_add_song_ratings():
-    matched_user_id = add_user(2)
+def test_add_song_ratings(set_up):
+    db, cursor, database = set_up
+
+    matched_user_id = add_user(2, db, cursor, database)
 
     song_ratings = [
-        SongRating(matched_user_id, add_user(1), "2hSBhzE4hbWRWl4PLMiJsu", 3),
-        SongRating(matched_user_id, add_user(1), "1p0ZOyfoywejbepwfUyQAG", 2),
-        SongRating(matched_user_id, add_user(1), "6COq76th7tzFFi2wlcD6xj", 5)
+        SongRating(matched_user_id, add_user(1, db, cursor, database), "2hSBhzE4hbWRWl4PLMiJsu", 3),
+        SongRating(matched_user_id, add_user(1, db, cursor, database), "1p0ZOyfoywejbepwfUyQAG", 2),
+        SongRating(matched_user_id, add_user(1, db, cursor, database), "6COq76th7tzFFi2wlcD6xj", 5)
     ]
 
-    assert add_song_ratings(song_ratings) == "Success storing song ratings"
+    assert add_song_ratings(song_ratings, db, cursor, database) == "Success storing song ratings"
 
 
-def test_add_user():
-    actual = add_user(1)
+def test_add_user(set_up):
+    db, cursor, database = set_up
+
+    actual = add_user(1, db, cursor, database)
     assert type(actual) == int
 
 
-def test_add_value():
-    user_id = add_user(1)
+def test_add_value(set_up):
+    db, cursor, database = set_up
+
+    user_id = add_user(1, db, cursor, database)
     tup = (1, 1, 1, 1, 1, 1, 1, 1, 1, 1)
-    assert "Success storing value" == add_value(user_id, tup)
+    assert "Success storing value" == add_value(user_id, tup, db, cursor, database)
 
 
-def test_add_personality():
-    user_id = add_user(1)
+def test_add_personality(set_up):
+    db, cursor, database = set_up
+
+    user_id = add_user(1, db, cursor, database)
     tup = (1, 1, 1, 1, 1, 1)
-    assert "Success storing personality" == add_personality(user_id, tup)
+    assert "Success storing personality" == add_personality(user_id, tup, db, cursor, database)
 
 

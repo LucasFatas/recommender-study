@@ -16,14 +16,15 @@ app.register_blueprint(dashboard, url_prefix='/dashboard')
 
 
 CORS(app)
+load_dotenv()
 
 
 def create_app():
-    load_dotenv()
 
     app.run(debug=True, port=os.getenv('PORT'))
 
 
 if __name__ == "__main__":
+    os.environ['IS_TESTING'] = 'FALSE'
     create_app()
 
