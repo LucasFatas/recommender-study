@@ -1,6 +1,10 @@
 import mysql.connector
 from random import randint
 from src.Services.database_config import DatabaseException, open_connection
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
 
 
 # Method that stores all answers of a user to the database
@@ -13,7 +17,10 @@ def add_answers(answers):
         sql = "INSERT INTO " + database + ".Answer(UserId, QuestionNumber, Response) VALUES (%s, %s, %s)"
 
         cursor.executemany(sql, answers)
-        db.commit()
+        if os.getenv('IS_TESTING'):
+            db.rollback()
+        else:
+            db.commit()
         return "Success storing all Answers"
 
     except mysql.connector.errors.Error as e:
@@ -30,7 +37,10 @@ def add_user(batch_id):
 
         participant_id = cursor.lastrowid
 
-        db.commit()
+        if os.getenv('IS_TESTING'):
+            db.rollback()
+        else:
+            db.commit()
         return participant_id
 
     except mysql.connector.errors.Error as e:
@@ -51,7 +61,11 @@ def add_value(user_id, values):
         val = (user_id, values[0], values[1], values[2], values[3], values[4],
                values[5], values[6], values[7], values[8], values[9])
         cursor.execute(sql, val)
-        db.commit()
+
+        if os.getenv('IS_TESTING'):
+            db.rollback()
+        else:
+            db.commit()
 
         return "Success storing value"
 
@@ -71,7 +85,11 @@ def add_personality(user_id, personality):
         val = (user_id, personality[0], personality[1], personality[2],
                personality[3], personality[4], personality[5])
         cursor.execute(sql, val)
-        db.commit()
+
+        if os.getenv('IS_TESTING'):
+            db.rollback()
+        else:
+            db.commit()
 
         return "Success storing personality"
 
@@ -87,7 +105,7 @@ def get_value(userId):
               " Tradition, Conformity, SecurityVal, PowerVal, Achievement, Hedonism " \
               "From " + database + ".value as v Where v.ValueId = " + str(userId)
         cursor.execute(sql)
-        db.commit()
+
         result = cursor.fetchall()
         return result
 
@@ -121,7 +139,11 @@ def add_matches(userId, val_user, pers_user, random_user):
         sql = "INSERT INTO Recommender.Match (UserId, ValId, PersId, RandId) VALUES (%s, %s, %s, %s)"
         val = (userId, val_user, pers_user, random_user)
         cursor.execute(sql, val)
-        db.commit()
+
+        if os.getenv('IS_TESTING'):
+            db.rollback()
+        else:
+            db.commit()
 
         return "Success storing personality"
 

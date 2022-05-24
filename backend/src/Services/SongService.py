@@ -1,6 +1,10 @@
 from src.Services.database_config import DatabaseException, open_connection
 import mysql.connector
 from src.Entities.Song import Song
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
 
 
 # Method that stores the top songs of a user
@@ -17,10 +21,14 @@ def add_top_songs(userId, songs):
             for artist in song.artists:
                 val = (song.spotify_url, artist['artist_name'])
                 cursor.execute(artist_sql, val)
-        db.commit()
+        if os.getenv('IS_TESTING'):
+            db.rollback()
+        else:
+            db.commit()
         return "Success storing of top songs"
     except mysql.connector.errors.Error as e:
         print(e)
+        db.rollback()
         raise DatabaseException("Error connecting to database when adding songs.")
 
 
@@ -52,6 +60,7 @@ def get_top_songs(userId):
 
         return songs
     except mysql.connector.errors.Error as e:
+        print(e)
         raise DatabaseException("Error connecting to database when getting songs.")
 
 
@@ -66,10 +75,14 @@ def add_playlist_ratings(playlists):
             val = (playlist.userId, playlist.matchedUserId, playlist.rating)
             cursor.execute(playlist_sql, val)
 
-        db.commit()
+        if os.getenv('IS_TESTING'):
+            db.rollback()
+        else:
+            db.commit()
         return "Success storing playlist ratings"
     except mysql.connector.errors.Error as e:
         print(e)
+        db.rollback()
         raise DatabaseException("Error connecting to database when storing playlist ratings.")
 
 
@@ -85,10 +98,14 @@ def add_song_ratings(song_ratings):
             val = (song_rating.userId, song_rating.matchedUserId, song_rating.spotify_url, song_rating.rating)
             cursor.execute(song_sql, val)
 
-        db.commit()
+        if os.getenv('IS_TESTING'):
+            db.rollback()
+        else:
+            db.commit()
         return "Success storing song ratings"
     except mysql.connector.errors.Error as e:
         print(e)
+        db.rollback()
         raise DatabaseException("Error connecting to database when storing song ratings.")
 
 
