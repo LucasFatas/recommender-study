@@ -1,4 +1,4 @@
-from src.Services.database_config import DatabaseException, open_connection, change_database_for_testing
+from src.Services.database_config import DatabaseException, open_connection
 import mysql.connector
 from src.Entities.Song import Song
 
@@ -9,10 +9,10 @@ from src.Entities.Song import Song
 def add_top_songs(userId, songs):
     try:
         db, cursor, database = open_connection()
-        song_sql = "Insert into " + database + ".song(spotify_url, userId, name) Values (%s, %s, %s)"
+        song_sql = "Insert into " + database + ".song(preview_url, userId, name, spotify_url) Values (%s, %s, %s, %s)"
         artist_sql = "Insert into recommender.Artist(spotify_url, name)  Values(%s, %s)"
         for song in songs:
-            val = (song.spotify_url, userId, song.name)
+            val = (song.preview_url, userId, song.name, song.spotify_url)
             cursor.execute(song_sql, val)
             for artist in song.artists:
                 val = (song.spotify_url, artist['artist_name'])
@@ -20,6 +20,7 @@ def add_top_songs(userId, songs):
         db.commit()
         return "Success storing of top songs"
     except mysql.connector.errors.Error as e:
+        print(e)
         raise DatabaseException("Error connecting to database when adding songs.")
 
 
@@ -29,7 +30,7 @@ def add_top_songs(userId, songs):
 def get_top_songs(userId):
     try:
         db, cursor, database = open_connection()
-        song_sql = "Select name, spotify_url from " + database + ".song Where userId = " + str(userId)
+        song_sql = "Select name, preview_url, spotify_url from " + database + ".song Where userId = " + str(userId)
 
         cursor.execute(song_sql)
 
@@ -47,7 +48,7 @@ def get_top_songs(userId):
             for artist in cursor.fetchall():
                 artists.append(artist[0])
 
-            songs.append(Song(row[1], row[0], artists))
+            songs.append(Song(row[1], row[0], artists, row[2]))
 
         return songs
     except mysql.connector.errors.Error as e:
@@ -78,7 +79,8 @@ def add_playlist_ratings(playlists):
 def add_song_ratings(song_ratings):
     try:
         db, cursor, database = open_connection()
-        song_sql = "Insert into " + database + ".SongRating(userId, matchedUserId, spotify_url, rating) Values (%s,%s,%s,%s)"
+        song_sql = "Insert into " + database + ".SongRating(userId, matchedUserId, spotify_url, rating) Values (%s," \
+                                               "%s,%s,%s) "
         for song_rating in song_ratings:
             val = (song_rating.userId, song_rating.matchedUserId, song_rating.spotify_url, song_rating.rating)
             cursor.execute(song_sql, val)

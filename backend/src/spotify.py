@@ -50,14 +50,16 @@ def get_top_songs_api(access_token):
     if len(user_data['items']) < 5:
         raise InvalidAccountException("Not enough top tracks")
     songs = []
-
-    for item in user_data['items']:
+    index = 0
+    while len(songs) < 5:
+        item = user_data['items'][index]
         artists = []
         for artist in item['artists']:
             artists.append({
                 'artist_name': artist['name']
             })
-
-        songs.append(Song(item['preview_url'], item['name'], artists))
+        if item['preview_url'] != "" or item['preview_url'] is not None:
+            songs.append(Song(item['preview_url'], item['name'], artists, item['external_urls']['spotify']))
+        index += 1
 
     return songs
