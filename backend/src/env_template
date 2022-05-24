@@ -9,4 +9,5 @@ DB_DATABASE=Recommender
 DB_USER=root
 DB_PASSWORD=password
 
-
+IS_TESTING=FALSE
+DB_TEST_DATABASE=Recommender
