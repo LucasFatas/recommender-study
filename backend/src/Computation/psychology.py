@@ -7,7 +7,7 @@ import numpy as np
 def val_calc(val_answers):
     mrat = np.mean(val_answers)
 
-    # Tuple with the 10 value fields.
+    # List with the 10 value fields.
     values = np.array([
         # Conformity - 7,16,28,36
         np.mean([val_answers[6], val_answers[15], val_answers[27], val_answers[35]]),
@@ -41,16 +41,56 @@ def val_calc(val_answers):
         np.mean([val_answers[4], val_answers[13], val_answers[20], val_answers[30], val_answers[34]])
     ]).round(2).tolist()
 
-    meaned_values = values - mrat
+    mean_values = values - mrat
     return values
 
 
-# Calculates personality scores of a user given the answers to the quiz.
+# Calculates the reverse of the HEXACO score, in order to compute the scores of the questionnaire
+def reverse(score):
+    return 6 - score
+
+
+# Calculates HEXACO personality scores of a user given the answers to the quiz.
 # Parameters: answers related to personality.
 # Returns an array of floats representing the personality scores.
-def pers_calc(val_answers):
-    # TODO: Implement logic with HEXACO questions
-    return 0
+def pers_calc(pers_answers):
+
+    # List with the 6 personality fields. Comment on top of each entry is coding key for personality calculation.
+    # R after a number corresponds to the reverse of that score. Explained in the corresponding method.
+    personalities = np.array([
+        # Honesty-Humility - 6, 30R, 54, 12R, 36, 60R, 18, 42R, 24R, 48R
+        np.mean([pers_answers[5], reverse(pers_answers[29]), pers_answers[53], reverse(pers_answers[11]),
+                 pers_answers[35], reverse(pers_answers[59]), pers_answers[17], reverse(pers_answers[41]),
+                 reverse(pers_answers[23]), reverse(pers_answers[47])]),
+
+        # Emotionality - 5, 29, 53R, 11, 35R, 17, 41R, 23, 47, 59R
+        np.mean([pers_answers[4], pers_answers[28], reverse(pers_answers[52]), pers_answers[10],
+                 reverse(pers_answers[34]), pers_answers[16], reverse(pers_answers[40]),
+                 pers_answers[22], pers_answers[46], reverse(pers_answers[58])]),
+
+        # Extraversion - 4, 28R, 52R, 10R, 34, 58, 16, 40, 22, 46R
+        np.mean([pers_answers[3], reverse(pers_answers[27]), reverse(pers_answers[51]), reverse(pers_answers[9]),
+                 pers_answers[33], pers_answers[57], pers_answers[15], pers_answers[39],
+                 pers_answers[21], reverse(pers_answers[45])]),
+
+        # Agreeableness - 3, 27, 9R, 33, 51, 15R, 39, 57R, 21R, 45
+        np.mean([pers_answers[2], pers_answers[26], reverse(pers_answers[8]), pers_answers[32],
+                 pers_answers[50], reverse(pers_answers[14]), pers_answers[38], reverse(pers_answers[56]),
+                 reverse(pers_answers[20]), pers_answers[44]]),
+
+        # Conscientiousness - 2, 26R, 8, 32R, 14R, 38, 50, 20R, 44R, 56R
+        np.mean([pers_answers[1], reverse(pers_answers[25]), pers_answers[7], reverse(pers_answers[31]),
+                 reverse(pers_answers[13]), pers_answers[37], pers_answers[49], reverse(pers_answers[19]),
+                 reverse(pers_answers[43]), reverse(pers_answers[55])]),
+
+        # Openness to Experience - 1R, 25, 7, 31R, 13, 37, 49R, 19R, 43, 55R
+        np.mean([reverse(pers_answers[0]), pers_answers[24], pers_answers[6], reverse(pers_answers[30]),
+                 pers_answers[12], pers_answers[36], reverse(pers_answers[48]), reverse(pers_answers[18]),
+                 pers_answers[42], reverse(pers_answers[54])]),
+
+    ]).round(2).tolist()
+
+    return personalities
 
 
 # Connecting method, called from QuestionnaireController.py. Includes both previous methods.

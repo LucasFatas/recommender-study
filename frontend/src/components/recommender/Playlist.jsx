@@ -4,15 +4,20 @@ import { Track } from "./Track";
 
 export const Playlist = (props) => {
 
+	const {
+		playlistName,
+		trackList
+	} = props;
+
 	return (
 		<div>
-			<h2 className="text-center">{ props.name }</h2>
-			<div className=" rounded-[20px] border-solid border-8 border-green-300 bg-gray-900 hover:border-green-500">
-				{props.trackList.map((e, idx) => (
+			<h2 className="text-center">{ playlistName }</h2>
+			<div className=" rounded-[20px] mx-10 px-12 py-6 border-solid border-8 border-green-300 bg-gray-900 hover:border-green-500">
+				{trackList.map((e, idx) => (
 					<div key={idx}>
 						<Track 
 							trackUrl= {e.url}
-							playlist={props.name} 
+							playlistName={playlistName} 
 							song={idx} 
 							songName={e.songName}
 							artist={e.artist}
@@ -25,7 +30,10 @@ export const Playlist = (props) => {
 				))}
 			</div>
 			
-			<StarRating startStyle='text-4xl text-center' playlist={props.name} {...props}/>
+			<StarRating 
+				{...props}
+				starStyle='text-4xl text-center'
+			/>
 		</div>
 	)
 }
