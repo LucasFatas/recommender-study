@@ -10,9 +10,8 @@ load_dotenv()
 # Method that stores all answers of a user to the database
 # Parameters: a list of tuples containing: a user id, the question number and the user's answer
 # Returns: A confirmation message
-def add_answers(answers):
+def add_answers(answers, db, cursor, database):
     try:
-        db, cursor, database = open_connection()
         # The SQL statement for storing answers in the Answer table
         sql = "INSERT INTO " + database + ".Answer(UserId, QuestionNumber, Response) VALUES (%s, %s, %s)"
 
@@ -30,9 +29,8 @@ def add_answers(answers):
 # Method that stores a new user to the database
 # Parameters: a batch id
 # Returns: a user id
-def add_user(batch_id):
+def add_user(batch_id, db, cursor, database):
     try:
-        db, cursor, database = open_connection()
         cursor.execute("Insert Into " + database + ".Participant(Batch) Values (" + str(batch_id) + ")")
 
         participant_id = cursor.lastrowid
@@ -50,10 +48,9 @@ def add_user(batch_id):
 # Method that stores the value vector of a user to the database
 # Parameters: a user id and a value vector
 # Returns: A confirmation message
-def add_value(user_id, values):
+def add_value(user_id, values, db, cursor, database):
     try:
         # The SQL statement for storing a value in the Value table
-        db, cursor, database = open_connection()
         sql = "INSERT INTO " + database + ".Value (ValueId, Stimulation, SelfDirection, Universalism" \
                                           ",Benevolence,Tradition, Conformity, SecurityVal, PowerVal, Achievement,Hedonism)" \
                                           " VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
@@ -75,10 +72,9 @@ def add_value(user_id, values):
 # Method that stores the personality vector of a user to the database
 # Parameters: a user id and a personality vector
 # Returns: A confirmation message
-def add_personality(user_id, personality):
+def add_personality(user_id, personality, db, cursor, database):
     try:
         # The SQL statement for storing a personality in the Personality table
-        db, cursor, database = open_connection()
         sql = "INSERT INTO " + database + ".Personality (PersonalityId, Openness, Honesty, Emotionality" \
                                           ", Extroversion, Agreeableness, Conscientiousness) VALUES (%s, %s, %s, %s, %s, %s, %s)"
         val = (user_id, personality[0], personality[1], personality[2],
@@ -97,9 +93,8 @@ def add_personality(user_id, personality):
 
 
 # Returns user's value score and takes userId is input
-def get_value(userId):
+def get_value(userId, db, cursor, database):
     try:
-        db, cursor, database = open_connection()
         sql = "Select Stimulation, SelfDirection, Universalism, Benevolence," \
               " Tradition, Conformity, SecurityVal, PowerVal, Achievement, Hedonism " \
               "From " + database + ".value as v Where v.ValueId = " + str(userId)
@@ -114,9 +109,8 @@ def get_value(userId):
 
 
 # Returns user's personality score and takes userId as input
-def get_personality(userId):
+def get_personality(userId, db, cursor, database):
     try:
-        db, cursor, database = open_connection()
         sql = "Select Openness, Honesty, Emotionality," \
               "Extroversion, Agreeableness, Conscientiousness " \
               "From " + database + ".personality as pe Where pe.PersonalityId = " + str(userId)
@@ -132,10 +126,9 @@ def get_personality(userId):
 # Method that stores a user and his matches on personality and value and a random other user
 # Parameters: a user id , a value user id, a personality user id and a random user id
 # Returns: A confirmation message
-def add_matches(userId, val_user, pers_user, random_user):
+def add_matches(userId, val_user, pers_user, random_user, db, cursor, database):
     try:
         # The SQL statement for storing user id and matches in the Match table
-        db, cursor, database = open_connection()
         sql = "INSERT INTO Recommender.Match (UserId, ValId, PersId, RandId) VALUES (%s, %s, %s, %s)"
         val = (userId, val_user, pers_user, random_user)
         cursor.execute(sql, val)
@@ -154,9 +147,8 @@ def add_matches(userId, val_user, pers_user, random_user):
 # Method that gets all the users of a certain batch and their values
 # Parameters: batch number
 # Returns: a list of tuples containing user and his values
-def get_all_values(batch):
+def get_all_values(batch, db, cursor, database):
     try:
-        db, cursor, database = open_connection()
         sql = "Select UserId, Stimulation, SelfDirection, Universalism, Benevolence," \
               " Tradition, Conformity, SecurityVal, PowerVal, Achievement, Hedonism " \
               "From " + database + ".value as v , " + database + ".participant as p " \
@@ -174,9 +166,8 @@ def get_all_values(batch):
 # Method that gets all the users of a certain batch and their personalities
 # Parameters: batch number
 # Returns: a list of tuples containing user and his personalities
-def get_all_personalities(batch):
+def get_all_personalities(batch, db, cursor, database):
     try:
-        db, cursor, database = open_connection()
         sql = "Select UserID, Openness, Honesty, Emotionality," \
               "Extroversion, Agreeableness, Conscientiousness " \
               "From " + database + ".personality as pe , " \
@@ -195,9 +186,8 @@ def get_all_personalities(batch):
 # Method that gets all the users of a certain batch apart from the value user and personality user
 # Parameters: batch number
 # Returns: one random user id
-def get_random_user(user1, user2, batch):
+def get_random_user(user1, user2, batch, db, cursor, database):
     try:
-        db, cursor, database = open_connection()
         sql = "Select UserID From " + database + ".participant as p " \
                                                  "Where p.Batch = " + str(batch) + " and not (p.UserID =" + str(
             user1) + " or p.UserID =  " + str(user2) + ")"

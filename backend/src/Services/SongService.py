@@ -10,9 +10,8 @@ load_dotenv()
 # Method that stores the top songs of a user
 # Parameters: a userId and a list of song objects with a name, spotify_url and list of artist(s)
 # Returns: a confirmation message
-def add_top_songs(userId, songs):
+def add_top_songs(userId, songs, db, cursor, database):
     try:
-        db, cursor, database = open_connection()
         song_sql = "Insert into " + database + ".song(preview_url, userId, name, spotify_url) Values (%s, %s, %s, %s)"
         artist_sql = "Insert into recommender.Artist(spotify_url, name)  Values(%s, %s)"
         for song in songs:
@@ -33,9 +32,8 @@ def add_top_songs(userId, songs):
 # Method that retrieves top songs of a user
 # Parameter: a userId
 # Returns: a list of song objects
-def get_top_songs(userId):
+def get_top_songs(userId, db, cursor, database):
     try:
-        db, cursor, database = open_connection()
         song_sql = "Select name, preview_url, spotify_url from " + database + ".song Where userId = " + str(userId)
 
         cursor.execute(song_sql)
@@ -65,9 +63,8 @@ def get_top_songs(userId):
 # Method that stores the recommendation ratings of a user
 # Parameters: a userId and a list of three playlistRatings, each with userId, matchedUserId and rating.
 # Returns: a confirmation message
-def add_playlist_ratings(playlists):
+def add_playlist_ratings(playlists, db, cursor, database):
     try:
-        db, cursor, database = open_connection()
         playlist_sql = "Insert into " + database + ".PlaylistRating(userId, matchedUserId, rating) Values (%s, %s, %s)"
         for playlist in playlists:
             val = (playlist.userId, playlist.matchedUserId, playlist.rating)
@@ -85,9 +82,8 @@ def add_playlist_ratings(playlists):
 # Method that stores the recommendation ratings of a user
 # Parameters: a userId and a list of song objects with a name, spotify_url and list of artist(s)
 # Returns: a confirmation message
-def add_song_ratings(song_ratings):
+def add_song_ratings(song_ratings, db, cursor, database):
     try:
-        db, cursor, database = open_connection()
         song_sql = "Insert into " + database + ".SongRating(userId, matchedUserId, spotify_url, rating) Values (%s," \
                                                "%s,%s,%s) "
         for song_rating in song_ratings:

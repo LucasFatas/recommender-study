@@ -2,10 +2,11 @@ from flask import request, jsonify, Blueprint
 
 from src.Computation.psychology import calculations
 from src.Services.database_config import DatabaseException
-
+from src.Services.database_config import open_connection
 from src.Services.QuestionnaireService import add_answers
 
 questionnaire = Blueprint("questionnaire", __name__)
+db, cursor, database = open_connection()
 
 
 # Get answers and save them into the database.
@@ -27,7 +28,7 @@ def save_answer():
 
     try:
         # Add the newly formatted answers to our database.
-        add_answers(answers)
+        add_answers(answers, db, cursor, database)
     except DatabaseException as e:
         # Exception handling in case there is an error.
         response = jsonify({'message': str(e)})

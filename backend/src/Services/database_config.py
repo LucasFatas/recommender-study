@@ -11,7 +11,7 @@ class DatabaseException(Exception):
 # Method that opens the connection to the database
 def open_connection():
     load_dotenv()
-    if os.getenv('IS_TESTING'):
+    if os.getenv('IS_TESTING') == "TRUE":
         database = os.getenv('DB_TEST_DATABASE')
     else:
         database = os.getenv('DB_DATABASE')

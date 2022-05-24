@@ -20,6 +20,7 @@ CORS(app)
 
 def create_app():
     load_dotenv()
+
     app.run(debug=True, port=os.getenv('PORT'))
 
 
