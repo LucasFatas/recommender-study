@@ -21,57 +21,6 @@ def test_save_answers():
            and response.status_code == 200
 
 
-# Tests for SongController.
-def test_retrieve_top_songs():
-    songs = [
-        Song(
-            "https://p.scdn.co/mp3-preview/754ac47c66968d7bed8072e826cb9eb239457e11?cid=8073ee0f16a64774bd0e7f8fa955b9d6",
-            "JOVEN PARA SIEMPRE",
-            [{"artist_name": "Funzo y Baby Loud"}]
-        ),
-        Song(
-            "https://p.scdn.co/mp3-preview/ab9f4d3741dffa1c41ce156f523e440f7d288d5d?cid=8073ee0f16a64774bd0e7f8fa955b9d6",
-            "Dale",
-            [{"artist_name": "Pole"}, {"artist_name": "Hens"}]
-
-        ),
-        Song(
-            "https://p.scdn.co/mp3-preview/cf4be4c14b31037207998ebc190973f56cf5dd4c?cid=8073ee0f16a64774bd0e7f8fa955b9d6",
-            "Vuelve",
-            [{"artist_name": "Azel"}]
-        ),
-        Song(
-            "https://p.scdn.co/mp3-preview/e851e103d110d4c1b0002346c47d344da1b1945d?cid=8073ee0f16a64774bd0e7f8fa955b9d6",
-            "Amanecer",
-            [{"artist_name": "Azel"}]
-        ),
-        Song(
-            "https://p.scdn.co/mp3-preview/6bbc122d01a67f9aeac6c659455ee83478149c69?cid=8073ee0f16a64774bd0e7f8fa955b9d6",
-            "Loca",
-            [{"artist_name": "Azel"}]
-        )
-    ]
-    expected = [
-        {"artists": ["Funzo y Baby Loud"], "name": "JOVEN PARA SIEMPRE", "spotify_url":
-        "https://p.scdn.co/mp3-preview/754ac47c66968d7bed8072e826cb9eb239457e11?cid=8073ee0f16a64774bd0e7f8fa955b9d6"},
-        {"artists": ["Pole", "Hens"], "name": "Dale", "spotify_url":
-        "https://p.scdn.co/mp3-preview/ab9f4d3741dffa1c41ce156f523e440f7d288d5d?cid=8073ee0f16a64774bd0e7f8fa955b9d6"},
-        {"artists": ["Azel"], "name": "Vuelve", "spotify_url":
-        "https://p.scdn.co/mp3-preview/cf4be4c14b31037207998ebc190973f56cf5dd4c?cid=8073ee0f16a64774bd0e7f8fa955b9d6"},
-        {"artists": ["Azel"], "name": "Amanecer", "spotify_url":
-        "https://p.scdn.co/mp3-preview/e851e103d110d4c1b0002346c47d344da1b1945d?cid=8073ee0f16a64774bd0e7f8fa955b9d6"},
-        {"artists": ["Azel"], "name": "Loca", "spotify_url":
-        "https://p.scdn.co/mp3-preview/6bbc122d01a67f9aeac6c659455ee83478149c69?cid=8073ee0f16a64774bd0e7f8fa955b9d6"}]
-
-    userId = add_user(1)
-    add_top_songs(userId, songs)
-
-    userId = {"userId": userId}
-
-    response = app.test_client().get('/spotify/songs/get', json=userId)
-
-    assert response.status_code == 200 and response.json['songs'] == expected
-
 
 def test_match_user():
 
