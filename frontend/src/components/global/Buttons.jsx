@@ -1,25 +1,34 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { sendAnswer } from '../../API/Questionnaire';
-
 
 const buttonStyles = {
   active : "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full ",
-  disabled : "select-none text-transparent fonted bg-transparent hover:bg-transparent py-2 px-4 rounded-full",
-  inactive : "select-none bg-blue-300 text-white font-bold py-2 px-4 rounded-full "
+  disabled : "select-none text-transparent fonted bg-transparent hover:bg-transparent py-2 px-4 rounded-full pointer-events-none ",
+  inactive : "select-none bg-blue-300 text-white font-bold py-2 px-4 rounded-full pointer-events-none "
 }
 
+export const Buttons = (props) => {
 
+  const { 
+    prevPage, 
+    showSubmit, 
+    nextPage, 
+    answered,  
+    onNext, 
+    data, 
+    pathOnSubmit, 
+    submitFunction, 
+    currentPath 
+  } = props;
 
-export const Buttons = ({ prevPage, showSubmit, nextPage, answered, answers, onNext }) => {
+  //data recommender : ratings, comment,  playlistName
+  //data questionnaire : answers
 
   const navigate = useNavigate();
 
   const handleSubmit = () => {
-    sendAnswer(answers);
-    //for the moment, the participant is direcly redirected tp the recommender, 
-    // Later on, he/she will be redirected first to the result and loading page 
-    navigate('/recommender');
+    submitFunction(data);
+    navigate(pathOnSubmit);
   }
 
   const setStyleAndDisabled = (pageCondition, answerCondition) => {
@@ -32,7 +41,8 @@ export const Buttons = ({ prevPage, showSubmit, nextPage, answered, answers, onN
   
   return (
     <div className="flex justify-center w-fit mt-5 space-x-7 ">
-      <Link to={ `/questionnaire/page${ prevPage }`} className={ prevPage ? "" : "pointer-events-none"}>
+
+      <Link to={ `${currentPath}/page${ prevPage }`} className={ prevPage ? "" : "pointer-events-none"}>
         <button {...setStyleAndDisabled(prevPage, true)}>
           Previous
         </button> 
@@ -42,11 +52,12 @@ export const Buttons = ({ prevPage, showSubmit, nextPage, answered, answers, onN
         Submit
       </button>
 
-      <Link to={ `/questionnaire/page${ nextPage }` } className={ nextPage ? "" : "pointer-events-none"}>
+      <Link to={ `${currentPath}/page${ nextPage }` } className={ nextPage && answered ? "" : "pointer-events-none"}>
         <button {...setStyleAndDisabled(nextPage, answered)} onClick={ onNext }>
           Next
         </button>
       </Link>
+
     </div>
   );
 }   
