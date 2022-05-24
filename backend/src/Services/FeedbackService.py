@@ -33,6 +33,3 @@ def add_open_feedback(userId, matchedUserId, feedback):
     except mysql.connector.errors.Error as e:
         print(e)
         raise DatabaseException("Error while adding open feedback in database")
-
-
->>>>>>> backend/src/Services/FeedbackService.py
