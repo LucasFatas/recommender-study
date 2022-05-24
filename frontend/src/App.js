@@ -7,22 +7,26 @@ import { Introduction } from './components/pages/introductions/Introduction';
 import { ConsentPage } from './components/pages/ConsentPage';
 import { Thanks } from './components/pages/Thanks';
 import { ResultPage } from './components/pages/ResultPage';
+import { LogIn } from './components/dashboard/LogIn';
+import { Dashboard } from './components/dashboard/Dashboard';
 import {
   BrowserRouter,
   Routes,
   Route,
   Navigate
 } from "react-router-dom";
-
+import { useState } from 'react';
 import questions from './util/questions.json';
 import * as data from './util/API.json'
 import * as valueIntro from './util/valueIntroductions.json'
 import * as personalityIntro from './util/personalityIntroduction.json'
 import * as playlistIntro from './util/playlistIntroduction.json'
 
+
 const App = () => {
 
   const defaultPage = '/consentPage';
+  const [token,setToken] = useState("");
 
   return (
     <BrowserRouter>
@@ -31,6 +35,8 @@ const App = () => {
         <Route path="/error/*" element={<ErrorRouter defaultPage={defaultPage} />} />
         <Route path="*" element={<PageNotFound redirect={defaultPage} />}/>
 
+        <Route path="/login" element={<LogIn token={token} setToken={setToken}/>} />
+        <Route path="/dashboard" element={<Dashboard token={token} setToken={setToken}/>} />
         <Route path="/websiteIntroduction" element={<WebsiteIntroduction data={data}/>} />
         <Route path="/valuesIntroduction" element={<Introduction intro={valueIntro} nextpage={'/questionnaire'} />} />
         <Route path="/personalityIntroduction" element={<Introduction intro={personalityIntro} nextpage={'/questionnaire'} />} />
