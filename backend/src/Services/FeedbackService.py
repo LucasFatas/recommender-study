@@ -14,6 +14,19 @@ def add_feedback_questions(userId, matchedUserId, answers):
             params.append((userId, matchedUserId, i + 1, answer))
 
         cursor.executemany(sql, params)
+    except mysql.connector.errors.Error as e:
+        print(e)
+        raise DatabaseException("Error while adding question feedback in database")
+
+
+def add_open_feedback(userId, matchedUserId, feedback):
+    db, cursor, database = open_connection()
+
+    try:
+        sql = "Insert into " + database + ".openfeedback(UserId, MatchedUserId, Feedback) VALUES(%s, %s, %s)"
+        answer = (userId, matchedUserId, feedback)
+
+        cursor.execute(sql, answer)
         db.commit()
 
         return "Success storing answers"
@@ -22,5 +35,4 @@ def add_feedback_questions(userId, matchedUserId, answers):
         raise DatabaseException("Error while adding open feedback in database")
 
 
-if __name__ == '__main__':
-    add_feedback_questions(1, 333, [1,3,4,5,2,3,2])
+>>>>>>> backend/src/Services/FeedbackService.py

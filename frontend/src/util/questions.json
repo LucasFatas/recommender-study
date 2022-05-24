@@ -4,17 +4,17 @@
         "Thinking up new ideas and being creative is important to him. He likes to do things in his own original way",
         "It is important to him to be rich. He wants to have a lot of money and expensive things",
         "He thinks it is important that every person in the world be treated equally. He believes everyone should have equal opportunities in life",
-        "It's very important to him to show his abilities. He wants people to admire what he does"
-        
-    ],
-    "questionsHidden" : [
+        "It's very important to him to show his abilities. He wants people to admire what he does",
         "It is important to him to live in secure surroundings. He avoids anything that might endanger his safety",
         "He thinks it is important to do lots of different things in life. He always looks for new things to try.",
         "He believes that people should do what they're told. He thinks people should follow rules at all times, even when no-one is watching",
         "It is important to him to listen to people who are different from him. Even when he disagrees with them, he still wants to understand them",
         "He thinks it's important not to ask for more than what you have. He believes that people should be satisfied with what they have",
         "He seeks every chance he can to have fun. It is important to him to do things that give him pleasure",
-        "It is important to him to make his own decisions about what he does. He likes to be free to plan and to choose his activities for himself",
+        "It is important to him to make his own decisions about what he does. He likes to be free to plan and to choose his activities for himself"
+        
+    ],
+    "questionsHidden" : [
         "It's very important to him to help the people around him. He wants to care for their well-being",
         "Being very successful is important to him. He likes to impress other people",
         "It is very important to him that his country be safe. He thinks the state must be on watch against threats from within and without",
@@ -44,6 +44,14 @@
         "It is important to him to be humble and modest. He tries not to draw attention to himself",
         "He always wants to be the one who makes the decisions. He likes to be the leader",
         "It is important to him to adapt to nature and to fit into it. He believes that people should not change nature"
+    ],
+    "feedbackQuestions" : [
+        "Question 1?",
+        "Question 2?",
+        "Question 3?",
+        "Question 4?",
+        "Question 5?",
+        "Question 6?"
+        
     ]
-
 }
