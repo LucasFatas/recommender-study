@@ -17,9 +17,7 @@ def add_answers(answers):
         sql = "INSERT INTO " + database + ".Answer(UserId, QuestionNumber, Response) VALUES (%s, %s, %s)"
 
         cursor.executemany(sql, answers)
-        if os.getenv('IS_TESTING'):
-            db.rollback()
-        else:
+        if not os.getenv('IS_TESTING'):
             db.commit()
         return "Success storing all Answers"
 
@@ -39,9 +37,7 @@ def add_user(batch_id):
 
         participant_id = cursor.lastrowid
 
-        if os.getenv('IS_TESTING'):
-            db.rollback()
-        else:
+        if not os.getenv('IS_TESTING'):
             db.commit()
         return participant_id
 
@@ -65,9 +61,7 @@ def add_value(user_id, values):
                values[5], values[6], values[7], values[8], values[9])
         cursor.execute(sql, val)
 
-        if os.getenv('IS_TESTING'):
-            db.rollback()
-        else:
+        if not os.getenv('IS_TESTING'):
             db.commit()
 
         return "Success storing value"
@@ -91,9 +85,7 @@ def add_personality(user_id, personality):
                personality[3], personality[4], personality[5])
         cursor.execute(sql, val)
 
-        if os.getenv('IS_TESTING'):
-            db.rollback()
-        else:
+        if not os.getenv('IS_TESTING'):
             db.commit()
 
         return "Success storing personality"
@@ -148,9 +140,7 @@ def add_matches(userId, val_user, pers_user, random_user):
         val = (userId, val_user, pers_user, random_user)
         cursor.execute(sql, val)
 
-        if os.getenv('IS_TESTING'):
-            db.rollback()
-        else:
+        if not os.getenv('IS_TESTING'):
             db.commit()
 
         return "Success storing personality"

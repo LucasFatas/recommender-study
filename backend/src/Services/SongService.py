@@ -21,9 +21,7 @@ def add_top_songs(userId, songs):
             for artist in song.artists:
                 val = (song.spotify_url, artist['artist_name'])
                 cursor.execute(artist_sql, val)
-        if os.getenv('IS_TESTING'):
-            db.rollback()
-        else:
+        if not os.getenv('IS_TESTING'):
             db.commit()
         return "Success storing of top songs"
     except mysql.connector.errors.Error as e:
@@ -75,9 +73,7 @@ def add_playlist_ratings(playlists):
             val = (playlist.userId, playlist.matchedUserId, playlist.rating)
             cursor.execute(playlist_sql, val)
 
-        if os.getenv('IS_TESTING'):
-            db.rollback()
-        else:
+        if not os.getenv('IS_TESTING'):
             db.commit()
         return "Success storing playlist ratings"
     except mysql.connector.errors.Error as e:
@@ -98,9 +94,7 @@ def add_song_ratings(song_ratings):
             val = (song_rating.userId, song_rating.matchedUserId, song_rating.spotify_url, song_rating.rating)
             cursor.execute(song_sql, val)
 
-        if os.getenv('IS_TESTING'):
-            db.rollback()
-        else:
+        if not os.getenv('IS_TESTING'):
             db.commit()
         return "Success storing song ratings"
     except mysql.connector.errors.Error as e:

@@ -6,6 +6,8 @@ from flask_cors import CORS
 from src.Controllers.DashboardController import dashboard
 from src.Controllers.QuestionnaireController import questionnaire
 from src.Controllers.SongController import songs
+import os
+from dotenv import load_dotenv
 
 app = Flask(__name__)
 app.register_blueprint(songs, url_prefix='/spotify')
@@ -17,9 +19,8 @@ CORS(app)
 
 
 def create_app():
-    with open('config.json', 'r') as f:
-        config = json.load(f)
-    app.run(debug=True, port=config['port'])
+    load_dotenv()
+    app.run(debug=True, port=os.getenv('PORT'))
 
 
 if __name__ == "__main__":
