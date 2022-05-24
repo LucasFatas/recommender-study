@@ -24,6 +24,8 @@ def add_answers(answers):
         return "Success storing all Answers"
 
     except mysql.connector.errors.Error as e:
+        print(e)
+        db.rollback()
         raise DatabaseException("Error connecting to database when adding answers.")
 
 
@@ -45,6 +47,7 @@ def add_user(batch_id):
 
     except mysql.connector.errors.Error as e:
         print(e)
+        db.rollback()
         raise DatabaseException("Error connecting to database when adding users.")
 
 
@@ -70,6 +73,8 @@ def add_value(user_id, values):
         return "Success storing value"
 
     except mysql.connector.errors.Error as e:
+        print(e)
+        db.rollback()
         raise DatabaseException("Error connecting to database when adding values.")
 
 
@@ -94,6 +99,8 @@ def add_personality(user_id, personality):
         return "Success storing personality"
 
     except mysql.connector.errors.Error as e:
+        print(e)
+        db.rollback()
         raise DatabaseException("Error connecting to database when adding personalities.")
 
 
@@ -110,6 +117,7 @@ def get_value(userId):
         return result
 
     except mysql.connector.errors.Error as e:
+        print(e)
         raise DatabaseException("Error connecting to database when trying to retrieve values.")
 
 
@@ -148,6 +156,8 @@ def add_matches(userId, val_user, pers_user, random_user):
         return "Success storing personality"
 
     except mysql.connector.errors.Error as e:
+        print(e)
+        db.rollback()
         raise DatabaseException("Error connecting to database when adding personalities.")
 
 
@@ -167,6 +177,7 @@ def get_all_values(batch):
         result = cursor.fetchall()
         return result
     except mysql.connector.errors.Error as e:
+        print(e)
         raise DatabaseException("Error connecting to database when retrieving values.")
 
 
@@ -187,6 +198,7 @@ def get_all_personalities(batch):
         return result
 
     except mysql.connector.errors.Error as e:
+        print(e)
         raise DatabaseException("Error connecting to database when retrieving personalities.")
 
 
@@ -205,4 +217,5 @@ def get_random_user(user1, user2, batch):
 
         return result[randint(0, len(result))][0]
     except mysql.connector.errors.Error as e:
+        print(e)
         raise DatabaseException("Error connecting to database when retrieving users.")
