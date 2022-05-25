@@ -14,11 +14,8 @@ import {
   Navigate
 } from "react-router-dom";
 
-import questions from './util/questions.json';
 import * as data from './util/API.json'
-import * as valueIntro from './util/valueIntroductions.json'
-import * as personalityIntro from './util/personalityIntroduction.json'
-import * as playlistIntro from './util/playlistIntroduction.json'
+import intro from './util/introductions.json'
 
 const App = () => {
 
@@ -32,12 +29,12 @@ const App = () => {
         <Route path="*" element={<PageNotFound redirect={defaultPage} />}/>
 
         <Route path="/websiteIntroduction" element={<WebsiteIntroduction data={data}/>} />
-        <Route path="/valuesIntroduction" element={<Introduction intro={valueIntro} nextpage={'/questionnaire'} />} />
-        <Route path="/personalityIntroduction" element={<Introduction intro={personalityIntro} nextpage={'/questionnaire'} />} />
-        <Route path="/playlistIntroduction" element={<Introduction intro={playlistIntro} nextpage={'/recommender'} />} />
+        <Route path="/introduction/values" element={<Introduction intro={intro.values} nextpage="/questionnaire/v/page1" />} />
+        <Route path="/introduction/personality" element={<Introduction intro={intro.personality} nextpage={'/questionnaire/p/page1'} />} />
+        <Route path="/introduction/playlist" element={<Introduction intro={intro.playlist} nextpage={'/recommender'} />} />
         <Route path="/consentPage"  element={<ConsentPage defaultPage={defaultPage}/>} />
-        <Route path="/questionnaire/*" element={<Questionnaire questions={questions} defaultPage={defaultPage} />} />
-        <Route path="/recommender/*" element={<Recommender questions={questions.feedbackQuestions} defaultPage={defaultPage}/>} />
+        <Route path="/questionnaire/*" element={<Questionnaire defaultPage={defaultPage} />} />
+        <Route path="/recommender/*" element={<Recommender  defaultPage={defaultPage}/>} />
         <Route path="/resultPage" element={<ResultPage/>} />
         <Route path="/thanks" element={<Thanks/>} />
 
