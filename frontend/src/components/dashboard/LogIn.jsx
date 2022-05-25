@@ -1,14 +1,10 @@
 import React from "react";
 import { useState } from "react";
 import { useNavigate } from 'react-router-dom';
+import { useEffect } from "react";
 
 
 export const LogIn = (props) => {
-
-  const {
-    token,
-    setToken
-  } = props
 
   const navigate = useNavigate();
 
@@ -21,11 +17,16 @@ export const LogIn = (props) => {
     //   body: JSON.stringify(credentials)
     // })
     //   .then(data => data.json())
-    return "test123"
+    if(credentials.username === "user" && credentials.password === "pwd")
+      return "test123"
+    else 
+      return ""
    }
 
-  const [username, setUserName] = useState();
-  const [password, setPassword] = useState();
+  
+
+  const [username, setUserName] = useState("");
+  const [password, setPassword] = useState("");
 
   const handleSubmit = async e => {
     e.preventDefault();
@@ -33,10 +34,21 @@ export const LogIn = (props) => {
       username,
       password
     });
-    setToken(token);
-    navigate("/dashboard")
+    if(token === "")
+      console.log("wrong authentification");
+    else{
+      sessionStorage.setItem("token", token); 
+      console.log(token);
+      navigate("/dashboard")
+    }
   }
 
+  useEffect(() => {
+    const token = sessionStorage.getItem("token");
+    if(token)
+      navigate("/dashboard")
+  });
+  
 
 
 
