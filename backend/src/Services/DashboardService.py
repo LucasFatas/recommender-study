@@ -57,3 +57,40 @@ def get_all_songs(batch):
         raise DatabaseException("Error connecting to database when retrieving Scores.")
 
 
+# Method that gets all the songs of users of a certain batch
+# Parameters: batch number
+# Returns: a list of tuples containing userId and for each match, the id of the matched user, the rating of the match
+# and the answer to each question about the match answered by the user.
+def get_all_match_data():
+    try:
+        db, cursor, database = open_connection()
+
+        # Calculate the amount of questions being asked in this instance of the experiment.
+        sql_questions = "select count(distinct(questionNumber)) from recommender.questionfeedback"
+        cursor.execute(sql_questions)
+        number_of_questions = cursor.fetchall()[0][0]
+
+        # Retrieve all data from the database based on the matches made by our app.
+        sql = """Select m.userId, 
+        m.valueId, pr1.rating, qf1.questionNumber, qf1.answer, of1.feedback, 
+        m.personalityId, pr2.rating, qf2.questionNumber, qf2.answer, of2.feedback, 
+        m.randomId, pr3.rating, qf3.questionNumber, qf3.answer, of3.feedback 
+            from recommender.matches as m 
+            join recommender.PlaylistRating as pr1 on pr1.userId = m.userId and pr1.matchedUserId = m.ValueId
+            join recommender.QuestionFeedback as qf1 on qf1.userId = m.userId and qf1.matchedUserId = m.ValueId
+            join recommender.OpenFeedback as of1 on of1.userId = m.userId and of1.matchedUserId = m.ValueId 
+            join recommender.PlaylistRating as pr2 on pr2.userId = m.userId and pr2.matchedUserId = m.personalityId 
+            join recommender.QuestionFeedback as qf2 on qf2.userId = m.userId and qf2.matchedUserId = m.personalityId 
+            join recommender.OpenFeedback as of2 on of2.userId = m.userId and of2.matchedUserId = m.personalityId 
+            join recommender.PlaylistRating as pr3 on pr3.userId = m.userId and pr3.matchedUserId = m.randomId
+            join recommender.QuestionFeedback as qf3 on qf3.userId = m.userId and qf3.matchedUserId = m.randomId 
+            join recommender.OpenFeedback as of3 on of3.userId = m.userId and of3.matchedUserId = m.randomId
+        """
+
+        cursor.execute(sql)
+        result = cursor.fetchall()
+        return result, number_of_questions
+
+    except mysql.connector.errors.Error as e:
+        print(e)
+        raise DatabaseException("Error connecting to database when retrieving Scores.")
