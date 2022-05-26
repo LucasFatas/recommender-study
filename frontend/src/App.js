@@ -7,6 +7,7 @@ import { Introduction } from './components/pages/introductions/Introduction';
 import { ConsentPage } from './components/pages/ConsentPage';
 import { Thanks } from './components/pages/Thanks';
 import { ResultPage } from './components/pages/ResultPage';
+import { Dashboard } from './components/dashboard/Dashboard';
 import {
   BrowserRouter,
   Routes,
@@ -31,6 +32,8 @@ const App = () => {
         <Route path="/error/*" element={<ErrorRouter defaultPage={defaultPage} />} />
         <Route path="*" element={<PageNotFound redirect={defaultPage} />}/>
 
+        
+        <Route path="/dashboard" element={<Dashboard/>} />
         <Route path="/websiteIntroduction" element={<WebsiteIntroduction data={data}/>} />
         <Route path="/valuesIntroduction" element={<Introduction intro={valueIntro} nextpage={'/questionnaire'} />} />
         <Route path="/personalityIntroduction" element={<Introduction intro={personalityIntro} nextpage={'/questionnaire'} />} />
