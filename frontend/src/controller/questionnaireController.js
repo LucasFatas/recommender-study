@@ -4,11 +4,13 @@ export const getRandomValue = (arr) => arr[Math.floor(Math.random() * arr.length
 
 export const checkEveryElementIsInMap = (array, map) => array.every(x => map.has(x));
 
+export const getLastPage = (currentBatch) => currentBatch === 'questionnaire' ? '/thanks' : '/introduction/playlist';
+
 /**
- * Splits the array into a 2d array based on the rowsize
+ * Splits the array into a 2D array based on the rowsize
  * @param {string[]} array array to be split in rows
  * @param {number} rowSize the row size
- * @returns a 2d array with the same content of the 
+ * @returns a 2D array with the same content of the 
  * original array but with the content split into rows.
  */
 export const splitArrayIntoMatrix = (array, rowSize) => {
@@ -51,7 +53,7 @@ export const stringifyAnswers = (answers) => {
 /**
  * Parses the session object into the answer object used in the useState
  * @param {{personality : string[][], values : string[][]}} obj 
- * object containing 2d array of size nx2 where n is
+ * object containing 2D array of size nx2 where n is
  * the number of questions and each item will become an entry
  * in a map where the first value is used as the key and the second as 
  * the value.
@@ -125,5 +127,29 @@ export const getRandomQuestionnaire = (options) => {
         return choice;
     } else 
         return selectedQuestionnaire;
-    
+}
+
+
+/**
+ * Returns data object based on parameters, this function is used both for values and personality.
+ * @param {object} obj obect imported from questions.JSON file, all the entries are spread and included in the returned object
+ * @param {string[][]} questionsMatrix 2D array containing questions text
+ * @param {string} type 'values' for values object and 'personality' for personality
+ * @param {string} lastPage last page path
+ * @param {string} firstQuestionnaire 'values' for values object and 'personality' for personality
+ * @returns data object containing useful information used in QuestionnairePage component.
+ */
+export const getDataObj = (obj, questionsMatrix, type, lastPage, firstQuestionnaire) => {
+
+    const nextQuestionnaire = firstQuestionnaire === 'values' ? 'personality' : 'values';
+
+    return {
+        ...obj,
+        matrix : questionsMatrix, 
+        pathOnSubmit : firstQuestionnaire === type ? `/introduction/${nextQuestionnaire}` : lastPage,
+        lastPage : questionsMatrix.length,
+        path : type === 'values' ? '/v' : '/p',
+        type : type,
+        submitResults : firstQuestionnaire === type
+    }
 }
