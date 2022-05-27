@@ -5,49 +5,65 @@ import { Answer } from './Answer';
 import { Buttons } from "../global/Buttons";
 import { ProgressBar } from "./ProgressBar";
 import { sendAnswer } from '../../API/Questionnaire';
-import { updateAnswersLogic, checkEveryElementIsInMap } from "../../controller/questionnaireController";
+import { 
+  updateAnswersLogic, 
+  checkEveryElementIsInMap
+} from "../../controller/questionnaireController";
 
 export const QuestionnairePage = (props) => {
-  
+
+  const {
+    answers,
+    setAnswers,
+    type,
+    numberOfPages,
+    questions,
+    pageNumber,
+    pathOnSubmit,
+    optionsPerAnswer,
+    currentPath
+  } = props;
+
   //boolean value to check if all answers in the current page have been answered.
   const [ answered, setAnswered ] = useState(false);
-  const questionsNumberArr = useMemo(() => [...props.questions.map(x => x[1] + 1)], [props.questions]);
+  const questionsNumberArr = useMemo(() => [...questions.map(x => x[1] + 1)], [questions]);
 
   useEffect(() => 
-    setAnswered(checkEveryElementIsInMap(questionsNumberArr, props.answers)),
-    [questionsNumberArr, props.answers] //parameters that, if changed, trigger the function above
+    setAnswered(checkEveryElementIsInMap(questionsNumberArr, answers[type])),
+    [questionsNumberArr, answers, type] //parameters that, if changed, trigger the function above
   );
     
   const updateAnswers = (e, questionNumber) => 
-    updateAnswersLogic(e, questionNumber, props.answers, questionsNumberArr, setAnswered, props.setAnswers);
+    updateAnswersLogic(e, questionNumber, answers, questionsNumberArr, setAnswered, setAnswers, type);
 
   const handleNext = () => {
     const nextQuestionsNumber = questionsNumberArr.map(x => x + questionsNumberArr.length);
-    setAnswered(checkEveryElementIsInMap(nextQuestionsNumber, props.answers));
+    setAnswered(checkEveryElementIsInMap(nextQuestionsNumber, answers[type]));
   }
 
   return (
     <>
       <ProgressBar
-        numberOfPages={props.numberOgPages}
-        pageNumber={props.pageNumber}
+        numberOfPages={numberOfPages}
+        pageNumber={pageNumber}
       /> 
       <div className='grid place-items-center'>
-        {props.questions.map(([text, index]) => 
+        {questions.map(([text, index]) => 
           <div className='flex flex-col py-10 items-center' key={index}>
             <h1 className='text-blue-500 text-center text-2xl'>{text}</h1>
             <Answer 
-              answers={props.answers} 
+              answers={answers[type]} 
               questionNumber={index}  
               onChange={updateAnswers}
+              optionsPerAnswer={optionsPerAnswer}
             />
           </div>
         )}
         <Buttons 
           {...props} 
-          data={props.answers}
-          currentPath="/questionnaire"
-          pathOnSubmit="/recommender"
+          data={answers}
+          currentPath={`/questionnaire${currentPath}`}
+          pathOnSubmit={pathOnSubmit}
           submitFunction={sendAnswer}
           answered={answered} 
           onNext={handleNext}

@@ -1,9 +1,12 @@
 import React from "react";
 
 import { RadioButton } from "../global/RadioButton";
-import { optionsPerAnswer } from "../../controller/questionnaireController";
 
 export const Answer = (props) => {
+
+  const {
+    optionsPerAnswer
+  } = props;
 
   const inputs = [];
 
