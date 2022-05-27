@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 export const Dashboard = () => {
   
@@ -7,12 +7,21 @@ export const Dashboard = () => {
   const batchUsers = 1
   const batchMetric = "euclidian"
   const batchType = "Questionnaire"
+
+  const downloadData = ["Songs", "Q&A", "Rating&Feedback", "Scores"]
+  const batchs = [1,2]
+
   const logout= () => {
     console.log("log out")
   }
   const downloadCSV= () => {
     console.log("download CSV")
+    
+    console.log(batchToDownload, dataToDownload)
   }
+
+  const [dataToDownload, setDataToDownload] = useState("");
+  const [batchToDownload, setBatchToDownload] = useState("");
   
   return (
   
@@ -51,95 +60,36 @@ export const Dashboard = () => {
           <span className="text-white text-center text-xl"> Download Data </span>
           <div className='flex'>
             <span className="text-white pr-3"> Data: </span>
-            <div className='pr-3'>
-              <input 
-                type="radio" 
-                // className={inputStyle} 
-                value={"Songs"}
-                name={"Songs"}
-                // onChange={e => onChange(e, questionNumber)}
-                // defaultChecked={answers.get(questionNumber + 1) === value}
-              /> 
-              <span className="text-white"> Songs </span>
-            </div>
-            <div className='pr-3'>
-              <input 
-                type="radio" 
-                // className={inputStyle} 
-                value={"Q&A"}
-                name={"Q&A"}
-                // onChange={e => onChange(e, questionNumber)}
-                // defaultChecked={answers.get(questionNumber + 1) === value}
-              /> 
-              <span className="text-white"> Q&A </span>
-            </div>
-            <div className='pr-3'>
-              <input 
-                type="radio" 
-                // className={inputStyle} 
-                value={"Ratings&Feedback"}
-                name={"Ratings&Feedback"}
-                // onChange={e => onChange(e, questionNumber)}
-                // defaultChecked={answers.get(questionNumber + 1) === value}
-              /> 
-              <span className="text-white"> Ratings&Feedback </span>
-            </div>
-            <div className='pr-3'>
-              <input 
-                type="radio" 
-                // className={inputStyle} 
-                value={"Scores"}
-                name={"Scores"}
-                // onChange={e => onChange(e, questionNumber)}
-                // defaultChecked={answers.get(questionNumber + 1) === value}
-              /> 
-              <span className="text-white"> Scores </span>
-            </div>
+            {downloadData.map((data, index) => 
+              (<div className='pr-3 '>
+                <input 
+                  type="radio" 
+                  // className={inputStyle} 
+                  value={data}
+                  name={"data"}
+                  onChange={e => setDataToDownload(e.target.value)}
+                /> 
+                <span className="text-white"> {data} </span>
+              </div>)
+            )}
+            
           </div>
           <div className='flex'>
             <span className="text-white pr-3"> Batch: </span>
-          
-            <div className='pr-3'>
-              <input 
-                type="radio" 
-                // className={inputStyle} 
-                value={"batch1"}
-                name={"batch1"}
-                // onChange={e => onChange(e, questionNumber)}
-                // defaultChecked={answers.get(questionNumber + 1) === value}
-              /> 
-              <span className="text-white"> 1 </span>
-            </div>
-            <div>
-              <input 
-                type="radio" 
-                // className={inputStyle} 
-                value={"batch2"}
-                name={"batch2"}
-                // onChange={e => onChange(e, questionNumber)}
-                // defaultChecked={answers.get(questionNumber + 1) === value}
-              /> 
-              <span className="text-white"> 2 </span>
-            </div>
+            {batchs.map((batch, index) => 
+              (<div className='pr-3 '>
+                <input 
+                  type="radio" 
+                  // className={inputStyle} 
+                  value={batch}
+                  name={"batch"}
+                  onChange={e => setBatchToDownload(e.target.value)}
+                /> 
+                <span className="text-white"> {batch} </span>
+              </div>)
+            )}
             
-
           </div>
-
-          {/* <div className='py-5'>
-            <button className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 rounded-full ' onClick={downloadSongs} >
-              <div className='grid place-items-center '>
-                <span className="text-white"> songs </span>
-              </div>
-            </button> 
-          </div>
-          <div>
-            <button className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 rounded-full ' onClick={downloadSongs} >
-              <div className='grid place-items-center '>
-                <span className="text-white"> scores </span>
-              </div>
-           </button> 
-          </div> */}
-          
 
           <div className='text-center '>
             <button className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-2 rounded-full ' onClick={downloadCSV} >
