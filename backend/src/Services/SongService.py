@@ -1,6 +1,7 @@
 from src.Services.database_config import DatabaseException, open_connection
 import mysql.connector
 from src.Entities.Song import Song
+from src.Entities.SongRating import SongRating
 
 
 # Method that stores the top songs of a user
@@ -79,10 +80,11 @@ def add_playlist_ratings(playlist):
 def add_song_ratings(song_ratings):
     try:
         db, cursor, database = open_connection()
-        song_sql = "Insert into " + database + ".SongRating(userId, matchedUserId, spotify_url, rating) Values (%s," \
-                                               "%s,%s,%s) "
+        song_sql = "Insert into " + database + ".SongRating(userId, matchedUserId, spotify_url, rating, playlistNumber) " \
+                                               "Values (%s,%s,%s,%s,%s) "
         for song_rating in song_ratings:
-            val = (song_rating.userId, song_rating.matchedUserId, song_rating.spotify_url, song_rating.rating)
+            val = (song_rating.userId, song_rating.matchedUserId, song_rating.spotify_url,
+                   song_rating.rating, song_rating.playlistNumber)
             cursor.execute(song_sql, val)
 
         db.commit()
@@ -90,6 +92,3 @@ def add_song_ratings(song_ratings):
     except mysql.connector.errors.Error as e:
         print(e)
         raise DatabaseException("Error connecting to database when storing song ratings.")
-
-
-

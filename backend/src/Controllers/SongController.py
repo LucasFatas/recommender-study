@@ -6,6 +6,7 @@ from src.Entities.Match import Match
 from src.Entities.PlaylistRating import PlaylistRating
 from src.Entities.SongRating import SongRating
 # from src.Services.FeedbackService import add_feedback_questions, add_open_feedback
+from src.Services.FeedbackService import add_open_feedback, add_feedback_questions
 from src.Services.QuestionnaireService import add_user, get_personality, get_value
 from src.Services.database_config import DatabaseException
 from src.Services.SongService import get_top_songs, add_top_songs, add_playlist_ratings, add_song_ratings
@@ -86,18 +87,16 @@ def save_ratings():
 
             for i, songRating in enumerate(rating["songsRatings"]):
                 if songRating != 0:
-                    songRatings.append(SongRating(userId, matchedUserId, rating["songUrls"][i], songRating))
+                    songRatings.append(SongRating(userId, matchedUserId, rating["songUrls"][i], songRating, i + 1))
 
             add_song_ratings(songRatings)
 
             add_playlist_ratings(PlaylistRating(userId, matchedUserId, rating["playlistRating"]))
 
-            # TODO: uncomment this piece of code when merged together with branch 13-Open_Feedback
-            # if rating["comment"] != "":
-                # add_open_feedback(userId, matchedUserId, rating["comment"])
+            if rating["comment"] != "":
+                add_open_feedback(userId, matchedUserId, rating["comment"])
 
-            # TODO: uncomment this piece of code when merged together with branch 20-Questions_Next_To_Playlist
-            # add_feedback_questions(userId, matchedUserId, rating["questionFeedback"])
+            add_feedback_questions(userId, matchedUserId, rating["questionFeedback"])
 
         # Everything has been successfully stored, return success message.
         return jsonify("Success")
