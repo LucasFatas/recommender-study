@@ -119,7 +119,7 @@ def retrieve_match_data():
         final_row.extend(row[8].split(","))
         final_row.extend([row[9], row[10], row[11], row[12]])
         final_row.extend(row[13].split(","))
-        final_row.extend(row[14])
+        final_row.append(row[14])
 
         writer.writerow(final_row)
 
