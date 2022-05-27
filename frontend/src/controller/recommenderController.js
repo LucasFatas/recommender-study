@@ -3,6 +3,56 @@ import { checkEveryElementIsInMap } from "./questionnaireController";
 export const optionsPerAnswer = 6;
 export const ratingRange = 5;
 
+//Orders map entries based on key
+const orderMap = (map) => new Map([...map.entries()].sort());
+
+/**
+ * Stringifies feedback object in order for it to be stored in session storage
+ * @param {object} feedback feeedback object
+ * @returns a string representation of the feedback object
+ */
+const stringifyFeedback = (feedback) => {
+
+    return JSON.stringify({
+        "personality" : {
+            "questions" : Array.from(orderMap(feedback.personality.questions).entries()),
+            "comment" : feedback.personality.comment
+        },
+        "values" : {
+            "questions" : Array.from(orderMap(feedback.values.questions).entries()),
+            "comment" : feedback.values.comment
+        },
+        "random" : {
+            "questions" : Array.from(orderMap(feedback.random.questions).entries()),
+            "comment" : feedback.random.comment
+        }
+    })
+}
+
+/**
+ * Parses session object, in the initial parameter, "questions" is a 2D array.
+ * Each 2D array is converted into a map and then returned.
+ * @param {object} sessionFeedback object that has questions array instead of map
+ * @returns 
+ */
+const parseSessionFeedback = (sessionFeedback) => {
+    
+    return {
+        "personality" : {
+            "questions" : new Map(sessionFeedback.personality.questions),
+            "comment" : sessionFeedback.personality.comment
+        },
+        "values" : {
+            "questions" : new Map(sessionFeedback.values.questions),
+            "comment" : sessionFeedback.values.comment
+        },
+        "random" : {
+            "questions" : new Map(sessionFeedback.random.questions),
+            "comment" : sessionFeedback.random.comment
+        }
+    }
+}
+
 export const initialFeedbackObj = {
     random : {
         questions : new Map(),
@@ -19,9 +69,18 @@ export const initialFeedbackObj = {
 }
 
 export const initialRatingsObj = {
-    random : { playlist: 0, songs: Array(ratingRange).fill(0) },
-    personality : { playlist: 0, songs: Array(ratingRange).fill(0) },
-    values : { playlist: 0, songs: Array(ratingRange).fill(0) },
+    random : { 
+        playlist: 0, 
+        songs: Array(ratingRange).fill(0) 
+    },
+    personality : { 
+        playlist: 0, 
+        songs: Array(ratingRange).fill(0) 
+    },
+    values : { 
+        playlist: 0, 
+        songs: Array(ratingRange).fill(0) 
+    },
 }
 
 /**
@@ -46,6 +105,8 @@ export const handleRating = (idx, ratings, song, playlistName, setRatingsFilled,
 
     setRatings(ratings);
     setCurrentRating(idx);
+
+    sessionStorage.setItem("ratings", JSON.stringify(ratings));
 }
 
 
@@ -61,6 +122,9 @@ export const handleComment = (e, currentFeedback, feedback, setFeedback, playlis
     
     currentFeedback.comment = e.target.value;
     setFeedback({...feedback, [playlistName] : { ...currentFeedback}});
+    
+    //store feedback in session storage
+    sessionStorage.setItem("feedback", stringifyFeedback(feedback));
 }
 
 
@@ -84,7 +148,21 @@ export const updateAnswersLogic = (e, questionNumber, feedback, setFeedback, cur
 
     //Set new state of feedback object
     setFeedback(feedback);
+
+    //store feedback in session storage
+    sessionStorage.setItem("feedback", stringifyFeedback(feedback));
     
     //Enable button to next page if all questions are answered
     setAnswered(checkEveryElementIsInMap(questionsNumberArr, currentFeedback.questions));
+}
+
+
+/**
+ * Loads feedback object from session storage
+ * @param {string} sessionFeedback feedback stored as stringified object
+ * @returns feedback object
+ */
+export const loadFeedbackFromStorage = (sessionFeedback) => {
+    const sessionObj = JSON.parse(sessionFeedback);
+    return parseSessionFeedback(sessionObj);
 }

@@ -7,7 +7,7 @@ import { QuestionnairePage } from './QuestionnairePage';
 import { PageNotFound } from "../errors/PageNotFound";
 import { 
   splitArrayIntoMatrix, 
-  loadAnswersFromStorage,
+  parseSessionObj,
   getRandomQuestionnaire,
   getLastPage,
   getDataObj
@@ -34,7 +34,7 @@ export const Questionnaire = (props) => {
         "personality" : new Map(), 
         "values" : new Map()
       } 
-      : loadAnswersFromStorage(sessionAnswers)
+      : parseSessionObj(JSON.parse(sessionAnswers))
   );
   
   const initialPath = firstQuestionnaire === 'values' ? 'v' : 'p';
