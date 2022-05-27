@@ -103,3 +103,39 @@ def get_all_match_data():
     except mysql.connector.errors.Error as e:
         print(e)
         raise DatabaseException("Error connecting to database when retrieving match feedback")
+
+
+# Method that gets all the song ratings of users of batch 2
+# Returns: list of tuples containing userId and for each match and the rating of each song recommendation (0 if empty).
+def get_song_ratings():
+    try:
+        db, cursor, database = open_connection()
+
+        # Retrieve all data from the database based on the matches made by our app.
+        sql = """
+        with 
+        table1 as (
+                    Select m.userId, group_concat(sr1.playlistNumber, '-', sr1.rating order by sr1.playlistNumber) as answers
+                    from recommender.matches as m 
+                    join recommender.songRating as sr1 on m.userId = sr1.userId and m.valueId = sr1.matchedUserId)
+        , table2 as (
+                    Select m.userId, group_concat(sr2.playlistNumber, '-', sr2.rating order by sr2.playlistNumber) as answers
+                    from recommender.songRating as sr2 
+                    join recommender.matches as m on m.userId = sr2.userId and m.personalityId = sr2.matchedUserId)
+        , table3 as (
+                    Select m.userId, group_concat(sr3.playlistNumber, '-', sr3.rating order by sr3.playlistNumber) as answers
+                    from recommender.songRating as sr3 
+                    join recommender.matches as m on m.userId = sr3.userId and m.randomId = sr3.matchedUserId)
+        
+        select table1.userId, table1.answers, table2.answers, table3.answers from table1 
+            join table2 on table1.userId = table2.userId
+            join table3 on table1.userId = table3.userId;
+        """
+
+        cursor.execute(sql)
+        result = cursor.fetchall()
+        return result
+
+    except mysql.connector.errors.Error as e:
+        print(e)
+        raise DatabaseException("Error connecting to database when retrieving Song ratings.")
