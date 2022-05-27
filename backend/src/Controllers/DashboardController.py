@@ -114,11 +114,11 @@ def retrieve_match_data():
     # Will store the answers for all the questions across matches.
     for row in match_data:
         final_row = [row[0], row[1], row[2]]
-        final_row.extend(row[3].split(","))
+        final_row.extend(int(i) for i in row[3].split(","))
         final_row.extend([row[4], row[5], row[6], row[7]])
-        final_row.extend(row[8].split(","))
+        final_row.extend(int(i) for i in row[8].split(","))
         final_row.extend([row[9], row[10], row[11], row[12]])
-        final_row.extend(row[13].split(","))
+        final_row.extend(int(i) for i in row[13].split(","))
         final_row.append(row[14])
 
         writer.writerow(final_row)
