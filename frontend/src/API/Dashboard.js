@@ -1,0 +1,89 @@
+import * as server from '../util/API.json';
+
+const { serverUrl, port } = server;
+
+export const getSongs = async (batchId) => {
+    console.log(batchId);
+    try {
+        const response = await fetch(`${serverUrl}/dashboard/songs`, {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(batchId),
+        });
+        console.log(response);
+        return response
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+export const getSongRatings = async () => {
+    try {
+        const response = await fetch(`${serverUrl}:${port}/dashboard/songRatings`, {
+            method: 'GET',
+            mode: 'no-cors',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+        });
+        console.log(response);
+        return response
+    } catch (error) {
+        return console.log(error);
+    }
+}
+
+export const getScores = async (batchId) => {
+    console.log(batchId);
+    try {
+        const response = await fetch(`${serverUrl}/dashboard/scores`, {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(batchId),
+        });
+        console.log(response);
+        return response
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+export const getAnswers = async (batchId) => {
+    console.log(batchId);
+    try {
+        const response = await fetch(`${serverUrl}/dashboard/answers`, {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(batchId),
+        });
+        console.log(response);
+        return response
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+export const getMatchData = async () => {
+    try {
+        const response = await fetch(`${serverUrl}:${port}/dashboard/match`, {
+            method: 'GET',
+            mode: 'no-cors',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+        });
+        console.log(response);
+        return response
+    } catch (error) {
+        return console.log(error);
+    }
+}
