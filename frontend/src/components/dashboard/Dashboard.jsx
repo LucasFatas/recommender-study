@@ -14,9 +14,15 @@ export const Dashboard = () => {
 
   const [dataToDownload, setDataToDownload] = useState("");
   const [batchToDownload, setBatchToDownload] = useState("");
+  
+  const [changeBatch, setChangeBatch] = useState(true);
 
-  const logout= () => {
+  const logout = () => {
     console.log("log out")
+  }
+
+  const showChangeBatchButtons = () => {
+    setChangeBatch(false)
   }
   const downloadCSV= () => {
     console.log("download CSV")
@@ -69,13 +75,20 @@ export const Dashboard = () => {
               <span className="text-white pr-3"> {batchMetric} </span>
             </div>
           </div>
+          {changeBatch?
           <div className='py-2 text-center'>
-            <button className=' bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full ' onClick={logout} >
-              <div className='grid place-items-center '>
-                <span className="text-white"> New Batch </span>
-             </div>
-           </button> 
-          </div>
+          <button className=' bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full ' onClick={showChangeBatchButtons} >
+            <div className='grid place-items-center '>
+              <span className="text-white"> New Batch </span>
+           </div>
+         </button> 
+        </div>
+        :
+        <h1>ehy</h1>
+
+          }
+          
+          
         </div>
         
         <div className='flex flex-col rounded-[10px] mx-10 px-12 py-6 border-solid border-2 border-gray-300 bg-gray-700' >
@@ -132,6 +145,7 @@ export const Dashboard = () => {
           </div>
         </button> 
       </div>
+      
       
     </div>
   )
