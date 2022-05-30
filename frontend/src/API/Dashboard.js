@@ -18,11 +18,9 @@ var jsonData = {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(jsonData),
-        });
-        console.log(response);
-        console.log(response.json());
-        return response.json()
-
+        })
+        .then(res => res.json())
+        .then(data => console.log(data));
     } catch (error) {
         console.log(error.response.status)
         console.log(error.toString());
