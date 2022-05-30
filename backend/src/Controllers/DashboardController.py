@@ -10,7 +10,7 @@ dashboard = Blueprint('dashboard', __name__)
 # Method that gets all the users of a certain batch and their questionnaire scores
 # Parameters: batch number
 # Returns: a list of tuples containing userId and their scores
-@dashboard.route("/scores")
+@dashboard.route("/scores", methods=["POST"])
 def retrieve_scores():
     batchId = request.get_json(force=True)['batchId']
 
@@ -34,7 +34,7 @@ def retrieve_scores():
 # Method that gets all the answers of users of a certain batch
 # Parameters: batch number
 # Returns: a list of tuples containing userId, question number, answer
-@dashboard.route("/answers")
+@dashboard.route("/answers", methods=["POST"])
 def retrieve_answers():
     batchId = request.get_json(force=True)['batchId']
 
@@ -56,7 +56,7 @@ def retrieve_answers():
 # Method that gets all the songs of users of a certain batch
 # Parameters: batch number
 # Returns: a csv of tuples containing userId, spotify_url
-@dashboard.route("/songs")
+@dashboard.route("/songs", methods=["POST"])
 def retrieve_songs_from_batch():
     batchId = request.get_json(force=True)['batchId']
 
@@ -76,6 +76,7 @@ def retrieve_songs_from_batch():
 
 
 # Batch 2 information starts here.
+
 # Method that gets all the match information of users being matched.
 # Returns: a csv of tuples containing userId and the feedback provided based on the matches they got.
 @dashboard.route("/match")
