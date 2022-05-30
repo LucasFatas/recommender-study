@@ -13,7 +13,6 @@ def match(userId, values, personality, batch, metric):
     # pers_user = closest_user(personality, batch_personality, metric)
 
     #random_user = get_random_user(val_user, pers_user, batch)
-    # add_matches(userId, val_user, pers_user, random_user)
     return val_user, pers_user, random_user
     """
     batch_personality = get_all_personalities(batch)
@@ -23,6 +22,7 @@ def match(userId, values, personality, batch, metric):
     val_user = closest_user(values, batch_values, metric)
 
     random_user = get_random_user(userId, pers_user, val_user, batch)
+    add_matches(userId, val_user, pers_user, random_user)
     return val_user, pers_user, random_user
 
 
