@@ -1,4 +1,4 @@
-from src.distance import manhattan_distance, euclidean_distance
+from src.Computation.distance import manhattan_distance, euclidean_distance
 
 
 def test_manhattan_distance_trivial():

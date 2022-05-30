@@ -5,6 +5,7 @@ from flask import request, redirect, Blueprint, jsonify
 from src.Entities.Match import Match
 from src.Entities.PlaylistRating import PlaylistRating
 from src.Entities.SongRating import SongRating
+from src.Services.database_config import open_connection
 # from src.Services.FeedbackService import add_feedback_questions, add_open_feedback
 from src.Services.QuestionnaireService import add_user, get_personality, get_value
 from src.Services.database_config import DatabaseException
@@ -14,6 +15,7 @@ from src.Computation.matching import match
 
 songs = Blueprint('spotify', __name__)
 frontend_url = "http://www.localhost.com/3000"
+db, cursor, database = open_connection()
 
 
 @songs.route('/songs/get')
@@ -22,7 +24,7 @@ def retrieve_top_songs():
         data = request.get_json(force=True)
 
         # Given the user id, retrieve top songs from database.
-        top_songs = get_top_songs(data['userId'])
+        top_songs = get_top_songs(data['userId'], db, cursor, database)
 
         # Return JSON object with such a song list.
         return jsonify(songs=[song.__dict__ for song in top_songs])
@@ -38,16 +40,17 @@ def match_user():
 
     try:
         # Add the newly formatted answers to our database.
-        values = get_value(userId)
-        personality = get_personality(userId)
+        values = get_value(userId, db, cursor, database)
+        personality = get_personality(userId, db, cursor, database)
 
         # values = {1,1,1,1,1,1}
 
         # Find IDs of the users more similar to the given user id
         val_user, pers_user, random_user = match(userId, values, personality, 1, data['metric'])
 
-        lst = [Match(val_user, get_top_songs(val_user)), Match(pers_user, get_top_songs(pers_user)),
-               Match(random_user, get_top_songs(random_user))]
+        lst = [Match(val_user, get_top_songs(val_user, db, cursor, database)),
+               Match(pers_user, get_top_songs(pers_user, db, cursor, database)),
+               Match(random_user, get_top_songs(random_user, db, cursor, database))]
 
         # Format song list into a jsonifiable object
         data = []
@@ -81,6 +84,7 @@ def save_ratings():
         # In order to do that, we need to format the data retrieved. We use a helper Entity SongRating
         # SongRating(user id, matched user, spotify preview url, rating)
         songRatings = []
+
         for rating in ratings:
             matchedUserId = rating["matchedUserId"]
 
@@ -88,9 +92,12 @@ def save_ratings():
                 if songRating != 0:
                     songRatings.append(SongRating(userId, matchedUserId, rating["songUrls"][i], songRating))
 
-            add_song_ratings(songRatings)
+            add_song_ratings(songRatings, db, cursor, database)
 
-            add_playlist_ratings(PlaylistRating(userId, matchedUserId, rating["playlistRating"]))
+            add_playlist_ratings(PlaylistRating(userId, matchedUserId, rating["playlistRating"]), 
+                db, cursor, database)
+
+
 
             # TODO: uncomment this piece of code when merged together with branch 13-Open_Feedback
             # if rating["comment"] != "":
@@ -118,10 +125,10 @@ def spotify_log_in():
         top_songs = get_top_songs_api(access_token)
 
         # Store the user in the database.
-        userId = add_user(1)  # Batch Number hardcoded for now
+        userId = add_user(1, db, cursor, database)  # Batch Number hardcoded for now
 
         # Store top songs into our database.
-        add_top_songs(userId, top_songs)
+        add_top_songs(userId, top_songs, db, cursor, database)
 
         # Redirect to first page of the questionnaire
         return redirect(frontend_url + "/questionnaire/page1?userID = " + str(userId), 302)

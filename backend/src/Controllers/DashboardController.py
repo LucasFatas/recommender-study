@@ -1,7 +1,7 @@
 import io, csv
 from flask import request, Blueprint, jsonify, make_response
-
 from src.Services.DashboardService import get_all_scores, get_all_answers, get_all_songs
+from src.Services.database_config import open_connection
 
 dashboard = Blueprint('dashboard', __name__)
 
@@ -11,9 +11,10 @@ dashboard = Blueprint('dashboard', __name__)
 # Returns: a list of tuples containing userId and their scores
 @dashboard.route("/scores")
 def retrieve_scores():
+    db, cursor, database = open_connection()
     batchId = request.get_json(force=True)['batchId']
 
-    scores = get_all_scores(batchId)
+    scores = get_all_scores(batchId, db, cursor, database)
 
     data = io.StringIO()
     writer = csv.writer(data)
@@ -35,9 +36,10 @@ def retrieve_scores():
 # Returns: a list of tuples containing userId, question number, answer
 @dashboard.route("/answers")
 def retrieve_answers():
+    db, cursor, database = open_connection()
     batchId = request.get_json(force=True)['batchId']
 
-    scores = get_all_answers(batchId)
+    scores = get_all_answers(batchId, db, cursor, database)
 
     data = io.StringIO()
     writer = csv.writer(data)
@@ -57,9 +59,10 @@ def retrieve_answers():
 # Returns: a csv of tuples containing userId, spotify_url
 @dashboard.route("/songs")
 def retrieve_songs_from_batch():
+    db, cursor, database = open_connection()
     batchId = request.get_json(force=True)['batchId']
 
-    scores = get_all_songs(batchId)
+    scores = get_all_songs(batchId, db, cursor, database)
 
     data = io.StringIO()
     writer = csv.writer(data)
