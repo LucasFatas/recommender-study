@@ -11,18 +11,25 @@ export const Dashboard = () => {
 
   const downloadData = ["Songs", "Q&A", "Rating&Feedback", "Scores"]
   const batchs = [1,2]
+  const metric = ["Euclidean", "Manhattan"]
 
   const [dataToDownload, setDataToDownload] = useState("");
   const [batchToDownload, setBatchToDownload] = useState("");
+  const [metricNextBatch, setMetricNextBatch] = useState("");
   
-  const [changeBatch, setChangeBatch] = useState(true);
+  const [changeBatch, setChangeBatch] = useState(false);
+
+  const createNewBatch = () => {
+    console.log("create new batch with ", metricNextBatch, "metric")
+    setChangeBatch(false)
+  }
 
   const logout = () => {
     console.log("log out")
   }
 
   const showChangeBatchButtons = () => {
-    setChangeBatch(false)
+    setChangeBatch(true)
   }
   const downloadCSV= () => {
     console.log("download CSV")
@@ -75,16 +82,40 @@ export const Dashboard = () => {
               <span className="text-white pr-3"> {batchMetric} </span>
             </div>
           </div>
-          {changeBatch?
+          {!changeBatch?
           <div className='py-2 text-center'>
-          <button className=' bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full ' onClick={showChangeBatchButtons} >
-            <div className='grid place-items-center '>
-              <span className="text-white"> New Batch </span>
-           </div>
-         </button> 
-        </div>
+            <button className=' bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full ' onClick={showChangeBatchButtons} >
+              <div className='grid place-items-center '>
+                <span className="text-white"> New Batch </span>
+              </div>
+            </button> 
+          </div>
         :
-        <h1>ehy</h1>
+        <>
+          <div className='flex py-2'>
+            <span className="text-white pr-3"> Metric: </span>
+            {metric.map((metric, index) => 
+              (<div className='pr-3 '>
+                <input 
+                  type="radio" 
+                  // className={inputStyle} 
+                  value={metric}
+                  name={"metric"}
+                  onChange={e => setMetricNextBatch(e.target.value)}
+                /> 
+                <span className="text-white"> {metric} </span>
+              </div>)
+            )}
+          </div>
+          <div className='py-2 text-center'>
+          <button className=' bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full ' onClick={createNewBatch} >
+            <div className='grid place-items-center '>
+              <span className="text-white"> Create and Change to New Batch </span>
+            </div>
+          </button> 
+        </div>
+       </>
+
 
           }
           
