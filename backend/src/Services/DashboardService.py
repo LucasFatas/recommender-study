@@ -8,11 +8,11 @@ from src.Services.database_config import DatabaseException, open_connection
 def get_all_scores(batch):
     try:
         db, cursor, database = open_connection()
-        sql = "Select UserID, Openness, Honesty, Emotionality, Extroversion, Agreeableness, Conscientiousness," \
-            " Stimulation, SelfDirection, Universalism, Benevolence, Tradition, Conformity, SecurityVal, PowerVal, " \
-            "Achievement, Hedonism "\
-            "From recommender.personality as pe Inner Join recommender.participant as pa on pe.PersonalityId = "\
-            "pa.UserId Inner Join recommender.value as v on v.ValueId = pa.UserId Where pa.Batch = %s"
+        sql = "Select userID, openness, honesty, emotionality, extroversion, agreeableness, conscientiousness," \
+            " stimulation, selfDirection, universalism, benevolence, tradition, conformity, securityVal, powerVal, " \
+            "achievement, hedonism "\
+            "From Recommender.Personality as pe Inner Join Recommender.Participant as pa on pe.userId = "\
+            "pa.userId Inner Join recommender.Value as v on v.userId = pa.userId Where pa.batch = %s"
 
         cursor.execute(sql, (batch,))
         result = cursor.fetchall()
@@ -29,8 +29,8 @@ def get_all_scores(batch):
 def get_all_answers(batch):
     try:
         db, cursor, database = open_connection()
-        sql = "Select p.UserId, QuestionNumber, Response from recommender.Answer as a Left Join recommender.participant" \
-              " as p on a.UserId=p.UserId Where p.Batch = %s"
+        sql = "Select p.userId, questionNumber, response from Recommender.Answer as a Left Join " \
+              "Recommender.Participant as p on a.userId = p.userId Where p.batch = %s"
         cursor.execute(sql, (batch,))
         result = cursor.fetchall()
         return result
@@ -46,8 +46,8 @@ def get_all_answers(batch):
 def get_all_songs(batch):
     try:
         db, cursor, database = open_connection()
-        sql = "Select p.UserId, spotify_url from recommender.song as s Left Join recommender.participant" \
-              " as p on s.UserId=p.UserId Where p.Batch = %s"
+        sql = "Select p.userId, spotifyUrl from Recommender.Song as s Left Join Recommender.Participant" \
+              " as p on s.userId = p.userId Where p.batch = %s"
         cursor.execute(sql, (batch,))
         result = cursor.fetchall()
         return result
@@ -65,7 +65,7 @@ def get_all_match_data():
         db, cursor, database = open_connection()
 
         # Calculate the amount of questions being asked in this instance of the experiment.
-        sql_questions = "select count(distinct(questionNumber)) from recommender.questionfeedback"
+        sql_questions = "select count(distinct(questionNumber)) from Recommender.QuestionFeedback"
         cursor.execute(sql_questions)
         number_of_questions = cursor.fetchall()[0][0]
 
@@ -74,19 +74,19 @@ def get_all_match_data():
         sql = """
         with table1 as (
             Select m.userId, m.valueId, pr1.rating, group_concat(qf1.answer order by qf1.questionNumber), of1.feedback
-            from recommender.matches as m 
+            from recommender.Matches as m 
             join recommender.PlaylistRating as pr1 on pr1.userId = m.userId and pr1.matchedUserId = m.ValueId
             join recommender.QuestionFeedback as qf1 on qf1.userId = m.userId and qf1.matchedUserId = m.ValueId
             join recommender.OpenFeedback as of1 on of1.userId = m.userId and of1.matchedUserId = m.ValueId)
         , table2 as (
             Select m.userId, m.personalityId, pr2.rating, group_concat(qf2.answer order by qf2.questionNumber), of2.feedback
-            from recommender.matches as m 
+            from recommender.Matches as m 
             join recommender.PlaylistRating as pr2 on pr2.userId = m.userId and pr2.matchedUserId = m.personalityId 
             join recommender.QuestionFeedback as qf2 on qf2.userId = m.userId and qf2.matchedUserId = m.personalityId 
             join recommender.OpenFeedback as of2 on of2.userId = m.userId and of2.matchedUserId = m.personalityId)
         , table3 as (
             Select m.userId, m.randomId, pr3.rating, group_concat(qf3.answer order by qf3.questionNumber), of3.feedback 
-            from recommender.matches as m 
+            from recommender.Matches as m 
             join recommender.PlaylistRating as pr3 on pr3.userId = m.userId and pr3.matchedUserId = m.randomId 
             join recommender.QuestionFeedback as qf3 on qf3.userId = m.userId and qf3.matchedUserId = m.randomId 
             join recommender.OpenFeedback as of3 on of3.userId = m.userId and of3.matchedUserId = m.randomId)
@@ -115,17 +115,20 @@ def get_song_ratings():
         sql = """
         with 
         table1 as (
-                    Select m.userId, group_concat(sr1.playlistNumber, '-', sr1.rating order by sr1.playlistNumber) as answers
-                    from recommender.matches as m 
+                    Select m.userId, group_concat(sr1.playlistNumber, '-', sr1.rating order by sr1.playlistNumber) 
+                    as answers
+                    from recommender.Matches as m 
                     join recommender.songRating as sr1 on m.userId = sr1.userId and m.valueId = sr1.matchedUserId)
         , table2 as (
-                    Select m.userId, group_concat(sr2.playlistNumber, '-', sr2.rating order by sr2.playlistNumber) as answers
+                    Select m.userId, group_concat(sr2.playlistNumber, '-', sr2.rating order by sr2.playlistNumber) 
+                    as answers
                     from recommender.songRating as sr2 
-                    join recommender.matches as m on m.userId = sr2.userId and m.personalityId = sr2.matchedUserId)
+                    join recommender.Matches as m on m.userId = sr2.userId and m.personalityId = sr2.matchedUserId)
         , table3 as (
-                    Select m.userId, group_concat(sr3.playlistNumber, '-', sr3.rating order by sr3.playlistNumber) as answers
+                    Select m.userId, group_concat(sr3.playlistNumber, '-', sr3.rating order by sr3.playlistNumber) 
+                    as answers
                     from recommender.songRating as sr3 
-                    join recommender.matches as m on m.userId = sr3.userId and m.randomId = sr3.matchedUserId)
+                    join recommender.Matches as m on m.userId = sr3.userId and m.randomId = sr3.matchedUserId)
         
         select table1.userId, table1.answers, table2.answers, table3.answers from table1 
             join table2 on table1.userId = table2.userId
