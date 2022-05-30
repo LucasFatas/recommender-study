@@ -66,9 +66,9 @@ def get_top_songs(userId, db, cursor, database):
 def add_playlist_ratings(playlists, db, cursor, database):
     try:
         playlist_sql = "Insert into " + database + ".PlaylistRating(userId, matchedUserId, rating) Values (%s, %s, %s)"
-        for playlist in playlists:
-            val = (playlist.userId, playlist.matchedUserId, playlist.rating)
-            cursor.execute(playlist_sql, val)
+
+        val = (playlist.userId, playlist.matchedUserId, playlist.rating)
+        cursor.execute(playlist_sql, val)
 
         if not os.getenv('IS_TESTING'):
             db.commit()
@@ -97,5 +97,6 @@ def add_song_ratings(song_ratings, db, cursor, database):
         print(e)
         db.rollback()
         raise DatabaseException("Error connecting to database when storing song ratings.")
+
 
 

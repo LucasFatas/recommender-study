@@ -1,49 +1,91 @@
 import React from "react";
 import { useState } from 'react';
 import { Route, Routes, Navigate } from 'react-router-dom';
+
+import questions from '../../util/questions.json';
 import { QuestionnairePage } from './QuestionnairePage';
 import { PageNotFound } from "../errors/PageNotFound";
+import { 
+  splitArrayIntoMatrix, 
+  loadAnswersFromStorage,
+  getRandomQuestionnaire,
+  getLastPage,
+  getDataObj
+} from "../../controller/questionnaireController";
 
-export const Questionnaire = ({ questions, defaultPage }) => {
 
-  const [answers, setAnswers] = useState(new Map());
-    
-  const questionsArray = questions.questions;
+const options = ['values', 'personality'];
+
+//Choose which questionnaire should be shown first.
+const firstQuestionnaire = getRandomQuestionnaire(options);
+
+export const Questionnaire = (props) => {
+  
+  const {
+    defaultPage,
+    currentBatch
+  } = props;
+
+  const sessionAnswers = sessionStorage.getItem("answers");
+
+  const [answers, setAnswers] = useState(
+    sessionAnswers === null
+      ? {
+        "personality" : new Map(), 
+        "values" : new Map()
+      } 
+      : loadAnswersFromStorage(sessionAnswers)
+  );
+  
+  const initialPath = firstQuestionnaire === 'values' ? 'v' : 'p';
+  const lastPage = getLastPage(currentBatch);
+
+  const valuesObj = questions.values;
+  const personalityObj = questions.personality;
   const questionsPerPage = questions.questionsPerPage;
 
-  /** 
-   * Splits the array of questions into a 2D array where each row is an 
-   * array of questions that is going to appear on one page.
-   * The number of rows always equals the number of pages in the questionnaire.
-   */
-  const questionMatrix = questionsArray.map((e, i) => {
-      return i % questionsPerPage === 0 ? questionsArray.slice(i, i + questionsPerPage).map((e, idx) => [e, i + idx]) : null;
-  }).filter(e => { return e; });
+  const personalityQuestionsMatrix = splitArrayIntoMatrix(personalityObj.questions, questionsPerPage);
+  const valuesQuestionsMatrix = splitArrayIntoMatrix(valuesObj.questions, questionsPerPage);
 
-  const lastPageIdx = questionMatrix.length;
+  const values = getDataObj(valuesObj, valuesQuestionsMatrix, 'values', lastPage, firstQuestionnaire);
+  const personality = getDataObj(personalityObj, personalityQuestionsMatrix, 'personality', lastPage, firstQuestionnaire);
 
-  const currentPage = (questions, idx) => (
-    <QuestionnairePage
-      answers={answers} 
+  const questionnaireArray = firstQuestionnaire === 'values' ? [values, personality] : [personality, values];
+
+  const currentPage = (obj, idx, questions) => {
+    idx += 1;
+    
+    return (<QuestionnairePage
+      answers={answers}
       setAnswers={setAnswers}
-      numberOgPages={lastPageIdx}
+      submitResults={obj.submitResults}
+      type={obj.type} 
+      numberOfPages={obj.lastPage}
       questions={questions} 
-      pageNumber={idx + 1}
-      prevPage={idx + 1 === 1 ? false : idx} 
-      nextPage={idx + 1 === lastPageIdx ? false : idx + 2}
-      showSubmit={idx + 1 === lastPageIdx ? lastPageIdx : false}
-    />
-  )
+      pageNumber={idx}
+      nextIntro={obj.nextIntro}
+      currentPath={obj.path}
+      pathOnSubmit={obj.pathOnSubmit}
+      optionsPerAnswer={obj.answerOptions}
+      prevPage={idx === 1 ? false : idx - 1} 
+      nextPage={idx === obj.lastPage ? false : idx + 1}
+      showSubmit={idx === obj.lastPage ? obj.lastPage : false}
+    />)
+  }
 
-    return (
-      <Routes>
-        <Route path="*" element={<PageNotFound redirect={defaultPage} />}/>
-        <Route path="/" element={<Navigate replace to="page1"/>} />
-        {
-          questionMatrix.map((questions, idx) => (
-            <Route path={`page${idx + 1}`} key={idx + 1} element={currentPage(questions, idx)}/>
-          ))
-        }
-      </Routes>
-    )
+  return (
+    <Routes>
+      <Route path="*" element={<PageNotFound redirect={defaultPage} />}/>
+      <Route path="/" element={<Navigate replace to={`${initialPath}/page1`}/>} />
+      {questionnaireArray.map(obj => 
+        obj.matrix.map((questions, idx) => 
+          <Route
+            path={`${obj.path}/page${idx + 1}`}
+            key={`${obj.path}${idx}`}
+            element={currentPage(obj, idx, questions)}
+          />
+        )
+      )}
+    </Routes>
+  )
 }

@@ -2,54 +2,72 @@ import React from "react";
 import { useState, useEffect, useMemo } from "react";
 
 import { Answer } from './Answer';
-import { Buttons } from "./Buttons";
+import { Buttons } from "../global/Buttons";
 import { ProgressBar } from "./ProgressBar";
+import { sendAnswer } from '../../API/Questionnaire';
+import { 
+  updateAnswersLogic, 
+  checkEveryElementIsInMap
+} from "../../controller/questionnaireController";
 
 export const QuestionnairePage = (props) => {
-  
+
+  const {
+    answers,
+    setAnswers,
+    type,
+    numberOfPages,
+    questions,
+    pageNumber,
+    pathOnSubmit,
+    optionsPerAnswer,
+    currentPath
+  } = props;
+
   //boolean value to check if all answers in the current page have been answered.
   const [ answered, setAnswered ] = useState(false);
-  const questionsNumber = useMemo(() => [...props.questions.map(x => x[1] + 1)], [props.questions]);
-  
-  useEffect(() => 
-    setAnswered(questionsNumber.every(x => props.answers.has(x))),
-    [questionsNumber, props.answers] //parameters that, if changed, trigger the function above
-  );
+  const questionsNumberArr = useMemo(() => [...questions.map(x => x[1] + 1)], [questions]);
 
-  const updateAnswers = (e, setSelected, questionNumber, value) => {
-    //Set solution in answers map
-    props.setAnswers(props.answers.set(questionNumber + 1, parseInt(e.target.value)));
+  useEffect(() => 
+    setAnswered(checkEveryElementIsInMap(questionsNumberArr, answers[type])),
+    [questionsNumberArr, answers, type] //parameters that, if changed, trigger the function above
+  );
     
-    //Set selected radio button in answer
-    setSelected(props.answers.get(questionNumber + 1) === value);
-    
-    //Change boolean value
-    setAnswered(questionsNumber.every(x => props.answers.has(x)));
-  }
+  const updateAnswers = (e, questionNumber) => 
+    updateAnswersLogic(e, questionNumber, answers, questionsNumberArr, setAnswered, setAnswers, type);
 
   const handleNext = () => {
-    const nextQuestionsNumber = questionsNumber.map(x => x + questionsNumber.length);
-    setAnswered(nextQuestionsNumber.every(x => props.answers.has(x)))
+    const nextQuestionsNumber = questionsNumberArr.map(x => x + questionsNumberArr.length);
+    setAnswered(checkEveryElementIsInMap(nextQuestionsNumber, answers[type]));
   }
 
   return (
     <>
       <ProgressBar
-        numberOfPages={props.numberOgPages}
-        pageNumber={props.pageNumber}
+        numberOfPages={numberOfPages}
+        pageNumber={pageNumber}
       /> 
       <div className='grid place-items-center'>
-        {props.questions.map(([text, index]) => 
+        {questions.map(([text, index]) => 
           <div className='flex flex-col py-10 items-center' key={index}>
             <h1 className='text-blue-500 text-center text-2xl'>{text}</h1>
             <Answer 
-              answers={props.answers} 
+              answers={answers[type]} 
               questionNumber={index}  
               onChange={updateAnswers}
+              optionsPerAnswer={optionsPerAnswer}
             />
           </div>
         )}
-        <Buttons {...props} answered={answered} onNext={handleNext}/>
+        <Buttons 
+          {...props} 
+          data={answers}
+          currentPath={`/questionnaire${currentPath}`}
+          pathOnSubmit={pathOnSubmit}
+          submitFunction={sendAnswer}
+          answered={answered} 
+          onNext={handleNext}
+        />
       </div>
     </>
   );

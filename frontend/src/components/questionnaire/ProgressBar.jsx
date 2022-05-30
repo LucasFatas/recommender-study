@@ -1,8 +1,10 @@
 import React from 'react';
 
+import { getProgressPercentage } from '../../controller/questionnaireController';
+
 export const ProgressBar = (props) => {
 
-  const progressPercentage = props.pageNumber / props.numberOfPages * 100;
+  const progressPercentage = getProgressPercentage(props.pageNumber, props.numberOfPages);
 
   return (
     <div className=' sticky z-50 top-0  h-5 w-full bg-gray-300'>
