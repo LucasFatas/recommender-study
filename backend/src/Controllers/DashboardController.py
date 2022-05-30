@@ -3,6 +3,7 @@ import numpy as np
 from flask import request, Blueprint, jsonify, make_response
 
 from src.Services.DashboardService import get_all_scores, get_all_answers, get_all_songs, get_all_match_data, get_song_ratings
+from src.Services.database_config import open_connection
 
 dashboard = Blueprint('dashboard', __name__)
 
@@ -12,9 +13,11 @@ dashboard = Blueprint('dashboard', __name__)
 # Returns: a list of tuples containing userId and their scores
 @dashboard.route("/scores", methods=["POST"])
 def retrieve_scores():
+    db, cursor, database = open_connection()
+
     batchId = request.get_json(force=True)['batchId']
 
-    scores = get_all_scores(batchId)
+    scores = get_all_scores(batchId, db, cursor, database)
 
     data = io.StringIO()
     writer = csv.writer(data)
@@ -36,9 +39,11 @@ def retrieve_scores():
 # Returns: a list of tuples containing userId, question number, answer
 @dashboard.route("/answers", methods=["POST"])
 def retrieve_answers():
+    db, cursor, database = open_connection()
+
     batchId = request.get_json(force=True)['batchId']
 
-    scores = get_all_answers(batchId)
+    scores = get_all_answers(batchId, db, cursor, database)
 
     data = io.StringIO()
     writer = csv.writer(data)
@@ -58,9 +63,11 @@ def retrieve_answers():
 # Returns: a csv of tuples containing userId, spotify_url
 @dashboard.route("/songs", methods=["POST"])
 def retrieve_songs_from_batch():
+    db, cursor, database = open_connection()
+
     batchId = request.get_json(force=True)['batchId']
 
-    scores = get_all_songs(batchId)
+    scores = get_all_songs(batchId, db, cursor, database)
 
     data = io.StringIO()
     writer = csv.writer(data)
@@ -81,8 +88,10 @@ def retrieve_songs_from_batch():
 # Returns: a csv of tuples containing userId and the feedback provided based on the matches they got.
 @dashboard.route("/match")
 def retrieve_match_data():
+    db, cursor, database = open_connection()
+
     # Retrieve data and number of questions per match from the service
-    match_data, number_of_questions = get_all_match_data()
+    match_data, number_of_questions = get_all_match_data(db, cursor, database)
 
     data = io.StringIO()
     writer = csv.writer(data)
@@ -134,10 +143,12 @@ def retrieve_match_data():
 # Returns: a csv of tuples containing userId and the song ratings for each rating, 0 if there is no rating
 @dashboard.route("/songRatings")
 def retrieve_song_ratings():
+    db, cursor, database = open_connection()
+
     # Retrieve data and number of questions per match from the service.
     # Data is returned as userId and three strings containing the information about which songs have been answered.
     # Strings are formatted as such: "songNumber-rating, songNumber-rating" and it has maximum five elements.
-    rows = get_song_ratings()
+    rows = get_song_ratings(db, cursor, database)
 
     data = io.StringIO()
     writer = csv.writer(data)
