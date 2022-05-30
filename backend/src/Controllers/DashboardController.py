@@ -82,8 +82,8 @@ def retrieve_answers():
 def retrieve_songs_from_batch():
     try:
         check_token(request.headers['Authorization'].replace("Bearer ", ""))
-    except AuthorizationException:
-        response = jsonify({'message': "Incorrect Token"})
+    except AuthorizationException as e:
+        response = jsonify({'message': str(e)})
         return response, 401
     except KeyError:
         response = jsonify({'message': "Missing Token"})
@@ -132,15 +132,18 @@ def create_token():
 # Parameters: jwt token in auth header
 # Returns: true or false
 def check_token(token):
+    try:
+        decoded = jwt.decode(token, os.environ.get("KEY"), algorithms="HS256")
+        username = decoded['username']
+        password = decoded['password']
 
-    decoded = jwt.decode(token, os.environ.get("KEY"), algorithms="HS256")
-    username = decoded['username']
-    password = decoded['password']
-
-    if os.environ.get("USERNAME") != username or os.environ.get("PASSWORD") != password:
+        if os.environ.get("USERNAME") != username or os.environ.get("PASSWORD") != password:
+            raise AuthorizationException("Incorrect Token")
+        else:
+            return True
+    except jwt.exceptions.DecodeError:
         raise AuthorizationException("Incorrect Token")
-    else:
-        return True
+
 
 
 
