@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { getAnswers, getMatchData, getScores, getSongRatings, getSongs } from '../../API/Dashboard';
 
 export const Dashboard = () => {
   
@@ -11,19 +12,40 @@ export const Dashboard = () => {
   const downloadData = ["Songs", "Q&A", "Rating&Feedback", "Scores"]
   const batchs = [1,2]
 
+  const [dataToDownload, setDataToDownload] = useState("");
+  const [batchToDownload, setBatchToDownload] = useState("");
+
   const logout= () => {
     console.log("log out")
   }
   const downloadCSV= () => {
     console.log("download CSV")
-    
+    // getSongs(batchToDownload)
+    getSongRatings()
     console.log(batchToDownload, dataToDownload)
-  }
 
-  const [dataToDownload, setDataToDownload] = useState("");
-  const [batchToDownload, setBatchToDownload] = useState("");
+    switch(dataToDownload) {
+      case "Songs":
+        getSongs(batchToDownload)
+        break;
+      case "Q&A":
+        getAnswers(batchToDownload)
+        break;
+      case "Rating&Feedback":
+        getSongRatings()
+        getMatchData()
+        break;
+      case "Scores":
+        getScores(batchToDownload)
+        break;
+      default:
+        // code block
+        console.log("error word does not exist: " ,dataToDownload)
+    }
+  }
   
   return (
+    
   
     <div className='flex flex-col items-center justify-between py-28'>
       <div className='flex rounded-[20px] mx-10 px-5 py-6 border-solid border-4 border-gray-300 bg-gray-700' >
@@ -92,13 +114,13 @@ export const Dashboard = () => {
           </div>
 
           <div className='text-center '>
-            <form method="get" action="file.doc">
+            {/* <form method="get" action="file.doc"> */}
               <button type="submit" className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-2 rounded-full ' onClick={downloadCSV} >
                 <div className='grid place-items-center align-text-bottom'>
                   <span className="text-white"> Download </span>
                 </div>
               </button> 
-            </form>
+            {/* </form> */}
           </div>
         </div>
         
