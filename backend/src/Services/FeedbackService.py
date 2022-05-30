@@ -26,9 +26,7 @@ def add_feedback_questions(userId, matchedUserId, answers, db, cursor, database)
         raise DatabaseException("Error while adding question feedback in database")
 
 
-def add_open_feedback(userId, matchedUserId, feedback):
-    db, cursor, database = open_connection()
-
+def add_open_feedback(userId, matchedUserId, feedback, db, cursor, database):
     try:
         sql = "INSERT INTO " + database + ".OpenFeedback(userId, matchedUserId, feedback) VALUES(%s, %s, %s)"
         answer = (userId, matchedUserId, feedback)

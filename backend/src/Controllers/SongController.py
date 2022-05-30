@@ -89,13 +89,13 @@ def save_ratings():
 
             add_song_ratings(songRatings, db, cursor, database)
 
-            add_playlist_ratings(PlaylistRating(userId, matchedUserId, rating["playlistRating"]), 
-                db, cursor, database)
+            add_playlist_ratings(PlaylistRating(userId, matchedUserId, rating["playlistRating"]),
+                                 db, cursor, database)
 
             if rating["comment"] != "":
-                add_open_feedback(userId, matchedUserId, rating["comment"])
+                add_open_feedback(userId, matchedUserId, rating["comment"], db, cursor, database)
 
-            add_feedback_questions(userId, matchedUserId, rating["questionFeedback"])
+            add_feedback_questions(userId, matchedUserId, rating["questionFeedback"], db, cursor, database)
 
         # Everything has been successfully stored, return success message.
         return jsonify("Success")
@@ -136,4 +136,3 @@ def spotify_log_in():
     except DatabaseException as e:
         # Exception handling in case there is a database error.
         return redirect(frontend_url + "/error/database")
-
