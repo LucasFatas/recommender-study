@@ -6,7 +6,7 @@ from src.Entities.Match import Match
 from src.Entities.PlaylistRating import PlaylistRating
 from src.Entities.SongRating import SongRating
 from src.Services.database_config import open_connection
-# from src.Services.FeedbackService import add_feedback_questions, add_open_feedback
+from src.Services.FeedbackService import add_feedback_questions, add_open_feedback
 from src.Services.QuestionnaireService import add_user, get_personality, get_value
 from src.Services.database_config import DatabaseException
 from src.Services.SongService import get_top_songs, add_top_songs, add_playlist_ratings, add_song_ratings
@@ -18,7 +18,7 @@ frontend_url = "http://www.localhost.com/3000"
 db, cursor, database = open_connection()
 
 
-@songs.route('/songs/get')
+@songs.route('/songs/get', methods=["POST"])
 def retrieve_top_songs():
     try:
         data = request.get_json(force=True)
@@ -33,7 +33,7 @@ def retrieve_top_songs():
         return redirect(frontend_url + "/error/database")
 
 
-@songs.route('/match')
+@songs.route('/match', methods=["POST"])
 def match_user():
     data = request.get_json(force=True)
     userId = data['user']
@@ -42,8 +42,6 @@ def match_user():
         # Add the newly formatted answers to our database.
         values = get_value(userId, db, cursor, database)
         personality = get_personality(userId, db, cursor, database)
-
-        # values = {1,1,1,1,1,1}
 
         # Find IDs of the users more similar to the given user id
         val_user, pers_user, random_user = match(userId, values, personality, 1, data['metric'])
@@ -72,10 +70,7 @@ def save_ratings():
     try:
         data = request.get_json(force=True)
 
-        ratings = []
-        ratings.append(data['values'])
-        ratings.append(data['personality'])
-        ratings.append(data['random'])
+        ratings = [data['values'], data['personality'], data['random']]
 
         # Retrieve the user id from the user.
         userId = data['userId']
@@ -97,14 +92,10 @@ def save_ratings():
             add_playlist_ratings(PlaylistRating(userId, matchedUserId, rating["playlistRating"]), 
                 db, cursor, database)
 
+            if rating["comment"] != "":
+                add_open_feedback(userId, matchedUserId, rating["comment"])
 
-
-            # TODO: uncomment this piece of code when merged together with branch 13-Open_Feedback
-            # if rating["comment"] != "":
-                # add_open_feedback(userId, matchedUserId, rating["comment"])
-
-            # TODO: uncomment this piece of code when merged together with branch 20-Questions_Next_To_Playlist
-            # add_feedback_questions(userId, matchedUserId, rating["questionFeedback"])
+            add_feedback_questions(userId, matchedUserId, rating["questionFeedback"])
 
         # Everything has been successfully stored, return success message.
         return jsonify("Success")
@@ -125,7 +116,8 @@ def spotify_log_in():
         top_songs = get_top_songs_api(access_token)
 
         # Store the user in the database.
-        userId = add_user(1, db, cursor, database)  # Batch Number hardcoded for now
+        userId = add_user(1, db, cursor, database)
+        # TODO: Batch Number hardcoded for now
 
         # Store top songs into our database.
         add_top_songs(userId, top_songs, db, cursor, database)

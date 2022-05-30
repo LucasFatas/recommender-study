@@ -12,8 +12,8 @@ load_dotenv()
 # Returns: a confirmation message
 def add_top_songs(userId, songs, db, cursor, database):
     try:
-        song_sql = "Insert into " + database + ".song(preview_url, userId, name, spotify_url) Values (%s, %s, %s, %s)"
-        artist_sql = "Insert into recommender.Artist(spotify_url, name)  Values(%s, %s)"
+        song_sql = "INSERT INTO " + database + ".Song(previewUrl, userId, name, spotifyUrl) VALUES (%s, %s, %s, %s)"
+        artist_sql = "INSERT INTO " + database + ".Artist(spotifyUrl, name)  VALUES (%s, %s)"
         for song in songs:
             val = (song.preview_url, userId, song.name, song.spotify_url)
             cursor.execute(song_sql, val)
@@ -34,16 +34,16 @@ def add_top_songs(userId, songs, db, cursor, database):
 # Returns: a list of song objects
 def get_top_songs(userId, db, cursor, database):
     try:
-        song_sql = "Select name, preview_url, spotify_url from " + database + ".song Where userId = " + str(userId)
+        song_sql = "SELECT name, previewUrl, spotifyUrl FROM " + database + ".song WHERE userId = %s"
 
-        cursor.execute(song_sql)
+        cursor.execute(song_sql, (userId,))
 
         data = cursor.fetchall()
 
         songs = []
 
         for row in data:
-            artist_sql = "Select distinct name from " + database + ".Artist Where spotify_url = %(url)s"
+            artist_sql = "SELECT DISTINCT name FROM " + database + ".Artist Where spotifyUrl = %(url)s"
 
             cursor.execute(artist_sql, {'url': str(row[1])})
 
@@ -61,11 +61,11 @@ def get_top_songs(userId, db, cursor, database):
 
 
 # Method that stores the recommendation ratings of a user
-# Parameters: a userId and a list of three playlistRatings, each with userId, matchedUserId and rating.
+# Parameters: a userId and a playlistRating, with userId, matchedUserId and rating.
 # Returns: a confirmation message
-def add_playlist_ratings(playlists, db, cursor, database):
+def add_playlist_ratings(playlist, db, cursor, database):
     try:
-        playlist_sql = "Insert into " + database + ".PlaylistRating(userId, matchedUserId, rating) Values (%s, %s, %s)"
+        playlist_sql = "INSERT INTO " + database + ".PlaylistRating(userId, matchedUserId, rating) VALUES (%s, %s, %s)"
 
         val = (playlist.userId, playlist.matchedUserId, playlist.rating)
         cursor.execute(playlist_sql, val)
@@ -83,8 +83,12 @@ def add_playlist_ratings(playlists, db, cursor, database):
 # Parameters: a userId and a list of song objects with a name, spotify_url and list of artist(s)
 # Returns: a confirmation message
 def add_song_ratings(song_ratings, db, cursor, database):
+
+    """
+    This method has been updated in branch 7/8-Retrieve-Batch-1/2-Data so don't create a test for this just yet.
+    """
     try:
-        song_sql = "Insert into " + database + ".SongRating(userId, matchedUserId, spotify_url, rating) Values (%s," \
+        song_sql = "Insert into " + database + ".SongRating(userId, matchedUserId, spotifyUrl, rating) Values (%s," \
                                                "%s,%s,%s) "
         for song_rating in song_ratings:
             val = (song_rating.userId, song_rating.matchedUserId, song_rating.spotify_url, song_rating.rating)
