@@ -1,7 +1,11 @@
 import io, csv
-from flask import request, Blueprint, jsonify, make_response
+import os
 
+from flask import request, Blueprint, jsonify, make_response
 from src.Services.DashboardService import get_all_scores, get_all_answers, get_all_songs
+from dotenv import load_dotenv
+import jwt
+
 
 dashboard = Blueprint('dashboard', __name__)
 
@@ -72,5 +76,30 @@ def retrieve_songs_from_batch():
     output.headers["Content-Disposition"] = "attachment; filename=export.csv"
     output.headers["Content-type"] = "text/csv"
     return output
+
+
+# Method that checks the credentials of the researcher
+# Parameters: username, password
+# Returns: 200 status code if correct and 401 if incorrent credentials
+@dashboard.route("/login")
+def create_token():
+    data = request.get_json(force=True)
+    load_dotenv()
+    username = data['username']
+    password = data['password']
+
+    if os.environ.get("USERNAME") != username and os.environ.get("PASSWORD") == password:
+        response = jsonify({'message': "Success login"})
+        return response, 200
+    else:
+        credentials = {
+            "username": username,
+            "password": password
+        }
+
+    return jwt.encode(credentials, os.environ.get("KEY"), algorithm="HS256")
+
+
+
 
 
