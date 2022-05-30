@@ -2,6 +2,7 @@ import React from "react";
 import { useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import { useEffect } from "react";
+import { logIn } from "../../API/Dashboard";
 
 
 export const LogIn = (props) => {
@@ -17,10 +18,8 @@ export const LogIn = (props) => {
     //   body: JSON.stringify(credentials)
     // })
     //   .then(data => data.json())
-    if(credentials.username === "user" && credentials.password === "pwd")
-      return "test123"
-    else 
-      return ""
+
+    return logIn(credentials)
    }
 
   
@@ -34,7 +33,7 @@ export const LogIn = (props) => {
       username,
       password
     });
-    if(token === "")
+    if(token instanceof Error)
       console.log("wrong authentification");
     else{
       sessionStorage.setItem("token", token); 
