@@ -14,8 +14,17 @@ dashboard = Blueprint('dashboard', __name__)
 # Method that gets all the users of a certain batch and their questionnaire scores
 # Parameters: batch number
 # Returns: a list of tuples containing userId and their scores
-@dashboard.route("/scores")
+@dashboard.route("/scores", methods=["POST"])
 def retrieve_scores():
+    try:
+        check_token(request.headers['Authorization'].replace("Bearer ", ""))
+    except AuthorizationException:
+        response = jsonify({'message': "Incorrect Token"})
+        return response, 401
+    except KeyError:
+        response = jsonify({'message': "Missing Token"})
+        return response, 401
+
     batchId = request.get_json(force=True)['batchId']
 
     scores = get_all_scores(batchId)
@@ -38,8 +47,17 @@ def retrieve_scores():
 # Method that gets all the answers of users of a certain batch
 # Parameters: batch number
 # Returns: a list of tuples containing userId, question number, answer
-@dashboard.route("/answers")
+@dashboard.route("/answers", methods=["POST"])
 def retrieve_answers():
+    try:
+        check_token(request.headers['Authorization'].replace("Bearer ", ""))
+    except AuthorizationException:
+        response = jsonify({'message': "Incorrect Token"})
+        return response, 401
+    except KeyError:
+        response = jsonify({'message': "Missing Token"})
+        return response, 401
+
     batchId = request.get_json(force=True)['batchId']
 
     scores = get_all_answers(batchId)
@@ -60,8 +78,17 @@ def retrieve_answers():
 # Method that gets all the songs of users of a certain batch
 # Parameters: batch number
 # Returns: a csv of tuples containing userId, spotify_url
-@dashboard.route("/songs")
+@dashboard.route("/songs", methods=["POST"])
 def retrieve_songs_from_batch():
+    try:
+        check_token(request.headers['Authorization'].replace("Bearer ", ""))
+    except AuthorizationException:
+        response = jsonify({'message': "Incorrect Token"})
+        return response, 401
+    except KeyError:
+        response = jsonify({'message': "Missing Token"})
+        return response, 401
+
     batchId = request.get_json(force=True)['batchId']
 
     scores = get_all_songs(batchId)
@@ -104,23 +131,16 @@ def create_token():
 # Method that checks JWT tokens
 # Parameters: jwt token in auth header
 # Returns: true or false
-@dashboard.route("/authorize", methods=["POST"])
-def check_token():
-    try:
-        token = request.headers['Authorization'].replace("Bearer ", "")
-        decoded = jwt.decode(token, os.environ.get("KEY"), algorithms="HS256")
-        username = decoded['username']
-        password = decoded['password']
+def check_token(token):
 
-        if os.environ.get("USERNAME") != username or os.environ.get("PASSWORD") != password:
-            response = jsonify({'message': "Incorrect Token"})
-            return response, 401
-        else:
-            response = jsonify({'message': "Correct Token"})
-            return response
-    except AuthorizationException:
-        response = jsonify({'message': "Incorrect Token"})
-        return response, 401
+    decoded = jwt.decode(token, os.environ.get("KEY"), algorithms="HS256")
+    username = decoded['username']
+    password = decoded['password']
+
+    if os.environ.get("USERNAME") != username or os.environ.get("PASSWORD") != password:
+        raise AuthorizationException("Incorrect Token")
+    else:
+        return True
 
 
 
