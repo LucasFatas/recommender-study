@@ -6,6 +6,7 @@ from src.Services.DashboardService import get_all_scores, get_all_answers, get_a
 from dotenv import load_dotenv
 import jwt
 
+from src.spotify import AuthorizationException
 
 dashboard = Blueprint('dashboard', __name__)
 
@@ -78,19 +79,19 @@ def retrieve_songs_from_batch():
     return output
 
 
-# Method that checks the credentials of the researcher
+# Method that creates the JWT token of the researcher
 # Parameters: username, password
-# Returns: 200 status code if correct and 401 if incorrent credentials
-@dashboard.route("/login")
+# Returns: jwt token
+@dashboard.route("/login", methods=["POST"])
 def create_token():
     data = request.get_json(force=True)
     load_dotenv()
     username = data['username']
     password = data['password']
 
-    if os.environ.get("USERNAME") != username and os.environ.get("PASSWORD") == password:
-        response = jsonify({'message': "Success login"})
-        return response, 200
+    if os.environ.get("USERNAME") != username or os.environ.get("PASSWORD") != password:
+        response = jsonify({'message': "Unsuccessful login"})
+        return response, 401
     else:
         credentials = {
             "username": username,
@@ -98,6 +99,28 @@ def create_token():
         }
 
     return jwt.encode(credentials, os.environ.get("KEY"), algorithm="HS256")
+
+
+# Method that checks JWT tokens
+# Parameters: jwt token in auth header
+# Returns: true or false
+@dashboard.route("/authorize", methods=["POST"])
+def check_token():
+    try:
+        token = request.headers['Authorization'].replace("Bearer ", "")
+        decoded = jwt.decode(token, os.environ.get("KEY"), algorithms="HS256")
+        username = decoded['username']
+        password = decoded['password']
+
+        if os.environ.get("USERNAME") != username or os.environ.get("PASSWORD") != password:
+            response = jsonify({'message': "Incorrect Token"})
+            return response, 401
+        else:
+            response = jsonify({'message': "Correct Token"})
+            return response
+    except AuthorizationException:
+        response = jsonify({'message': "Incorrect Token"})
+        return response, 401
 
 
 
