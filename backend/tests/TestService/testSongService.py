@@ -1,10 +1,8 @@
-import json
-from src.Services.QuestionnaireService import add_value, add_answers, add_user, add_personality
-from src.Services.SongService import add_top_songs, get_top_songs, add_playlist_ratings, add_song_ratings
-from src.Services.database_config import change_database_for_testing
-from src.Entities.Song import Song
 from src.Entities.PlaylistRating import PlaylistRating
+from src.Entities.Song import Song
 from src.Entities.SongRating import SongRating
+from src.Services.QuestionnaireService import add_user
+from src.Services.SongService import add_top_songs, get_top_songs, add_playlist_ratings, add_song_ratings
 
 
 def test_add_song_ratings():
@@ -37,11 +35,6 @@ def test_add_song_ratings():
         )
     ]
     assert "Success storing of top songs" == add_top_songs(add_user(1), tup)
-
-
-def test_add_answers():
-    tup = [(1, 1, 1), (1, 2, 3)]
-    assert "Success storing all Answers" == add_answers(tup)
 
 
 def test_get_top_songs():
@@ -116,48 +109,4 @@ def test_add_song_ratings():
     ]
 
     assert add_song_ratings(song_ratings) == "Success storing song ratings"
-
-
-def test_add_user():
-    actual = add_user(1)
-    assert type(actual) == int
-
-
-def test_add_value():
-    user_id = add_user(1)
-    tup = (1, 1, 1, 1, 1, 1, 1, 1, 1, 1)
-    assert "Success storing value" == add_value(user_id, tup)
-
-
-def test_add_personality():
-    user_id = add_user(1)
-    tup = (1, 1, 1, 1, 1, 1)
-    assert "Success storing personality" == add_personality(user_id, tup)
-
-
-def test_change_database_for_testing():
-    value = 0
-    change_database_for_testing(False)
-    with open('../src/config.json', 'r+') as f:
-        data = json.load(f)
-        value = data['is_testing']
-
-    assert not json.loads(value)
-
-    change_database_for_testing(True)
-    with open('../src/config.json', 'r+') as f:
-        data = json.load(f)
-        value = data['is_testing']
-
-    assert json.loads(value)
-
-
-
-if __name__ == '__main__':
-    test_change_database_for_testing()
-    change_database_for_testing(True)
-    test_add_answers()
-    test_add_user()
-    test_add_value()
-    test_add_personality()
 
