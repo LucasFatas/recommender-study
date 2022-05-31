@@ -27,7 +27,7 @@ def retrieve_scores():
 
     batchId = request.get_json(force=True)['batchId']
 
-    scores = get_all_scores(batchId)
+    scores = get_all_scores(batchId, db, cursor, database)
 
     data = io.StringIO()
     writer = csv.writer(data)
@@ -60,7 +60,7 @@ def retrieve_answers():
 
     batchId = request.get_json(force=True)['batchId']
 
-    scores = get_all_answers(batchId)
+    scores = get_all_answers(batchId, db, cursor, database)
 
     data = io.StringIO()
     writer = csv.writer(data)
@@ -91,7 +91,7 @@ def retrieve_songs_from_batch():
 
     batchId = request.get_json(force=True)['batchId']
 
-    scores = get_all_songs(batchId)
+    scores = get_all_songs(batchId, db, cursor, database)
 
     data = io.StringIO()
     writer = csv.writer(data)
