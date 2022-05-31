@@ -1,5 +1,3 @@
-
-import renderer from "react-test-renderer";
 import {cleanup, screen, fireEvent, render} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { ConsentPage } from "../ConsentPage";
