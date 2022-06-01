@@ -11,8 +11,11 @@ computation:
     policy: push
   before_script:
     - pip install pytest
+    - cd backend
   script:
-    - python -m pytest backend/tests/TestComputation 
+    - python -m pytest tests/TestComputation 
+  after_script:
+    - cd ..
 
 
 #controller:
