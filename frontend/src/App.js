@@ -21,7 +21,7 @@ import intro from './util/introductions.json'
 
 import { switchBatch } from './controller/dashboardController';
 
-const defaultPage = '/loginPage';
+const defaultPage = '/websiteIntroduction';
 
 const App = () => {
 
