@@ -10,7 +10,7 @@ computation:
   cache:
     policy: push
   before_script:
-    - pip install pytest
+    - pip install pytest numpy
     - cd backend
   script:
     - python -m pytest tests/TestComputation 
