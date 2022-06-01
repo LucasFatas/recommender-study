@@ -12,7 +12,7 @@ computation:
   before_script:
     - pip install pytest
   script:
-    - python -m pytest tests/TestComputation 
+    - python -m pytest backend/tests/TestComputation 
 
 
 #controller:
