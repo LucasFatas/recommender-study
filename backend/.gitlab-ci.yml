@@ -10,7 +10,7 @@ computation:
   cache:
     policy: push
   before_script:
-    - pip install pytest numpy
+    - pip install pytest numpy mysql-connector
     - cd backend
   script:
     - python -m pytest tests/TestComputation 
