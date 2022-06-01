@@ -10,14 +10,6 @@ export const LogIn = (props) => {
   const navigate = useNavigate();
 
   async function loginUser(credentials) {
-    // return fetch('http://localhost:8080/login', {
-    //   method: 'POST',
-    //   headers: {
-    //     'Content-Type': 'application/json'
-    //   },
-    //   body: JSON.stringify(credentials)
-    // })
-    //   .then(data => data.json())
 
     return logIn(credentials)
    }
@@ -33,7 +25,7 @@ export const LogIn = (props) => {
       username,
       password
     });
-    if(token instanceof Error)
+    if(token instanceof Error || !token)
       console.log("wrong authentification");
     else{
       sessionStorage.setItem("token", token); 
