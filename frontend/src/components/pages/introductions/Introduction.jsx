@@ -10,8 +10,8 @@ export const Introduction = (props) => {
   
 
   const {
-    intro,
-    nextpage
+    intro, //String : introduction text
+    nextpage //String : path to the next page
   } = props;
 
   const navigate = useNavigate();

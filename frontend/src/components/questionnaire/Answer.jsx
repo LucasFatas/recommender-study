@@ -5,7 +5,7 @@ import { RadioButton } from "../global/RadioButton";
 export const Answer = (props) => {
 
   const {
-    optionsPerAnswer
+    optionsPerAnswer //Number : defines the number of radio buttons per answer
   } = props;
 
   const inputs = [];

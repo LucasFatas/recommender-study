@@ -22,8 +22,8 @@ const firstQuestionnaire = getRandomQuestionnaire(options);
 export const Questionnaire = (props) => {
   
   const {
-    defaultPage,
-    currentBatch
+    defaultPage, //String : path to default page
+    currentBatch //String : either 'values' or 'personality'
   } = props;
 
   const sessionAnswers = sessionStorage.getItem("answers");

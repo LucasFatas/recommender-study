@@ -3,10 +3,10 @@ import { StarRating } from "./StarRating";
 export const Track = (props) => {
 
   const {
-    songName,
-    albumName,
-    artist,
-    trackUrl
+    songName, //String : song name
+    albumName, //String : album name
+    artist, //String : artist
+    trackUrl //String : track url
   } = props;
 
   return (
