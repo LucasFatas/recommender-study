@@ -25,7 +25,7 @@ export const Recommender = (props) => {
 	const [ratings, setRatings] = useState(initialRatingsObj);
 
 	const {
-		defaultPage
+		defaultPage //String with default page url
 	} = props;
 
 	const questions = questionsObj.feedback.questions;

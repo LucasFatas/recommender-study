@@ -6,7 +6,7 @@ import  spotifyLogo from "../../../assets/spotifyLogo.svg"
 export const WebsiteIntroduction = (props) => {
 
   const {
-    data
+    data //Object containing data of util/API.json
   } = props;
 
 

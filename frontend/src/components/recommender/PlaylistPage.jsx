@@ -14,16 +14,15 @@ export const PlaylistPage = (props) => {
 	const [answered, setAnswered] = useState(false);
 
 	const {
-		feedback,
-		setFeedback,
-		playlistName,
-		questions,
-		ratings,
-		setRatings,
-		playlistKey,
-		trackList,
-		setRatingsFilled,
-		comment
+		feedback, //Object, check recommenderController inintialFeedbackObj for structure
+		setFeedback, //Function to change feedback object
+		playlistName, //String with playlist name
+		questions, //String[] containing feedback questions text
+		ratings, //Object, check recommenderController initialRatingsObj for structure
+		setRatings, //Function to change ratings object
+		trackList, //Object[] check Recommender.jsx for structure
+		setRatingsFilled, //Function to change ratingsFilled parameter
+		comment //String containing feedback comment on current page
 	} = props;
 
 	const currentFeedback = feedback[playlistName];
@@ -44,7 +43,6 @@ export const PlaylistPage = (props) => {
 					playlistName={playlistName}
 					setRatings={setRatings}
 					ratings={ratings}
-					key={playlistKey}
 					trackList={trackList}
 					setRatingsFilled={setRatingsFilled}
 				/>

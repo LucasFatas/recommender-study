@@ -11,11 +11,11 @@ const buttonStyles = {
 export const RecommenderPage = (props) => {
   
 	const {
-		trackLists, 
-		ratings, 
-		setRatings, 
-		ratingsFilled, 
-		setRatingsFilled
+		trackLists, //Object[] check Recommender.jsx for structure
+		ratings, //Object check recommenderController initialRatingsObj for structure
+		setRatings, //Function to change ratings object
+		ratingsFilled, //boolean, true if all playlist ratings are answered, false otherwise
+		setRatingsFilled //Function to change value of ratingsFilled 
 	} = props;
 
 	useEffect(() => setRatingsFilled(Object.values(ratings).every(x => x.playlist !== 0)), [ratings, setRatingsFilled])
