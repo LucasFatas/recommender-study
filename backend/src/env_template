@@ -1,0 +1,13 @@
+# This is a template of how and what gets store in the .env
+# you should make a copy of this file and change its name to .env and remove these comments
+
+PORT=3000
+FRONTEND_URL=http://www.localhost.com/5000
+
+DB_HOST=localhost
+DB_DATABASE=Recommender
+DB_USER=root
+DB_PASSWORD=password
+
+IS_TESTING=FALSE
+DB_TEST_DATABASE=Recommender

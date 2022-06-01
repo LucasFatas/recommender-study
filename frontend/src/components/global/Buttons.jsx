@@ -10,15 +10,16 @@ const buttonStyles = {
 export const Buttons = (props) => {
 
   const { 
-    prevPage, 
-    showSubmit, 
-    nextPage, 
-    answered,  
-    onNext, 
-    data, 
-    pathOnSubmit, 
-    submitFunction, 
-    currentPath 
+    prevPage, //boolean condition to decide whether to show previous button
+    showSubmit, //boolean condition to decide whether to show submit button
+    nextPage, //boolean condition to decide whether to show next button
+    answered,  //boolean condition to decide whether to activate next button
+    onNext, //function to execute everytime next button is pressed
+    data, //data object, parameters are specified right below
+    pathOnSubmit, //path to route after submit button is pressed
+    submitFunction, //function to execute on submit
+    currentPath, //current path of the page
+    submitResults //boolean condition to decide whether to execute submit function
   } = props;
 
   //data recommender : ratings, comment,  playlistName
@@ -27,7 +28,9 @@ export const Buttons = (props) => {
   const navigate = useNavigate();
 
   const handleSubmit = () => {
-    submitFunction(data);
+    if (submitResults)
+      submitFunction(data);
+      
     navigate(pathOnSubmit);
   }
 

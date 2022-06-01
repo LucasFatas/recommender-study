@@ -1,6 +1,7 @@
 import io, csv
 import os
 
+import flask
 from flask import request, Blueprint, jsonify, make_response
 from src.Services.DashboardService import get_all_scores, get_all_answers, get_all_songs
 from dotenv import load_dotenv
@@ -27,7 +28,7 @@ def retrieve_scores():
 
     batchId = request.get_json(force=True)['batchId']
 
-    scores = get_all_scores(batchId)
+    scores = get_all_scores(batchId, db, cursor, database)
 
     data = io.StringIO()
     writer = csv.writer(data)
@@ -60,7 +61,7 @@ def retrieve_answers():
 
     batchId = request.get_json(force=True)['batchId']
 
-    scores = get_all_answers(batchId)
+    scores = get_all_answers(batchId, db, cursor, database)
 
     data = io.StringIO()
     writer = csv.writer(data)
@@ -91,7 +92,7 @@ def retrieve_songs_from_batch():
 
     batchId = request.get_json(force=True)['batchId']
 
-    scores = get_all_songs(batchId)
+    scores = get_all_songs(batchId, db, cursor, database)
 
     data = io.StringIO()
     writer = csv.writer(data)
@@ -116,7 +117,7 @@ def create_token():
     username = data['username']
     password = data['password']
 
-    if os.environ.get("USERNAME") != username or os.environ.get("PASSWORD") != password:
+    if os.environ.get("RESEARCHER_USERNAME") != username or os.environ.get("RESEARCHER_PASSWORD") != password:
         response = jsonify({'message': "Unsuccessful login"})
         return response, 401
     else:
@@ -125,23 +126,19 @@ def create_token():
             "password": password
         }
 
-    return jwt.encode(credentials, os.environ.get("KEY"), algorithm="HS256")
+        return flask.jsonify(jwt.encode(credentials, os.environ.get("KEY"), algorithm="HS256"))
 
 
 # Method that checks JWT tokens
 # Parameters: jwt token in auth header
 # Returns: true or false
 def check_token(token):
-    try:
-        decoded = jwt.decode(token, os.environ.get("KEY"), algorithms="HS256")
-        username = decoded['username']
-        password = decoded['password']
 
-        if os.environ.get("USERNAME") != username or os.environ.get("PASSWORD") != password:
-            raise AuthorizationException("Incorrect Token")
-        else:
-            return True
-    except jwt.exceptions.DecodeError:
+    decoded = jwt.decode(token, os.environ.get("KEY"), algorithms="HS256")
+    username = decoded['username']
+    password = decoded['password']
+
+    if os.environ.get("RESEARCHER_USERNAME") != username or os.environ.get("RESEARCHER_PASSWORD") != password:
         raise AuthorizationException("Incorrect Token")
 
 

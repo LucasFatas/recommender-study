@@ -5,12 +5,15 @@ const { serverUrl, port } = server;
 // Send the answers
 export const sendAnswer = async (body) => {
     
-    const mapValuesToArr = Array.from(body.values());
+    const personalityArray = Array.from(body.personality.values());
+    const valuesArray = Array.from(body.values.values());
     const obj = {
         user : 1,
-        personality_answers : [1, 2, 3],
-        values_answers : mapValuesToArr
+        personality_answers : personalityArray,
+        values_answers : valuesArray
     }
+
+    console.log(obj);
 
     try {
         const response = await fetch(`${serverUrl}:${port}/questionnaire/answer/add`, {
