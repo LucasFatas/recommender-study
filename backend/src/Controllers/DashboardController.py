@@ -126,21 +126,24 @@ def create_token():
             "password": password
         }
 
-        return flask.jsonify(jwt.encode(credentials, os.environ.get("KEY"), algorithm="HS256"))
+        return flask.jsonify(token=jwt.encode(credentials, os.environ.get("KEY"), algorithm="HS256"))
 
 
 # Method that checks JWT tokens
 # Parameters: jwt token in auth header
 # Returns: true or false
 def check_token(token):
+    try:
+        decoded = jwt.decode(token, os.environ.get("KEY"), algorithms="HS256")
+        username = decoded['username']
+        password = decoded['password']
 
-    decoded = jwt.decode(token, os.environ.get("KEY"), algorithms="HS256")
-    username = decoded['username']
-    password = decoded['password']
-
-    if os.environ.get("RESEARCHER_USERNAME") != username or os.environ.get("RESEARCHER_PASSWORD") != password:
+        if os.environ.get("RESEARCHER_USERNAME") != username or os.environ.get("RESEARCHER_PASSWORD") != password:
+            raise AuthorizationException("Incorrect Token")
+        else:
+            return True
+    except jwt.exceptions.DecodeError:
         raise AuthorizationException("Incorrect Token")
-
 
 
 

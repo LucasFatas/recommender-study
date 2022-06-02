@@ -21,10 +21,10 @@ export const logIn = async (credentials) => {
         }).then(res => {
             if (res.status === 401)
                 return false
-            else return res.json()
+            return res.json()
         })
         
-        return res
+        return res.token
 
     } catch (error) {
         console.log(error);
