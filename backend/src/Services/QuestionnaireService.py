@@ -3,6 +3,7 @@ from random import randint
 from src.Services.database_config import DatabaseException, open_connection
 from dotenv import load_dotenv
 import os
+import time
 
 load_dotenv()
 
@@ -35,6 +36,7 @@ def add_user(batch_id, db, cursor, database):
 
         participant_id = cursor.lastrowid
 
+        time.sleep(1)
         if os.getenv('IS_TESTING') == "FALSE":
             db.commit()
         return participant_id

@@ -1,17 +1,47 @@
 from src.main import app
+from tests.fixtures import set_up
 
 
 # Tests for QuestionnaireController.
-def test_save_answers():
+def test_save_answers(set_up):
     data = {
-        "user": "1",
-        "value_answers": [1, 2, 3, 4, 5, 6, 6, 5, 4, 3, 2, 1, 6, 6, 6, 6, 6, 6, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 4,
-                          4, 4, 4, 4, 4, 3, 3, 5, 5],
-        "personality_answers": [5, 6]
+        "user": 5,
+        "value_answers": [1, 2, 1, 4, 1, 1,
+                          1, 2, 4, 3, 2, 1,
+                          1, 5, 1, 1, 1, 6,
+                          5, 5, 1, 6, 6, 1,
+                          2, 5, 1, 6, 5, 2,
+                          3, 4, 3, 1, 2, 4,
+                          3, 1, 5, 1],
+        "personality_answers": [2, 1, 5, 4, 5, 5, 4, 3, 2, 1,
+                                4, 1, 3, 1, 5, 2, 2, 5, 2, 2,
+                                3, 3, 3, 3, 3, 1, 5, 1, 1, 4,
+                                2, 5, 5, 2, 5, 2, 4, 3, 4, 4,
+                                3, 5, 1, 3, 3, 2, 2, 4, 2, 2,
+                                5, 1, 2, 1, 4, 5, 2, 3, 4, 1]
     }
 
     response = app.test_client().post('/questionnaire/answer/add', json=data)
-
-    assert response.json == {"values": [4.5, 2.5, 3.25, 2.83, 2.0, 4.67, 2.67, 3.75, 4.33, 4.0], "personalities": 0} \
-           and response.status_code == 200
-
+    expected = {
+        "personalities": [
+            3.1,
+            2.7,
+            3.7,
+            3.9,
+            2.8,
+            3.3
+        ],
+        "values": [
+            3.0,
+            3.0,
+            2.75,
+            3.33,
+            2.5,
+            1.33,
+            3.67,
+            2.5,
+            2.67,
+            2.4
+        ]
+    }
+    assert response.json == expected
