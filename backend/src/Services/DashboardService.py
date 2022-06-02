@@ -11,7 +11,7 @@ load_dotenv()
 # Returns: a list of tuples containing userId and their scores
 def get_all_scores(batch, db, cursor, database):
     try:
-        sql = "SELECT userId, openness, honesty, emotionality, extroversion, agreeableness, conscientiousness," \
+        sql = "SELECT pa.userId, openness, honesty, emotionality, extroversion, agreeableness, conscientiousness," \
             " stimulation, selfDirection, universalism, benevolence, tradition, conformity, securityVal, powerVal, " \
             "achievement, hedonism "\
             "FROM " + database + ".Personality AS pe INNER JOIN " + database + ".Participant AS pa ON pe.userId = "\

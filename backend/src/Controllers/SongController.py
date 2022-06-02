@@ -20,7 +20,7 @@ frontend_url = "http://www.localhost.com/3000"
 @songs.route('/songs/get')
 def retrieve_top_songs():
     try:
-        data = request.get_json(force=True)
+        data = request.args
 
         # Given the user id, retrieve top songs from database.
         top_songs = get_top_songs(data['userId'])
@@ -34,15 +34,13 @@ def retrieve_top_songs():
 
 @songs.route('/match')
 def match_user():
-    data = request.get_json(force=True)
+    data = request.args
     userId = data['user']
 
     try:
         # Add the newly formatted answers to our database.
         values = get_value(userId)
         personality = get_personality(userId)
-
-        # values = {1,1,1,1,1,1}
 
         # Find IDs of the users more similar to the given user id
         val_user, pers_user, random_user = match(userId, values, personality, 1, data['metric'])
@@ -70,10 +68,7 @@ def save_ratings():
     try:
         data = request.get_json(force=True)
 
-        ratings = []
-        ratings.append(data['values'])
-        ratings.append(data['personality'])
-        ratings.append(data['random'])
+        ratings = [data['values'], data['personality'], data['random']]
 
         # Retrieve the user id from the user.
         userId = data['userId']
