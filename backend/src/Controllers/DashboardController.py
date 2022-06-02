@@ -4,6 +4,7 @@ import os
 import flask
 from flask import request, Blueprint, jsonify, make_response
 from src.Services.DashboardService import get_all_scores, get_all_answers, get_all_songs
+from src.Services.database_config import open_connection
 from dotenv import load_dotenv
 import jwt
 
@@ -26,6 +27,8 @@ def retrieve_scores():
         response = jsonify({'message': "Missing Token"})
         return response, 401
 
+    db, cursor, database = open_connection()
+
     batchId = request.get_json(force=True)['batchId']
 
     scores = get_all_scores(batchId, db, cursor, database)
@@ -33,8 +36,8 @@ def retrieve_scores():
     data = io.StringIO()
     writer = csv.writer(data)
     column_names = ("UserID", "Openness", "Honesty", "Emotionality", "Extroversion", "Agreeableness", "Conscientiousness",
-                   "Stimulation", "SelfDirection", "Universalism", "Benevolence", "Tradition", "Conformity", "SecurityVal",
-                   "PowerVal", "Achievement", "Hedonism")
+                    "Stimulation", "SelfDirection", "Universalism", "Benevolence", "Tradition", "Conformity", "SecurityVal",
+                    "PowerVal", "Achievement", "Hedonism")
     writer.writerow(column_names)
     for row in scores:
         writer.writerow(row)
@@ -58,6 +61,8 @@ def retrieve_answers():
     except KeyError:
         response = jsonify({'message': "Missing Token"})
         return response, 401
+
+    db, cursor, database = open_connection()
 
     batchId = request.get_json(force=True)['batchId']
 
@@ -89,6 +94,8 @@ def retrieve_songs_from_batch():
     except KeyError:
         response = jsonify({'message': "Missing Token"})
         return response, 401
+
+    db, cursor, database = open_connection()
 
     batchId = request.get_json(force=True)['batchId']
 
