@@ -12,7 +12,6 @@ it('Check if button is dissabled when a new page is loaded', () => {
           <ConsentPage/>
         </Router>,
     );
-    //expect(screen.getByRole('checkbox', {name: /I accept the terms and agreements./i}));
     expect(screen.getByRole("button",{name: /Next/i})).toBeDisabled();
 });
 
