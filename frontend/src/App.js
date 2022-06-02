@@ -15,15 +15,20 @@ import { Introduction } from './components/pages/introductions/Introduction';
 import { ConsentPage } from './components/pages/ConsentPage';
 import { Thanks } from './components/pages/Thanks';
 import { ResultPage } from './components/pages/ResultPage';
+import { LogIn } from './components/dashboard/LogIn';
+import { Dashboard } from './components/dashboard/Dashboard';
 
+import questions from './util/questions.json';
 import * as data from './util/API.json'
 import intro from './util/introductions.json'
 
 import { switchBatch } from './controller/dashboardController';
 
-const defaultPage = '/loginPage';
+
+const defaultPage = '/consentPage';
 
 const App = () => {
+  
 
   const [currentBatch, setCurrentBatch] = useState('questionnaire');
 
@@ -41,6 +46,8 @@ const App = () => {
         <Route path="/error/*" element={<ErrorRouter defaultPage={defaultPage} />} />
         <Route path="*" element={<PageNotFound redirect={defaultPage} />}/>
 
+        <Route path="/login" element={<LogIn />} />
+        <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/websiteIntroduction" element={<WebsiteIntroduction data={data}/>} />
         <Route path="/introduction/values" element={<Introduction intro={intro.values} nextpage="/questionnaire/v/page1" />} />
         <Route path="/introduction/personality" element={<Introduction intro={intro.personality} nextpage={'/questionnaire/p/page1'} />} />
