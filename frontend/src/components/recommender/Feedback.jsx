@@ -15,9 +15,9 @@ export const Feedback = (props) => {
   const currentFeedback = feedback[playlistName];
 
   return (
-    <div className="flex flex-col items-center content-center">
+    <div className="flex flex-col items-center content-center col-span-2">
       {questions.map((e, i) => (
-        <div key={i} className="p-8">
+        <div key={i} className="p-8 flex flex-col items-center">
           <h1 className="text-center text-xl">{e}</h1>
           <div className="flex justify-center w-fit mt-5 space-x-7">
             <Answer {...props} questionNumber={i}/>

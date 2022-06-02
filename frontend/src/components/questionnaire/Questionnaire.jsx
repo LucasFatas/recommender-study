@@ -7,61 +7,48 @@ import { QuestionnairePage } from './QuestionnairePage';
 import { PageNotFound } from "../errors/PageNotFound";
 import { 
   splitArrayIntoMatrix, 
-  loadAnswersFromStorage,
-  getRandomQuestionnaire
+  parseSessionObj,
+  getRandomQuestionnaire,
+  getLastPage,
+  getDataObj
 } from "../../controller/questionnaireController";
 
 
 const options = ['values', 'personality'];
 
-
 //Choose which questionnaire should be shown first.
 const firstQuestionnaire = getRandomQuestionnaire(options);
 
 export const Questionnaire = (props) => {
-
-  console.log(firstQuestionnaire);
-  const sessionAnswers = sessionStorage.getItem("answers");
-
+  
   const {
-    defaultPage
+    defaultPage,
+    currentBatch
   } = props;
+
+  const sessionAnswers = sessionStorage.getItem("answers");
 
   const [answers, setAnswers] = useState(
     sessionAnswers === null
-    ? {
-      "personality" : new Map(), 
-      "values" : new Map()
-    } 
-    : loadAnswersFromStorage(sessionAnswers)
+      ? {
+        "personality" : new Map(), 
+        "values" : new Map()
+      } 
+      : parseSessionObj(JSON.parse(sessionAnswers))
   );
   
-  const personalityObj = questions.personality;
+  const initialPath = firstQuestionnaire === 'values' ? 'v' : 'p';
+  const lastPage = getLastPage(currentBatch);
+
   const valuesObj = questions.values;
+  const personalityObj = questions.personality;
   const questionsPerPage = questions.questionsPerPage;
 
   const personalityQuestionsMatrix = splitArrayIntoMatrix(personalityObj.questions, questionsPerPage);
   const valuesQuestionsMatrix = splitArrayIntoMatrix(valuesObj.questions, questionsPerPage);
 
-  const values = {
-    ...valuesObj,
-    matrix : valuesQuestionsMatrix,
-    pathOnSubmit : firstQuestionnaire === 'values' ? '/introduction/personality' : '/recommender',
-    lastPage : valuesQuestionsMatrix.length,
-    path : "/v",
-    type : 'values',
-    submitResults : firstQuestionnaire === 'personality'
-  }
-
-  const personality = {
-    ...personalityObj,
-    matrix : personalityQuestionsMatrix,
-    pathOnSubmit : firstQuestionnaire === 'personality' ? '/introduction/values' : '/recommender',
-    lastPage : personalityQuestionsMatrix.length,
-    path : "/p",
-    type : 'personality',
-    submitResults : firstQuestionnaire === 'values'
-  }
+  const values = getDataObj(valuesObj, valuesQuestionsMatrix, 'values', lastPage, firstQuestionnaire);
+  const personality = getDataObj(personalityObj, personalityQuestionsMatrix, 'personality', lastPage, firstQuestionnaire);
 
   const questionnaireArray = firstQuestionnaire === 'values' ? [values, personality] : [personality, values];
 
@@ -85,8 +72,6 @@ export const Questionnaire = (props) => {
       showSubmit={idx === obj.lastPage ? obj.lastPage : false}
     />)
   }
-
-  const initialPath = firstQuestionnaire === 'values' ? 'v' : 'p';
 
   return (
     <Routes>

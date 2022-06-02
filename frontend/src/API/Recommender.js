@@ -1,6 +1,4 @@
-import * as server from '../util/API.json';
-
-const { serverUrl, port } = server;
+const { serverUrl, port } = require('../util/API.json');
 
 export const sendRatings = async (ratings) => {
     console.log(ratings);

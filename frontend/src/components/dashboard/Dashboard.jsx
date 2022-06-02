@@ -1,8 +1,26 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { getAnswers, getMatchData, getScores, getSongRatings, getSongs } from '../../API/Dashboard';
+import { useEffect, useState } from "react";
+import { useNavigate } from 'react-router-dom';
+import { isLoggedIn } from "../../controller/dashboardController";
 
 export const Dashboard = () => {
   
+
+  const navigate = useNavigate()
+ 
+  
+  useEffect(() => {
+    isLoggedIn(sessionStorage.getItem("token"), navigate)
+
+  }, [])
+
+  const logout = () => {
+    sessionStorage.removeItem("token")
+    navigate("/login")
+  }
+
+
   // const inputStyle = "appearance-none rounded-full h-4 w-4 border border-gray-300 bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer";
   const batchNumber = 1
   const batchUsers = 1
@@ -23,11 +41,6 @@ export const Dashboard = () => {
     console.log("create new batch with ", metricNextBatch, "metric")
     setChangeBatch(false)
   }
-
-  const logout = () => {
-    console.log("log out")
-  }
-
   const showChangeBatchButtons = () => {
     setChangeBatch(true)
   }
