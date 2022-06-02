@@ -1,5 +1,5 @@
 import numpy as np
-from tests.test_fixtures import set_up
+from tests.fixtures import set_up
 from src.Services.QuestionnaireService import add_user, add_value, add_personality
 from src.Services.SongService import add_top_songs
 from src.main import app
