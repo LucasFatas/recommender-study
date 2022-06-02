@@ -10,6 +10,15 @@ import {
   checkEveryElementIsInMap
 } from "../../controller/questionnaireController";
 
+const legendItems = [
+  'Not like me at all',
+  'Not like me',
+  'A little like me',
+  'Somewhat like me',
+  'Like me',
+  'Very much like me'
+]
+
 export const QuestionnairePage = (props) => {
 
   const {
@@ -47,6 +56,16 @@ export const QuestionnairePage = (props) => {
         numberOfPages={numberOfPages}
         pageNumber={pageNumber}
       /> 
+      {type === 'values' 
+      ? 
+      
+      <ol className="mt-5 flex justify-center list-decimal list-inside mx-5">
+        {legendItems.map(e => 
+          <li className="mx-3" key={e}>{e}</li>  
+        )}
+      </ol>
+    
+      : ""}
       <div className='grid place-items-center'>
         {questions.map(([text, index]) => 
           <div className='flex flex-col py-10 items-center' key={index}>
@@ -56,6 +75,7 @@ export const QuestionnairePage = (props) => {
               questionNumber={index}  
               onChange={updateAnswers}
               optionsPerAnswer={optionsPerAnswer}
+              type={type}
             />
           </div>
         )}

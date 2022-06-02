@@ -118,12 +118,12 @@
     "feedback" : {
         "answerOptions" : 5,
         "questions" : [
-            "Question 1?",
-            "Question 2?",
-            "Question 3?",
-            "Question 4?",
-            "Question 5?",
-            "Question 6?"
+            "Several songs in the list of recommended songs were very different from  each other.",
+            "The recommender is recommending content I hadn’t previously considered.",
+            "The provided recommended songs were interesting.",
+            "The recommended songs fitted my preference.",
+            "This list of recommendations was appealing.",
+            "The list contains too many bad items."
         ]
     }
 }
