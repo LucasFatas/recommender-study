@@ -1,5 +1,6 @@
 import numpy as np
 
+
 def manhattan_distance(arg1, arg2):
     point1 = np.array(arg1)
     point2 = np.array(arg2)
@@ -7,7 +8,6 @@ def manhattan_distance(arg1, arg2):
     #calculate manhattan distance
     distance = np.sum(np.abs(point1 - point2))
 
-    print(distance)
     return distance
 
 

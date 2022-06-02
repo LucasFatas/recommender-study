@@ -1,7 +1,8 @@
 import json
+import os
 
 from flask import request, redirect, Blueprint, jsonify
-
+from dotenv import load_dotenv
 from src.Entities.Match import Match
 from src.Entities.PlaylistRating import PlaylistRating
 from src.Entities.SongRating import SongRating
@@ -33,19 +34,20 @@ def retrieve_top_songs():
         return redirect(frontend_url + "/error/database")
 
 
-@songs.route('/match', methods=["POST"])
+@songs.route('/match')
 def match_user():
-    data = request.get_json(force=True)
-    userId = data['user']
-
+    userId = request.args['userId']
+    load_dotenv()
     try:
         # Add the newly formatted answers to our database.
-        values = get_value(userId, db, cursor, database)
-        personality = get_personality(userId, db, cursor, database)
+        values = get_value(userId)
+        personality = get_personality(userId)
 
         # Find IDs of the users more similar to the given user id
-        val_user, pers_user, random_user = match(userId, values, personality, 1, data['metric'])
+        val_user, pers_user, random_user = match(userId, values, personality, 1, os.environ.get("METRIC"))
 
+        lst = [Match(val_user, get_top_songs(val_user)), Match(pers_user, get_top_songs(pers_user)), Match(random_user,
+                    get_top_songs(random_user))]
         lst = [Match(val_user, get_top_songs(val_user, db, cursor, database)),
                Match(pers_user, get_top_songs(pers_user, db, cursor, database)),
                Match(random_user, get_top_songs(random_user, db, cursor, database))]
