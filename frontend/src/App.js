@@ -25,10 +25,10 @@ import intro from './util/introductions.json'
 import { switchBatch } from './controller/dashboardController';
 
 
+const defaultPage = '/consentPage';
 
 const App = () => {
   
-  const defaultPage = '/consentPage';
 
   const [currentBatch, setCurrentBatch] = useState('questionnaire');
 

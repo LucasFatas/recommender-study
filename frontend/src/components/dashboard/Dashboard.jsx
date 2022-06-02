@@ -1,6 +1,7 @@
 import React from "react";
 import { useEffect } from "react";
 import { useNavigate } from 'react-router-dom';
+import { isLogedIn } from "../../controller/dashboardController";
 
 
 export const Dashboard = () => {
@@ -9,12 +10,8 @@ export const Dashboard = () => {
  
   
     useEffect(() => {
-      const token = sessionStorage.getItem("token");
-      if(!token)
-        navigate("/login")
-      else
-        console.log('success');
-      
+      isLogedIn(sessionStorage.getItem("token"), navigate)
+  
     }, [])
 
     const logout = () => {

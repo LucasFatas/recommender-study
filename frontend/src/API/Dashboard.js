@@ -12,7 +12,7 @@ export const logIn = async (credentials) => {
     console.log(credentials);
 
     try {
-        const res = await fetch(`${serverUrl}:${port}/dashboard/login`, {
+        const response = await fetch(`${serverUrl}:${port}/dashboard/login`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -24,7 +24,7 @@ export const logIn = async (credentials) => {
             return res.json()
         })
         
-        return res.token
+        return response.token
 
     } catch (error) {
         console.log(error);

@@ -9,11 +9,6 @@ export const LogIn = (props) => {
 
   const navigate = useNavigate();
 
-  async function loginUser(credentials) {
-
-    return logIn(credentials)
-   }
-
   
 
   const [username, setUserName] = useState("");
@@ -21,7 +16,7 @@ export const LogIn = (props) => {
 
   const handleSubmit = async e => {
     e.preventDefault();
-    const token = await loginUser({
+    const token = await logIn({
       username,
       password
     });
@@ -29,7 +24,6 @@ export const LogIn = (props) => {
       console.log("wrong authentification");
     else{
       sessionStorage.setItem("token", token); 
-      console.log(token);
       navigate("/dashboard")
     }
   }
