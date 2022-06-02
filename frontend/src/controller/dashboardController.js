@@ -12,7 +12,7 @@ export const switchBatch = (currentBatch, setCurrentBatch) => {
 }
 
 
-export const isLogedIn = (token, navigate) => {
+export const isLoggedIn = (token, navigate) => {
     
       if(!token)
         navigate("/login")

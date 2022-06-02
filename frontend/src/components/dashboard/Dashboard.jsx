@@ -1,7 +1,7 @@
 import React from "react";
 import { useEffect } from "react";
 import { useNavigate } from 'react-router-dom';
-import { isLogedIn } from "../../controller/dashboardController";
+import { isLoggedIn } from "../../controller/dashboardController";
 
 
 export const Dashboard = () => {
@@ -10,7 +10,7 @@ export const Dashboard = () => {
  
   
     useEffect(() => {
-      isLogedIn(sessionStorage.getItem("token"), navigate)
+      isLoggedIn(sessionStorage.getItem("token"), navigate)
   
     }, [])
 
