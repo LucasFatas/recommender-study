@@ -6,12 +6,12 @@ export const getSongs = async (batchId, token) => {
     try {
         const response = await fetch(`${serverUrl}:${port}/dashboard/songs?batchId=${batchId}`, {
             method: 'GET',
-            mode: 'no-cors',
             headers: {
-                'Content-Type': 'application/json',
-                'Authorization': "Bearer " + token
+                'Authorization': "Bearer " + token,
+                'Content-Type': 'text/csv'
+                
             }
-        }).then(res => res.json());
+        }).then(res => res.text());
         console.log(response);
         return response
     } catch (error) {
@@ -24,9 +24,8 @@ export const getSongRatings = async () => {
     try {
         const response = await fetch(`${serverUrl}:${port}/dashboard/songRatings`, {
             method: 'GET',
-            mode: 'no-cors',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'text/csv'
             },
         });
         console.log(response);
