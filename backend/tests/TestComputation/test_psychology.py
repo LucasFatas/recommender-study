@@ -52,7 +52,3 @@ def test_calculations():
     assert calculations(val_answers, pers_answers) == (exp_values, exp_pers)
 
 
-if __name__ == '__main__':
-    test_pers_calc()
-    test_val_calc()
-    test_calculations()
