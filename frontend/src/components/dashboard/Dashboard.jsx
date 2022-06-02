@@ -47,12 +47,11 @@ export const Dashboard = () => {
   const downloadCSV= () => {
     console.log("download CSV")
     // getSongs(batchToDownload)
-    getSongRatings()
     console.log(batchToDownload, dataToDownload)
 
     switch(dataToDownload) {
       case "Songs":
-        getSongs(batchToDownload)
+        getSongs(batchToDownload, sessionStorage.getItem("token"))
         break;
       case "Q&A":
         getAnswers(batchToDownload)
@@ -172,7 +171,7 @@ export const Dashboard = () => {
 
           <div className='text-center '>
             {/* <form method="get" action="file.doc"> */}
-              <button type="submit" className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-2 rounded-full ' onClick={downloadCSV} >
+              <button type="submit" className=' bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-2 rounded-full ' onClick={downloadCSV} >
                 <div className='grid place-items-center align-text-bottom'>
                   <span className="text-white"> Download </span>
                 </div>

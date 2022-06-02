@@ -1,17 +1,17 @@
 const { serverUrl, port } = require('../util/API.json');
 
 
-export const getSongs = async (batchId) => {
+export const getSongs = async (batchId, token) => {
     console.log(batchId);
     try {
-        const response = await fetch(`${serverUrl}/dashboard/songs`, {
-            method: 'POST',
+        const response = await fetch(`${serverUrl}:${port}/dashboard/songs?batchId=${batchId}`, {
+            method: 'GET',
             mode: 'no-cors',
             headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(batchId),
-        });
+                'Content-Type': 'application/json',
+                'Authorization': "Bearer " + token
+            }
+        }).then(res => res.json());
         console.log(response);
         return response
     } catch (error) {
@@ -20,6 +20,7 @@ export const getSongs = async (batchId) => {
 }
 
 export const getSongRatings = async () => {
+    console.log("ratings")
     try {
         const response = await fetch(`${serverUrl}:${port}/dashboard/songRatings`, {
             method: 'GET',
