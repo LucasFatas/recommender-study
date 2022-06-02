@@ -1,0 +1,38 @@
+image: python:3.8
+
+stages:
+  - computation
+#  - controller
+#  - service
+
+computation:
+  stage: computation
+  cache:
+    policy: push
+  before_script:
+    - pip install pytest numpy mysql-connector
+    - cd backend
+  script:
+    - python -m pytest tests/TestComputation 
+  after_script:
+    - cd ..
+
+
+#controller:
+#  stage: controller
+#  cache:
+#    policy: push
+#  before_script:
+#    - pip install pytest
+#  script:
+#    - python -m pytest tests/TestController 
+
+
+#service:
+#  stage: service
+#  cache:
+#    policy: push
+#  before_script:
+#    - pip install pytest
+#  script:
+#    - python -m pytest tests/TestService 

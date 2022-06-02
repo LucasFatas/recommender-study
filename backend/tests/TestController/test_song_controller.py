@@ -1,24 +1,8 @@
 import numpy as np
-
+from src.Entities.Song import Song
 from src.Services.QuestionnaireService import add_user, add_value, add_personality
 from src.Services.SongService import add_top_songs
 from src.main import app
-from src.Entities.Song import Song
-
-
-# Tests for QuestionnaireController.
-def test_save_answers():
-    data = {
-        "user": "1",
-        "value_answers": [1, 2, 3, 4, 5, 6, 6, 5, 4, 3, 2, 1, 6, 6, 6, 6, 6, 6, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 4,
-                          4, 4, 4, 4, 4, 3, 3, 5, 5],
-        "personality_answers": [5, 6]
-    }
-
-    response = app.test_client().post('/questionnaire/answer/add', json=data)
-
-    assert response.json == {"values": [4.5, 2.5, 3.25, 2.83, 2.0, 4.67, 2.67, 3.75, 4.33, 4.0], "personalities": 0} \
-           and response.status_code == 200
 
 
 # Tests for SongController.
@@ -223,11 +207,3 @@ def test_save_ratings():
 def test_spotify_log_in():
     # TODO: add test for spotify callback. (see if possible)
     assert True
-
-
-if __name__ == '__main__':
-    test_save_answers()
-
-    test_match_user()
-    test_save_ratings()
-    test_retrieve_top_songs()
