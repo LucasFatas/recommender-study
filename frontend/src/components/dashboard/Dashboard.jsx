@@ -1,9 +1,8 @@
 import React from 'react';
-import { getAnswers, getMatchData, getScores, getSongRatings, getSongs } from '../../API/Dashboard';
 import { useEffect, useState } from "react";
 import { useNavigate } from 'react-router-dom';
-import { isLoggedIn } from "../../controller/dashboardController";
-import {CSVDownload, CSVLink} from 'react-csv'
+import { isLoggedIn, retrieveCSV } from "../../controller/dashboardController";
+import { CSVLink} from 'react-csv'
 
 export const Dashboard = () => {
   
@@ -20,18 +19,24 @@ export const Dashboard = () => {
     sessionStorage.removeItem("token")
     navigate("/login")
   };
-
-
+  const date = () => {
+    var currentdate = new Date(); 
+    return currentdate.getDate() + "/"
+                  + (currentdate.getMonth()+1)  + "/" 
+                  + currentdate.getFullYear() + " @ "  
+                  + currentdate.getHours() + ":"  
+                  + currentdate.getMinutes() + ":" 
+                  + currentdate.getSeconds();
+  }
   
 
-
-  // const inputStyle = "appearance-none rounded-full h-4 w-4 border border-gray-300 bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer";
+// This part is temporary, it is going to change next sprint
   const batchNumber = 1
   const batchUsers = 1
   const batchMetric = "euclidian"
   const batchType = "Questionnaire"
 
-  const downloadData = ["Songs", "Q&A", "Rating&Feedback", "Scores"]
+  const downloadData = ["Songs", "Q&A", "Playlist Rating&Feedback", "Scores", "Song Ratings"]
   const batchs = [1,2]
   const metric = ["Euclidean", "Manhattan"]
 
@@ -39,6 +44,7 @@ export const Dashboard = () => {
   const [batchToDownload, setBatchToDownload] = useState("");
   const [metricNextBatch, setMetricNextBatch] = useState("");
   const [CSVToDownload, setCSVToDownload] = useState([]);
+  const [canDownload, setCanDownload] = useState(false);
   
   const [changeBatch, setChangeBatch] = useState(false);
 
@@ -49,37 +55,8 @@ export const Dashboard = () => {
   const showChangeBatchButtons = () => {
     setChangeBatch(true)
   }
-  const downloadCSV= async () => {
-    console.log("download CSV")
-    // getSongs(batchToDownload)
-    console.log(batchToDownload, dataToDownload)
 
-    switch(dataToDownload) {
-      case "Songs":
-        const csvSongs = await getSongs(batchToDownload, sessionStorage.getItem("token")).then(res =>{
 
-          const csvSongsString = res.toString()
-          setCSVToDownload(csvSongsString)
-        }
-        )
-        
-       
-        break;
-      case "Q&A":
-        getAnswers(batchToDownload)
-        break;
-      case "Rating&Feedback":
-        getSongRatings()
-        getMatchData()
-        break;
-      case "Scores":
-        getScores(batchToDownload)
-        break;
-      default:
-        // code block
-        console.log("error word does not exist: " ,dataToDownload)
-    }
-  }
   
   return (
     
@@ -90,7 +67,7 @@ export const Dashboard = () => {
           <div className='flex flex-col rounded-[10px] mx-10 px-12 py-6 border-solid border-2 border-gray-300 bg-gray-700' >
           
          
-
+            {/* This is temporary, It is going to change Next Sprint in branch 33 Experiment Parameters  */}
             <span className="text-white text-center text-xl"> Current Batch </span>
             <div className='flex'>
               <span className="text-white pr-3"> Batch #: </span>
@@ -160,7 +137,7 @@ export const Dashboard = () => {
           <div className='flex'>
             <span className="text-white pr-3"> Data: </span>
             {downloadData.map((data, index) => 
-              (<div className='pr-3 '>
+              (<div key={index} className='pr-3 '>
                 <input 
                   type="radio" 
                   // className={inputStyle} 
@@ -176,7 +153,7 @@ export const Dashboard = () => {
           <div className='flex'>
             <span className="text-white pr-3"> Batch: </span>
             {batchs.map((batch, index) => 
-              (<div className='pr-3 '>
+              (<div key={index} className='pr-3 '>
                 <input 
                   type="radio" 
                   // className={inputStyle} 
@@ -191,26 +168,30 @@ export const Dashboard = () => {
           </div>
 
           <div className='text-center py-5'>
-              <button type="submit" className=' bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-2 rounded-full ' onClick={downloadCSV} >
+              <button type="submit" className=' bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-2 rounded-full ' onClick={() => retrieveCSV(batchToDownload, dataToDownload, setCSVToDownload, setCanDownload)} >
                 <div className='grid place-items-center align-text-bottom'>
-                  <span className="text-white"> Confirm </span>
+                  <span className="text-white"> Retrieve Data </span>
                 </div>
               </button> 
           </div>
-          <div className='text-center'>
-            <CSVLink
-              data={CSVToDownload}
-              separator={","}
-              enclosingCharacter={`"`}
-              filename="filefile.csv"
-            >
-              <button className=' bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full ' >
-                <div className='grid place-items-center '>
-                  <span className="text-white"> download </span>
-                </div>
-              </button> 
-            </CSVLink>
-          </div>
+          {!canDownload?
+          <></>
+          :
+            <div className='text-center'>
+              <CSVLink
+                data={CSVToDownload}
+                separator={","}
+                enclosingCharacter={`"`}
+                filename={dataToDownload + " "+ date() + ".csv"}
+              >
+                <button className=' bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full '  onClick={() => setCanDownload(false)}>
+                  <div className='grid place-items-center '>
+                    <span className="text-white"> download </span>
+                  </div>
+                </button> 
+              </CSVLink>
+            </div>
+          }
           
         </div>
         

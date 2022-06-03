@@ -19,33 +19,17 @@ export const getSongs = async (batchId, token) => {
     }
 }
 
-export const getSongRatings = async () => {
+export const getSongRatings = async (token) => {
     console.log("ratings")
     try {
         const response = await fetch(`${serverUrl}:${port}/dashboard/songRatings`, {
             method: 'GET',
             headers: {
+                'Authorization': "Bearer " + token,
                 'Content-Type': 'text/csv'
-            },
-        });
-        console.log(response);
-        return response
-    } catch (error) {
-        return console.log(error);
-    }
-}
-
-export const getScores = async (batchId) => {
-    console.log(batchId);
-    try {
-        const response = await fetch(`${serverUrl}/dashboard/scores`, {
-            method: 'POST',
-            mode: 'no-cors',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(batchId),
-        });
+                
+            }
+        }).then(res => res.text());
         console.log(response);
         return response
     } catch (error) {
@@ -53,17 +37,17 @@ export const getScores = async (batchId) => {
     }
 }
 
-export const getAnswers = async (batchId) => {
+export const getScores = async (batchId, token) => {
     console.log(batchId);
     try {
-        const response = await fetch(`${serverUrl}/dashboard/answers`, {
-            method: 'POST',
-            mode: 'no-cors',
+        const response = await fetch(`${serverUrl}:${port}/dashboard/scores?batchId=${batchId}`, {
+            method: 'GET',
             headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(batchId),
-        });
+                'Authorization': "Bearer " + token,
+                'Content-Type': 'text/csv'
+                
+            }
+        }).then(res => res.text());
         console.log(response);
         return response
     } catch (error) {
@@ -71,19 +55,38 @@ export const getAnswers = async (batchId) => {
     }
 }
 
-export const getMatchData = async () => {
+export const getAnswers = async (batchId, token) => {
+    console.log(batchId);
+    try {
+        const response = await fetch(`${serverUrl}:${port}/dashboard/answers?batchId=${batchId}`, {
+            method: 'GET',
+            headers: {
+                'Authorization': "Bearer " + token,
+                'Content-Type': 'text/csv'
+                
+            }
+        }).then(res => res.text());
+        console.log(response);
+        return response
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+export const getMatchData = async (token) => {
     try {
         const response = await fetch(`${serverUrl}:${port}/dashboard/match`, {
             method: 'GET',
-            mode: 'no-cors',
             headers: {
-                'Content-Type': 'application/json'
-            },
-        });
+                'Authorization': "Bearer " + token,
+                'Content-Type': 'text/csv'
+                
+            }
+        }).then(res => res.text());
         console.log(response);
         return response
     } catch (error) {
-        return console.log(error);
+        console.log(error);
     }
 }
 
