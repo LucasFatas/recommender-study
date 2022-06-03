@@ -3,6 +3,7 @@ import { getAnswers, getMatchData, getScores, getSongRatings, getSongs } from '.
 import { useEffect, useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import { isLoggedIn } from "../../controller/dashboardController";
+import {CSVDownload, CSVLink} from 'react-csv'
 
 export const Dashboard = () => {
   
@@ -18,7 +19,10 @@ export const Dashboard = () => {
   const logout = () => {
     sessionStorage.removeItem("token")
     navigate("/login")
-  }
+  };
+
+
+  
 
 
   // const inputStyle = "appearance-none rounded-full h-4 w-4 border border-gray-300 bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer";
@@ -34,6 +38,7 @@ export const Dashboard = () => {
   const [dataToDownload, setDataToDownload] = useState("");
   const [batchToDownload, setBatchToDownload] = useState("");
   const [metricNextBatch, setMetricNextBatch] = useState("");
+  const [CSVToDownload, setCSVToDownload] = useState([]);
   
   const [changeBatch, setChangeBatch] = useState(false);
 
@@ -44,14 +49,21 @@ export const Dashboard = () => {
   const showChangeBatchButtons = () => {
     setChangeBatch(true)
   }
-  const downloadCSV= () => {
+  const downloadCSV= async () => {
     console.log("download CSV")
     // getSongs(batchToDownload)
     console.log(batchToDownload, dataToDownload)
 
     switch(dataToDownload) {
       case "Songs":
-        getSongs(batchToDownload, sessionStorage.getItem("token"))
+        const csvSongs = await getSongs(batchToDownload, sessionStorage.getItem("token")).then(res =>{
+
+          const csvSongsString = res.toString()
+          setCSVToDownload(csvSongsString)
+        }
+        )
+        
+       
         break;
       case "Q&A":
         getAnswers(batchToDownload)
@@ -76,6 +88,9 @@ export const Dashboard = () => {
       <div className='flex rounded-[20px] mx-10 px-5 py-6 border-solid border-4 border-gray-300 bg-gray-700' >
         <div className='flex flex-col'>
           <div className='flex flex-col rounded-[10px] mx-10 px-12 py-6 border-solid border-2 border-gray-300 bg-gray-700' >
+          
+         
+
             <span className="text-white text-center text-xl"> Current Batch </span>
             <div className='flex'>
               <span className="text-white pr-3"> Batch #: </span>
@@ -89,6 +104,9 @@ export const Dashboard = () => {
               <span className="text-white pr-3"> Type of batch: </span>
               <span className="text-white pr-3"> {batchType} </span>
             </div>
+            
+            
+            
             <div className='flex'>
               <span className="text-white pr-3"> Metric: </span>
               <span className="text-white pr-3"> {batchMetric} </span>
@@ -101,6 +119,8 @@ export const Dashboard = () => {
                 <span className="text-white"> New Batch </span>
               </div>
             </button> 
+            
+            
           </div>
         :
         <>
@@ -125,6 +145,7 @@ export const Dashboard = () => {
               <span className="text-white"> Create and Change to New Batch </span>
             </div>
           </button> 
+          
         </div>
        </>
 
@@ -169,15 +190,28 @@ export const Dashboard = () => {
             
           </div>
 
-          <div className='text-center '>
-            {/* <form method="get" action="file.doc"> */}
+          <div className='text-center py-5'>
               <button type="submit" className=' bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-2 rounded-full ' onClick={downloadCSV} >
                 <div className='grid place-items-center align-text-bottom'>
-                  <span className="text-white"> Download </span>
+                  <span className="text-white"> Confirm </span>
                 </div>
               </button> 
-            {/* </form> */}
           </div>
+          <div className='text-center'>
+            <CSVLink
+              data={CSVToDownload}
+              separator={","}
+              enclosingCharacter={`"`}
+              filename="filefile.csv"
+            >
+              <button className=' bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full ' >
+                <div className='grid place-items-center '>
+                  <span className="text-white"> download </span>
+                </div>
+              </button> 
+            </CSVLink>
+          </div>
+          
         </div>
         
       </div>
