@@ -21,11 +21,12 @@ import intro from './util/introductions.json'
 
 import { switchBatch } from './controller/dashboardController';
 
-const defaultPage = '/loginPage';
+const defaultPage = '/websiteIntroduction';
 
 const App = () => {
 
-  const [currentBatch, setCurrentBatch] = useState('questionnaire');
+  //currentBatch can either be 'questionnaire' or 'recommender'
+  const [currentBatch, setCurrentBatch] = useState('recommender');
 
   //Call this function to switch batch
   /* 

@@ -14,8 +14,10 @@ from src.Services.SongService import get_top_songs, add_top_songs, add_playlist_
 from src.spotify import get_access_token, get_top_songs_api, AuthorizationException, InvalidAccountException
 from src.Computation.matching import match
 
-songs = Blueprint('spotify', __name__)
 load_dotenv()
+
+songs = Blueprint('spotify', __name__)
+frontend_url = os.getenv('FRONTEND_URL')
 db, cursor, database = open_connection()
 
 
@@ -37,7 +39,6 @@ def retrieve_top_songs():
 @songs.route('/match')
 def match_user():
     userId = request.args['userId']
-    load_dotenv()
     try:
         # Add the newly formatted answers to our database.
         values = get_value(userId)
@@ -125,7 +126,7 @@ def spotify_log_in():
         add_top_songs(userId, top_songs, db, cursor, database)
 
         # Redirect to first page of the questionnaire
-        return redirect(frontend_url + "/questionnaire/page1?userID = " + str(userId), 302)
+        return redirect(frontend_url + "/questionnaire?userID=" + str(userId), 302)
 
     except AuthorizationException as e:
         # Exception handling in case there is an authorization error.

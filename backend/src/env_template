@@ -2,7 +2,7 @@
 # you should make a copy of this file and change its name to .env and remove these comments
 
 PORT=3000
-FRONTEND_URL=http://www.localhost.com/5000
+FRONTEND_URL=http://localhost/5000
 
 DB_HOST=localhost
 DB_DATABASE=Recommender
