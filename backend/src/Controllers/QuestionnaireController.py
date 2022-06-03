@@ -6,6 +6,7 @@ from src.Services.database_config import open_connection
 from src.Services.QuestionnaireService import add_answers, add_personality, add_value
 
 
+
 questionnaire = Blueprint("questionnaire", __name__)
 db, cursor, database = open_connection()
 
@@ -39,10 +40,6 @@ def save_answer():
     value, personality = calculations(data['value_answers'], data['personality_answers'])
     add_personality(data['user'], personality, db, cursor, database)
     add_value(data['user'], value, db, cursor, database)
-
-    add_value(data['user'], value)
-
-    add_personality(data['user'], personality)
 
     # Process successful, return results for frontend to show to the user.
     return jsonify(values=value, personalities=personality)

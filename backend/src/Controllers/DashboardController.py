@@ -12,7 +12,7 @@ dashboard = Blueprint('dashboard', __name__)
 @dashboard.route("/scores")
 def retrieve_scores():
     db, cursor, database = open_connection()
-    batchId = request.get_json(force=True)['batchId']
+    batchId = request.args['batchId']
 
     scores = get_all_scores(batchId, db, cursor, database)
 
@@ -37,7 +37,7 @@ def retrieve_scores():
 @dashboard.route("/answers")
 def retrieve_answers():
     db, cursor, database = open_connection()
-    batchId = request.get_json(force=True)['batchId']
+    batchId = request.args['batchId']
 
     scores = get_all_answers(batchId, db, cursor, database)
 
@@ -60,7 +60,7 @@ def retrieve_answers():
 @dashboard.route("/songs")
 def retrieve_songs_from_batch():
     db, cursor, database = open_connection()
-    batchId = request.get_json(force=True)['batchId']
+    batchId = request.args['batchId']
 
     scores = get_all_songs(batchId, db, cursor, database)
 

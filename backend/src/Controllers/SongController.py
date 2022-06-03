@@ -15,7 +15,7 @@ from src.spotify import get_access_token, get_top_songs_api, AuthorizationExcept
 from src.Computation.matching import match
 
 songs = Blueprint('spotify', __name__)
-frontend_url = "http://www.localhost.com/3000"
+load_dotenv()
 db, cursor, database = open_connection()
 
 
@@ -31,21 +31,23 @@ def retrieve_top_songs():
         return jsonify(songs=[song.__dict__ for song in top_songs])
     except DatabaseException as e:
         # Exception handling in case there is a database error.
-        return redirect(frontend_url + "/error/database")
+        return redirect(os.getenv('FRONTEND_URL') + "/error/database")
 
 
-@songs.route('/match', methods=["POST"])
+@songs.route('/match')
 def match_user():
     userId = request.args['userId']
     load_dotenv()
     try:
         # Add the newly formatted answers to our database.
-        values = get_value(userId, db, cursor, database)
-        personality = get_personality(userId, db, cursor, database)
+        values = get_value(userId)
+        personality = get_personality(userId)
 
         # Find IDs of the users more similar to the given user id
         val_user, pers_user, random_user = match(userId, values, personality, 1, os.environ.get("METRIC"))
 
+        lst = [Match(val_user, get_top_songs(val_user)), Match(pers_user, get_top_songs(pers_user)), Match(random_user,
+                    get_top_songs(random_user))]
         lst = [Match(val_user, get_top_songs(val_user, db, cursor, database)),
                Match(pers_user, get_top_songs(pers_user, db, cursor, database)),
                Match(random_user, get_top_songs(random_user, db, cursor, database))]

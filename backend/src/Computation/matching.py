@@ -1,9 +1,6 @@
 from src.Services.QuestionnaireService import get_all_values, get_all_personalities, get_random_user, add_matches
 from src.Computation.distance import manhattan_distance, euclidean_distance, camberan_distance
-from src.Services.database_config import open_connection
 
-
-db, cursor, database = open_connection()
 
 def match(userId, values, personality, batch, metric):
     """

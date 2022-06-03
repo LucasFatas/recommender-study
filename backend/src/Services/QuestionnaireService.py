@@ -3,6 +3,7 @@ from random import randint
 from src.Services.database_config import DatabaseException, open_connection
 from dotenv import load_dotenv
 import os
+import time
 
 load_dotenv()
 
@@ -16,7 +17,7 @@ def add_answers(answers, db, cursor, database):
         sql = "INSERT INTO " + database + ".Answer(userId, questionNumber, response) VALUES (%s, %s, %s)"
 
         cursor.executemany(sql, answers)
-        if not os.getenv('IS_TESTING'):
+        if os.getenv('IS_TESTING') == "FALSE":
             db.commit()
         return "Success storing all Answers"
 
@@ -35,7 +36,8 @@ def add_user(batch_id, db, cursor, database):
 
         participant_id = cursor.lastrowid
 
-        if not os.getenv('IS_TESTING'):
+        time.sleep(1)
+        if os.getenv('IS_TESTING') == "FALSE":
             db.commit()
         return participant_id
 
@@ -59,7 +61,7 @@ def add_value(user_id, values, db, cursor, database):
                values[5], values[6], values[7], values[8], values[9])
         cursor.execute(sql, val)
 
-        if not os.getenv('IS_TESTING'):
+        if os.getenv('IS_TESTING') == "FALSE":
             db.commit()
 
         return "Success storing value"
@@ -83,7 +85,7 @@ def add_personality(user_id, personality, db, cursor, database):
                personality[3], personality[4], personality[5])
         cursor.execute(sql, val)
 
-        if not os.getenv('IS_TESTING'):
+        if os.getenv('IS_TESTING') == "FALSE":
             db.commit()
 
         return "Success storing personality"
@@ -136,7 +138,7 @@ def add_matches(userId, val_user, pers_user, random_user, db, cursor, database):
         val = (userId, val_user, pers_user, random_user)
         cursor.execute(sql, val)
 
-        if not os.getenv('IS_TESTING'):
+        if os.getenv('IS_TESTING') == "FALSE":
             db.commit()
 
         return "Success storing personality"
@@ -195,7 +197,8 @@ def get_random_user(user1, user2, batch, db, cursor, database):
 
         cursor.execute(sql, (batch, user1, user2))
         result = cursor.fetchall()
-        return result[randint(0, len(result)-1)][0]
+
+        return result[randint(0, len(result))][0]
     except mysql.connector.errors.Error as e:
         print(e)
         raise DatabaseException("Error connecting to database when retrieving users.")
