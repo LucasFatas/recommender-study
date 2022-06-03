@@ -116,8 +116,8 @@ def spotify_log_in():
         top_songs = get_top_songs_api(access_token)
 
         # Store the user in the database.
-        userId = add_user(1, db, cursor, database)
-        # TODO: Batch Number hardcoded for now
+        batch_number = os.getenv('BATCH')
+        userId = add_user(batch_number, db, cursor, database)
 
         # Store top songs into our database.
         add_top_songs(userId, top_songs, db, cursor, database)
