@@ -8,6 +8,25 @@ export const Dashboard = () => {
   
 
   const navigate = useNavigate()
+
+  
+// This part is temporary, it is going to change next sprint
+  const batchNumber = 1
+  const batchUsers = 1
+  const batchMetric = "euclidian"
+  const batchType = "Questionnaire"
+
+  const downloadData = ["Songs", "Q&A", "Playlist Rating&Feedback", "Scores", "Song Ratings"]
+  const batchs = [1,2]
+  const metric = ["Euclidean", "Manhattan"]
+
+  const [dataToDownload, setDataToDownload] = useState("");
+  const [batchToDownload, setBatchToDownload] = useState("");
+  const [metricNextBatch, setMetricNextBatch] = useState("");
+  const [CSVToDownload, setCSVToDownload] = useState([]);
+  const [canDownload, setCanDownload] = useState(false);
+  
+  const [changeBatch, setChangeBatch] = useState(false);
  
   
   useEffect(() => {
@@ -31,22 +50,7 @@ export const Dashboard = () => {
   
 
 // This part is temporary, it is going to change next sprint
-  const batchNumber = 1
-  const batchUsers = 1
-  const batchMetric = "euclidian"
-  const batchType = "Questionnaire"
 
-  const downloadData = ["Songs", "Q&A", "Playlist Rating&Feedback", "Scores", "Song Ratings"]
-  const batchs = [1,2]
-  const metric = ["Euclidean", "Manhattan"]
-
-  const [dataToDownload, setDataToDownload] = useState("");
-  const [batchToDownload, setBatchToDownload] = useState("");
-  const [metricNextBatch, setMetricNextBatch] = useState("");
-  const [CSVToDownload, setCSVToDownload] = useState([]);
-  const [canDownload, setCanDownload] = useState(false);
-  
-  const [changeBatch, setChangeBatch] = useState(false);
 
   const createNewBatch = () => {
     console.log("create new batch with ", metricNextBatch, "metric")
@@ -107,7 +111,6 @@ export const Dashboard = () => {
               (<div className='pr-3 '>
                 <input 
                   type="radio" 
-                  // className={inputStyle} 
                   value={metric}
                   name={"metric"}
                   onChange={e => setMetricNextBatch(e.target.value)}
@@ -140,7 +143,6 @@ export const Dashboard = () => {
               (<div key={index} className='pr-3 '>
                 <input 
                   type="radio" 
-                  // className={inputStyle} 
                   value={data}
                   name={"data"}
                   onChange={e => setDataToDownload(e.target.value)}

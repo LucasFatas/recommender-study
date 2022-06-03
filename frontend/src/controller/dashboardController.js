@@ -12,7 +12,11 @@ export const switchBatch = (currentBatch, setCurrentBatch) => {
         : setCurrentBatch('questionnaire');
 }
 
-
+/**
+ * Check if the user is logged in, if not, she/he is redirected to the log in
+ * @param {*} token 
+ * @param {*} navigate 
+ */
 export const isLoggedIn = (token, navigate) => {
     
       if(!token)
@@ -21,7 +25,13 @@ export const isLoggedIn = (token, navigate) => {
         console.log('authentication is a success');
 }
 
-
+/**
+ * Based on the user choice, the right CSV is retrieved from teh back-end
+ * @param {*} batchToDownload 
+ * @param {*} dataToDownload 
+ * @param {*} setCSVToDownload 
+ * @param {*} setCanDownload 
+ */
 export const retrieveCSV = async (batchToDownload, dataToDownload, setCSVToDownload, setCanDownload) => {
   console.log("download CSV")
   console.log(batchToDownload, dataToDownload)
