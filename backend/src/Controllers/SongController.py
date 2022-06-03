@@ -18,7 +18,7 @@ frontend_url = "http://www.localhost.com/3000"
 db, cursor, database = open_connection()
 
 
-@songs.route('/songs/get', methods=["POST"])
+@songs.route('/songs/get')
 def retrieve_top_songs():
     try:
         data = request.args
@@ -33,7 +33,7 @@ def retrieve_top_songs():
         return redirect(frontend_url + "/error/database")
 
 
-@songs.route('/match', methods=["POST"])
+@songs.route('/match')
 def match_user():
     data = request.args
     userId = data['user']
