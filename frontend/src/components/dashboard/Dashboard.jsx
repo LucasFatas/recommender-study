@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import { isLoggedIn, retrieveCSV } from "../../controller/dashboardController";
 import { CSVLink} from 'react-csv'
+import { DownloadDashboard } from './DownloadDashboard';
 
 export const Dashboard = () => {
   
@@ -40,12 +41,7 @@ export const Dashboard = () => {
   };
   const date = () => {
     var currentdate = new Date(); 
-    return currentdate.getDate() + "/"
-                  + (currentdate.getMonth()+1)  + "/" 
-                  + currentdate.getFullYear() + " @ "  
-                  + currentdate.getHours() + ":"  
-                  + currentdate.getMinutes() + ":" 
-                  + currentdate.getSeconds();
+    return `${currentdate.getDate()}/${(currentdate.getMonth()+1)}/${currentdate.getFullYear()} @ ${currentdate.getHours()}:${currentdate.getMinutes()}:${currentdate.getSeconds()}`;
   }
   
 
@@ -93,109 +89,55 @@ export const Dashboard = () => {
               <span className="text-white pr-3"> {batchMetric} </span>
             </div>
           </div>
-          {!changeBatch?
-          <div className='py-2 text-center'>
-            <button className=' bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full ' onClick={showChangeBatchButtons} >
-              <div className='grid place-items-center '>
-                <span className="text-white"> New Batch </span>
-              </div>
-            </button> 
-            
-            
-          </div>
-        :
-        <>
-          <div className='flex py-2'>
-            <span className="text-white pr-3"> Metric: </span>
-            {metric.map((metric, index) => 
-              (<div className='pr-3 '>
-                <input 
-                  type="radio" 
-                  value={metric}
-                  name={"metric"}
-                  onChange={e => setMetricNextBatch(e.target.value)}
-                /> 
-                <span className="text-white"> {metric} </span>
-              </div>)
-            )}
-          </div>
-          <div className='py-2 text-center'>
-          <button className=' bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full ' onClick={createNewBatch} >
-            <div className='grid place-items-center '>
-              <span className="text-white"> Create and Change to New Batch </span>
-            </div>
-          </button> 
-          
-        </div>
-       </>
-
-
-          }
-          
-          
-        </div>
-        
-        <div className='flex flex-col rounded-[10px] mx-10 px-12 py-6 border-solid border-2 border-gray-300 bg-gray-700' >
-          <span className="text-white text-center text-xl"> Download Data </span>
-          <div className='flex'>
-            <span className="text-white pr-3"> Data: </span>
-            {downloadData.map((data, index) => 
-              (<div key={index} className='pr-3 '>
-                <input 
-                  type="radio" 
-                  value={data}
-                  name={"data"}
-                  onChange={e => setDataToDownload(e.target.value)}
-                /> 
-                <span className="text-white"> {data} </span>
-              </div>)
-            )}
-            
-          </div>
-          <div className='flex'>
-            <span className="text-white pr-3"> Batch: </span>
-            {batchs.map((batch, index) => 
-              (<div key={index} className='pr-3 '>
-                <input 
-                  type="radio" 
-                  // className={inputStyle} 
-                  value={batch}
-                  name={"batch"}
-                  onChange={e => setBatchToDownload(e.target.value)}
-                /> 
-                <span className="text-white"> {batch} </span>
-              </div>)
-            )}
-            
-          </div>
-
-          <div className='text-center py-5'>
-              <button type="submit" className=' bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-2 rounded-full ' onClick={() => retrieveCSV(batchToDownload, dataToDownload, setCSVToDownload, setCanDownload)} >
-                <div className='grid place-items-center align-text-bottom'>
-                  <span className="text-white"> Retrieve Data </span>
+          {
+            changeBatch
+            ?
+              <>
+                <div className='flex py-2'>
+                  <span className="text-white pr-3"> Metric: </span>
+                  {metric.map((metric, index) => 
+                    (<div className='pr-3 '>
+                      <input 
+                        type="radio" 
+                        value={metric}
+                        name={"metric"}
+                        onChange={e => setMetricNextBatch(e.target.value)}
+                      /> 
+                      <span className="text-white"> {metric} </span>
+                    </div>)
+                  )}
                 </div>
-              </button> 
-          </div>
-          {!canDownload?
-          <></>
-          :
-            <div className='text-center'>
-              <CSVLink
-                data={CSVToDownload}
-                separator={","}
-                enclosingCharacter={`"`}
-                filename={dataToDownload + " "+ date() + ".csv"}
-              >
-                <button className=' bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full '  onClick={() => setCanDownload(false)}>
+                <div className='py-2 text-center'>
+                  <button className=' bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full ' onClick={createNewBatch} >
+                    <div className='grid place-items-center '>
+                      <span className="text-white"> Create and Change to New Batch </span>
+                    </div>
+                  </button> 
+                </div>
+              </>
+            :
+              <div className='py-2 text-center'>
+                <button className=' bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full ' onClick={showChangeBatchButtons} >
                   <div className='grid place-items-center '>
-                    <span className="text-white"> download </span>
+                    <span className="text-white"> New Batch </span>
                   </div>
                 </button> 
-              </CSVLink>
-            </div>
-          }
-          
+              </div>
+          }          
         </div>
+        <DownloadDashboard 
+          downloadData={downloadData} 
+          setDataToDownload={setDataToDownload} 
+          setBatchToDownload={setBatchToDownload} 
+          batchs={batchs} 
+          canDownload={canDownload} 
+          CSVToDownload={CSVToDownload} 
+          batchToDownload={batchToDownload} 
+          dataToDownload={dataToDownload} 
+          setCSVToDownload={setCSVToDownload} 
+          setCanDownload={setCanDownload} 
+          date={date}
+        />
         
       </div>
       <div className='py-2'>

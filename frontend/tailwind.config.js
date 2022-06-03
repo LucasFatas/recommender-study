@@ -3,12 +3,7 @@ module.exports = {
     "./src/**/*.{js,jsx,ts,tsx}",
   ],
   theme: {
-    extend: {
-      'error-login' : {
-        '0%, 100%': { 'backgroud-color': 'blue' },
-        '50%': { 'backgroud-color': 'red' },
-      }
-    },
+    extend: {},
   },
   plugins: [
     function ({ addVariant }) {
