@@ -55,11 +55,14 @@ def get_all_songs(batch, db, cursor, database):
         raise DatabaseException("Error connecting to database when retrieving Scores.")
 
 
-# Method that gets all the total users of a certain batch
+# Method that gets all the total users that finished the questionnaire from a certain batch
 # Parameters: batch number
 # Returns: a number with total users in the specific batch
 def get_user_total(batch, db, cursor, database):
-    sql = "SELECT COUNT(DISTINCT(userId)) FROM old_recommender.Participant WHERE batch = %s"
+    sql = """SELECT COUNT(DISTINCT(userId)) FROM old_recommender.Participant 
+                INNER JOIN old_recommender.Personality AS p ON p.personalityId = participant.userId
+                INNER JOIN old_recommender.Value AS v ON v.valueId = participant.userId
+                WHERE batch = %s"""
 
     cursor.execute(sql, (batch,))
     result = cursor.fetchall()
