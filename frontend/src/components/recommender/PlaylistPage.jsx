@@ -32,7 +32,7 @@ export const PlaylistPage = (props) => {
 	useEffect(() => {	
 			setAnswered(checkEveryElementIsInMap(questionsNumberArr, currentFeedback.questions));
 			setFeedback(feedback);
-		},[currentFeedback.questions, questionsNumberArr, props] //parameters that, if changed, trigger the function above
+		},[currentFeedback.questions, questionsNumberArr, props, feedback, setFeedback] //parameters that, if changed, trigger the function above
   );
 
 	const onAnswerChange = (e, questionNumber) => updateAnswersLogic(e, questionNumber, feedback, setFeedback, currentFeedback, setAnswered, questionsNumberArr);

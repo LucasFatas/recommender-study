@@ -7,29 +7,38 @@ export const sendRatings = async (ratings) => {
     try {
         const response = await fetch(`${serverUrl}:${port}/spotify/ratings/add`, {
             method: 'POST',
-            mode: 'no-cors',
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(ratings),
-        });
-        console.log(response);
+        }).then(res => res.json());
+        console.log("add ratings : ", response);
     } catch (error) {
         console.log(error);
         return;
     }
 }
 
-export const getSongs = async (userId) => {
+export const getSongs = async (userId, setTracklists, setLoading) => {
     try {
-        const response = await fetch(`${serverUrl}:${port}/spotify/match?userId=${userId}`, {
+        await fetch(`${serverUrl}:${port}/spotify/match?userId=${userId}`, {
             method: 'GET',
-            mode: 'no-cors',
             headers: {
                 'Content-Type': 'application/json'
             }
-        });
-        console.log(response);
+        })
+        .then(res => res.json())
+        .then(data => {
+            const [valMatch, persMatch, randMatch] = data.match;
+
+            setTracklists([
+                {name : 'values', songs : valMatch.songs},
+                {name : 'personality', songs : persMatch.songs},
+                {name : 'random', songs : randMatch.songs},
+            ])
+        })
+        .finally(() => setLoading(false))
+
     } catch (error) {
         console.log(error);
         return;

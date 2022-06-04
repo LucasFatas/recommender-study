@@ -24,15 +24,16 @@ export const RecommenderPage = (props) => {
 		<div className='grid place-items-center'>
 			<div className="flex justify-center w-fit h-fit mt-5 space-x-5 ">
 				{trackLists.map((e, i) => (
-					<Playlist
-						playlistName={e.name}
-						setRatings={setRatings}
-						ratings={ratings}
-						key={i}
-						setRatingsFilled={setRatingsFilled}
-						trackList={e.list}
-					/>
-				))}
+						<Playlist
+							playlistName={e.name}
+							setRatings={setRatings}
+							ratings={ratings}
+							key={i}
+							setRatingsFilled={setRatingsFilled}
+							trackList={e.songs}
+						/>
+					))
+				}
 			</div>
 			<Link to="/recommender/page2" className={ratingsFilled ? "mt-5" : "mt-5 pointer-events-none"}>
         <button className={ratingsFilled ? buttonStyles.active : buttonStyles.inactive}>

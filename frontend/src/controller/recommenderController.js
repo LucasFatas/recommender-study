@@ -53,7 +53,7 @@ const parseSessionFeedback = (sessionFeedback) => {
     }
 }
 
-export const initialFeedbackObj = {
+export const defaultFeedbackObj = {
     random : {
         questions : new Map(),
         comment : ""
@@ -68,7 +68,7 @@ export const initialFeedbackObj = {
     }
 }
 
-export const initialRatingsObj = {
+export const defaultRatingsObj = {
     random : { 
         playlist: 0, 
         songs: Array(ratingRange).fill(0) 
@@ -166,3 +166,6 @@ export const loadFeedbackFromStorage = (sessionFeedback) => {
     const sessionObj = JSON.parse(sessionFeedback);
     return parseSessionFeedback(sessionObj);
 }
+
+export const loadFeedbackIfStored = (sessionFeedback) => sessionFeedback ? loadFeedbackFromStorage(sessionFeedback) : defaultFeedbackObj;
+export const loadRatingsIfStored = (sessionRatings) => sessionRatings ? JSON.parse(sessionRatings) : defaultRatingsObj;

@@ -16,11 +16,11 @@ export const Playlist = (props) => {
 				{trackList.map((e, idx) => (
 					<div key={idx}>
 						<Track 
-							trackUrl= {e.url}
+							trackUrl= {e.preview_url}
 							playlistName={playlistName} 
 							song={idx} 
-							songName={e.songName}
-							artist={e.artist}
+							songName={e.name}
+							artist={e.artists}
 							albumName={e.albumName}
 							idx={idx}
 							key={idx}
