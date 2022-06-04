@@ -41,8 +41,8 @@ def match_user():
     userId = request.args['userId']
     try:
         # Add the newly formatted answers to our database.
-        values = get_value(userId)
-        personality = get_personality(userId)
+        values = get_value(userId, db, cursor, database)
+        personality = get_personality(userId, db, cursor, database)
 
         # Find IDs of the users more similar to the given user id
         val_user, pers_user, random_user = match(userId, values, personality, 1, os.environ.get("METRIC"))
