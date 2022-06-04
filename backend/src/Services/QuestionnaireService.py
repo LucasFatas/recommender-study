@@ -1,9 +1,9 @@
 import mysql.connector
-from random import randint
 from src.Services.database_config import DatabaseException, open_connection
 from dotenv import load_dotenv
 import os
 import time
+import random
 
 load_dotenv()
 
@@ -154,10 +154,10 @@ def add_matches(userId, val_user, pers_user, random_user, db, cursor, database):
 # Returns: a list of tuples containing user and his values
 def get_all_values(batch, db, cursor, database):
     try:
-        sql = "SELECT userId, stimulation, selfDirection, universalism, benevolence," \
+        sql = "SELECT p.userId, stimulation, selfDirection, universalism, benevolence," \
               " tradition, conformity, securityVal, powerVal, achievement, hedonism " \
               "FROM " + database + ".Value AS v , " + database + ".Participant AS p " \
-                                                                 "WHERE v.ValueId = p.userId AND p.batch = %s"
+                                                                 "WHERE v.userId = p.userId AND p.batch = %s"
 
         cursor.execute(sql, (batch,))
         result = cursor.fetchall()
@@ -172,11 +172,11 @@ def get_all_values(batch, db, cursor, database):
 # Returns: a list of tuples containing user and his personalities
 def get_all_personalities(batch, db, cursor, database):
     try:
-        sql = "SELECT userID, openness, honesty, emotionality," \
+        sql = "SELECT pa.userId, openness, honesty, emotionality," \
               "extroversion, agreeableness, conscientiousness " \
               "FROM " + database + ".personality AS pe , " \
               + database + ".participant AS pa " \
-                           "WHERE pe.PersonalityId = pa.UserId AND pa.Batch = %s"
+                           "WHERE pe.userId = pa.userId AND pa.Batch = %s"
 
         cursor.execute(sql, (batch,))
         result = cursor.fetchall()
@@ -197,8 +197,7 @@ def get_random_user(user1, user2, batch, db, cursor, database):
 
         cursor.execute(sql, (batch, user1, user2))
         result = cursor.fetchall()
-
-        return result[randint(0, len(result))][0]
+        return random.choice(result)[0]
     except mysql.connector.errors.Error as e:
         print(e)
         raise DatabaseException("Error connecting to database when retrieving users.")

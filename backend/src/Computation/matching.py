@@ -24,8 +24,8 @@ def match(userId, values, personality, batch, metric):
     pers_user = closest_user(personality, batch_personality, metric)
     val_user = closest_user(values, batch_values, metric)
 
-    random_user = get_random_user(userId, pers_user, val_user, batch)
-    add_matches(userId, val_user, pers_user, random_user)
+    random_user = get_random_user(pers_user, val_user, batch, db, cursor, database)
+    add_matches(userId, val_user, pers_user, random_user, db, cursor, database)
     return val_user, pers_user, random_user
 
 

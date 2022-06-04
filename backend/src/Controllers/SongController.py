@@ -47,8 +47,6 @@ def match_user():
         # Find IDs of the users more similar to the given user id
         val_user, pers_user, random_user = match(userId, values, personality, 1, os.environ.get("METRIC"))
 
-        lst = [Match(val_user, get_top_songs(val_user)), Match(pers_user, get_top_songs(pers_user)), Match(random_user,
-                    get_top_songs(random_user))]
         lst = [Match(val_user, get_top_songs(val_user, db, cursor, database)),
                Match(pers_user, get_top_songs(pers_user, db, cursor, database)),
                Match(random_user, get_top_songs(random_user, db, cursor, database))]
@@ -59,7 +57,6 @@ def match_user():
             matched = {"user_id": single_match.userId, "songs": [song.__dict__ for song in single_match.songs]}
 
             data.append(matched)
-
         return jsonify(match=data)
 
     except DatabaseException as e:
