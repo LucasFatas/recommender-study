@@ -15,8 +15,9 @@ import { Introduction } from './components/pages/introductions/Introduction';
 import { ConsentPage } from './components/pages/ConsentPage';
 import { Thanks } from './components/pages/Thanks';
 import { ResultPage } from './components/pages/ResultPage';
-import { LogIn } from './components/dashboard/LogIn';
 import { Dashboard } from './components/dashboard/Dashboard';
+
+import { LogIn } from './components/dashboard/LogIn';
 
 import questions from './util/questions.json';
 import * as data from './util/API.json'

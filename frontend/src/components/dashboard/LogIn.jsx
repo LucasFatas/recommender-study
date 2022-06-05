@@ -13,6 +13,8 @@ export const LogIn = (props) => {
 
   const [username, setUserName] = useState("");
   const [password, setPassword] = useState("");
+  
+  const [errorLogIn, setErrorLogIn] = useState(false);
 
   const handleSubmit = async e => {
     e.preventDefault();
@@ -21,7 +23,10 @@ export const LogIn = (props) => {
       password
     });
     if(token instanceof Error || !token)
+    {
       console.log("wrong authentification");
+      setErrorLogIn(true)
+    }
     else{
       sessionStorage.setItem("token", token); 
       navigate("/dashboard")
@@ -52,7 +57,7 @@ export const LogIn = (props) => {
       focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500" type="password" onChange={e => setPassword(e.target.value)}/>
         </label>
         <div className="text-center">
-          <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full" type="submit">Submit</button>
+          <button className={errorLogIn?"animate-bounce bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-full" : "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"} type="submit">Submit</button>
         </div>
       </form>
     </div>

@@ -13,6 +13,6 @@ export const sendRatings = async (ratings) => {
         });
         console.log(response);
     } catch (error) {
-        return console.log(error);
+        console.log(error);
     }
 }

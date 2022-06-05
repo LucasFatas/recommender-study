@@ -1,6 +1,53 @@
 const { serverUrl, port } = require('../util/API.json');
 
 
+const retrieveCSVHelperFunction = async ({batchId, token, endpoint}) => {
+    console.log(batchId);
+
+    const uri = typeof batchId === 'undefined' || batchId === null
+        ? `${serverUrl}:${port}/dashboard/${endpoint}`
+        : `${serverUrl}:${port}/dashboard/${endpoint}?batchId=${batchId}`;
+        
+    try {
+        const response = await fetch(uri, {
+            method: 'GET',
+            headers: {
+                'Authorization': "Bearer " + token,
+                'Content-Type': 'text/csv'
+                
+            }
+        }).then(res => res.text());
+
+        console.log(response);
+
+        return response        
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+export const getSongs = async (batchId, token) => {
+    return retrieveCSVHelperFunction({batchId : batchId, token : token, endpoint : "songs"})
+}
+
+export const getSongRatings = async (token) => {
+   return retrieveCSVHelperFunction({token : token, endpoint : "songRatings"})
+}
+
+export const getScores = async (batchId, token) => {
+   return retrieveCSVHelperFunction({token : token, batchId : batchId, endpoint : "scores"})
+}
+
+export const getAnswers = async (batchId, token) => {
+    return retrieveCSVHelperFunction({token : token, batchId : batchId, endpoint : "answers"})
+}
+
+export const getMatchData = async (token) => {
+    return retrieveCSVHelperFunction({token : token, endpoint : "match"})
+}
+
+
+
 export const logIn = async (credentials) => {
 
 
