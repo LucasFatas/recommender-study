@@ -255,7 +255,7 @@ def total_users():
 
     users = get_user_total(batch, db, cursor, database)
 
-    return users
+    return jsonify(users=users)
 
 
 # Method that gets the batch the experiment is at.
@@ -265,7 +265,7 @@ def get_batch():
     # Authentication not needed because this needs to be accessed from other places (not just dashboard).
     batch = os.environ['BATCH']
 
-    return batch
+    return jsonify(batch=batch)
 
 
 # Method that gets the metric employed by the experiment
@@ -285,7 +285,7 @@ def get_metric():
     # but it's not used at any point by the app when batch is 1
     metric = os.environ['METRIC']
 
-    return jsonify(metric)
+    return jsonify(metric=metric)
 
 
 # Method that sets the experiment to the next batch.
@@ -312,7 +312,7 @@ def set_batch():
     set_key(find_dotenv(), "METRIC", os.getenv("METRIC"))
     metric = os.environ["METRIC"]
 
-    return str(batch) + ", " + metric
+    return jsonify(batch=batch, metric=metric)
 
 
 """Authentication related methods"""
