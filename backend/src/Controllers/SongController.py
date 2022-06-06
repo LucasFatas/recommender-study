@@ -81,7 +81,6 @@ def save_ratings():
         for rating in ratings:
             songRatings = []
             matchedUserId = rating["matchedUserId"]
-
             for i, songRating in enumerate(rating["songsRatings"]):
                 if songRating != 0:
                     songRatings.append(SongRating(userId, matchedUserId, rating["songUrls"][i], songRating))
