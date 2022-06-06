@@ -2,6 +2,8 @@ image: python:3.8
 
 stages:
   - computation
+  - build
+  - jest
 #  - controller
 #  - service
 
