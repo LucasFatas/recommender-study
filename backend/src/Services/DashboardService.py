@@ -44,7 +44,7 @@ def get_all_answers(batch, db, cursor, database):
 # Returns: a list of tuples containing userId, spotify_url
 def get_all_songs(batch, db, cursor, database):
     try:
-        sql = "Select p.UserId, spotifyUrl from " + database + ".song as s Left Join recommender.participant" \
+        sql = "Select p.UserId, spotifyUrl from " + database + ".song as s Join recommender.participant" \
               " as p on s.UserId=p.UserId Where p.Batch = %s"
         cursor.execute(sql, (batch,))
         result = cursor.fetchall()
