@@ -156,9 +156,9 @@ def get_song_ratings(db, cursor, database):
 # Parameters: batch number
 # Returns: a number with total users in the specific batch
 def get_user_total(batch, db, cursor, database):
-    sql = """SELECT COUNT(DISTINCT(userId)) FROM old_recommender.Participant 
-                INNER JOIN old_recommender.Personality AS p ON p.personalityId = participant.userId
-                INNER JOIN old_recommender.Value AS v ON v.valueId = participant.userId
+    sql = """SELECT COUNT(DISTINCT(Participant.userId)) FROM """ + database + """.Participant 
+                INNER JOIN """ + database + """.Personality AS p ON p.userId = Participant.userId
+                INNER JOIN """ + database + """.Value AS v ON v.userId = Participant.userId
                 WHERE batch = %s"""
 
     cursor.execute(sql, (batch,))

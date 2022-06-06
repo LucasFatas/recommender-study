@@ -250,7 +250,7 @@ def total_users():
         response = jsonify({'message': "Missing Token"})
         return response, 401
 
-    batch = request.args['batch']
+    batch = request.args['batchId']
     db, cursor, database = open_connection()
 
     users = get_user_total(batch, db, cursor, database)
@@ -263,7 +263,23 @@ def total_users():
 @dashboard.route("/batch")
 def get_batch():
     # Authentication not needed because this needs to be accessed from other places (not just dashboard).
-    batch = os.environ['BATCH']
+    batch = os.getenv('BATCH')
+
+    return jsonify(batch=batch)
+
+
+# Method that gets the batch the experiment is at.
+# Returns: the stored batch number.
+@dashboard.route("/revert", methods=['POST'])
+def revert_batch():
+    # Authentication not needed because this needs to be accessed from other places (not just dashboard).
+    os.environ["BATCH"] = str(1)
+    set_key(find_dotenv(), "BATCH", os.getenv("BATCH"))
+    batch = os.environ["BATCH"]
+
+    os.environ["METRIC"] = "Euclidean"
+    set_key(find_dotenv(), "METRIC", os.getenv("METRIC"))
+    metric = os.environ["METRIC"]
 
     return jsonify(batch=batch)
 
