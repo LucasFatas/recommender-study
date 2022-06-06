@@ -40,14 +40,12 @@ def match_user():
     load_dotenv()
     try:
         # Add the newly formatted answers to our database.
-        values = get_value(userId)
-        personality = get_personality(userId)
+        values = get_value(userId, db, cursor, database)
+        personality = get_personality(userId, db, cursor, database)
 
         # Find IDs of the users more similar to the given user id
         val_user, pers_user, random_user = match(userId, values, personality, 1, os.environ.get("METRIC"))
 
-        lst = [Match(val_user, get_top_songs(val_user)), Match(pers_user, get_top_songs(pers_user)), Match(random_user,
-                    get_top_songs(random_user))]
         lst = [Match(val_user, get_top_songs(val_user, db, cursor, database)),
                Match(pers_user, get_top_songs(pers_user, db, cursor, database)),
                Match(random_user, get_top_songs(random_user, db, cursor, database))]
@@ -80,9 +78,8 @@ def save_ratings():
         # Add song ratings into our database.
         # In order to do that, we need to format the data retrieved. We use a helper Entity SongRating
         # SongRating(user id, matched user, spotify preview url, rating)
-        songRatings = []
-
         for rating in ratings:
+            songRatings = []
             matchedUserId = rating["matchedUserId"]
 
             for i, songRating in enumerate(rating["songsRatings"]):

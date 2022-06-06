@@ -45,7 +45,7 @@ def get_top_songs(userId, db, cursor, database):
         for row in data:
             artist_sql = "SELECT DISTINCT name FROM " + database + ".Artist Where spotifyUrl = %(url)s"
 
-            cursor.execute(artist_sql, {'url': str(row[1])})
+            cursor.execute(artist_sql, {'url': str(row[2])})
 
             artists = []
 
@@ -91,6 +91,7 @@ def add_song_ratings(song_ratings, db, cursor, database):
         song_sql = "Insert into " + database + ".SongRating(userId, matchedUserId, spotifyUrl, rating) Values (%s," \
                                                "%s,%s,%s) "
         for song_rating in song_ratings:
+
             val = (song_rating.userId, song_rating.matchedUserId, song_rating.spotify_url, song_rating.rating)
             cursor.execute(song_sql, val)
 
