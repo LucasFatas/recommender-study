@@ -1,4 +1,5 @@
-image: node:12.13.0-alpine
+image: node:latest
+image: python:3.8
 
 stages:
   - computation
