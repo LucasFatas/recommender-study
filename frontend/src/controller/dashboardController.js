@@ -76,6 +76,23 @@ export const retrieveCSV = async (batchToDownload, dataToDownload, setCSVToDownl
   }
 }
 
+/**
+ * This method calls the endpoint to change from batch 1 to batch 2 and as parameter we give the metric of batch 2 
+ * there exist a revert method on the back-end, but we do not use it on the front-end
+ * @param {*} setBatch Setter for Batch
+ * @param {*} setBatchNumber Setter for BatchNumber
+ * @param {*} setBatchMetric Setter for Metric
+ * @param {*} setChangeBatch Setter for changing batchs
+ * @param {*} setMetricNextBatch Setter for MetricNextBatch
+ * @param {String} metricNextBatch 
+ */
+export const backEndCreateNewBatch = (setBatch, setBatchNumber, setBatchMetric, setChangeBatch, setMetricNextBatch, metricNextBatch) => {
+  console.log("create new batch with ", metricNextBatch, "metric")
+  if (metricNextBatch)
+    setBatch(setBatchNumber, setBatchMetric, setChangeBatch, setMetricNextBatch,  sessionStorage.getItem("token"), metricNextBatch)
+}
+
+
 const helperCSVDownload = (res, setCSVToDownload, setCanDownload) => {
   setCSVToDownload(res.toString())
   setCanDownload(true)

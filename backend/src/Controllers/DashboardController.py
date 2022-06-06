@@ -307,7 +307,7 @@ def get_metric():
 # Method that sets the experiment to the next batch.
 # Parameters: metric employed.
 # Returns: the batch number and the metric employed.
-@dashboard.route("/setBatch", methods=["POST"])
+@dashboard.route("/setBatch")
 def set_batch():
     try:
         check_token(request.headers['Authorization'].replace("Bearer ", ""))
@@ -318,7 +318,7 @@ def set_batch():
         response = jsonify({'message': "Missing Token"})
         return response, 401
 
-    asked_metric = request.get_json(force=True)['metric']
+    asked_metric = request.args['metric']
 
     os.environ["BATCH"] = str(2)
     set_key(find_dotenv(), "BATCH", os.getenv("BATCH"))
