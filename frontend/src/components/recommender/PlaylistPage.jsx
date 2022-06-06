@@ -55,7 +55,8 @@ export const PlaylistPage = (props) => {
 				data={{"ratings" : ratings, "comment" : comment, "playlistName" : playlistName}}
 				pathOnSubmit="/thanks"
 				currentPath="/recommender"
-				submitFunction={sendRatings} 
+				submitFunction={() => sendRatings(ratings, feedback)}
+				submitResults={playlistName === 'random'}
 				answered={answered}
 			/>
 		</div>

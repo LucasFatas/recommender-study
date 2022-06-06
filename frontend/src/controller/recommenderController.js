@@ -68,19 +68,22 @@ export const defaultFeedbackObj = {
     }
 }
 
-export const defaultRatingsObj = {
-    random : { 
-        playlist: 0, 
-        songs: Array(ratingRange).fill(0) 
-    },
-    personality : { 
-        playlist: 0, 
-        songs: Array(ratingRange).fill(0) 
-    },
-    values : { 
-        playlist: 0, 
-        songs: Array(ratingRange).fill(0) 
-    },
+
+export const defaultRatingsObj = (userId) => {
+    return {
+        random : { 
+            playlistRating: 0, 
+            songsRatings: Array(ratingRange).fill(0)
+        },
+        personality : { 
+            playlistRating: 0, 
+            songsRatings: Array(ratingRange).fill(0)
+        },
+        values : { 
+            playlistRating: 0, 
+            songsRatings: Array(ratingRange).fill(0)
+        }
+    }
 }
 
 /**
@@ -96,12 +99,12 @@ export const defaultRatingsObj = {
 export const handleRating = (idx, ratings, song, playlistName, setRatingsFilled, setRatings, setCurrentRating) => {
 
     if (song === undefined) {
-        ratings[playlistName].playlist = idx;
-        setRatingsFilled(Object.values(ratings).every(x => x.playlist !== 0));
+        ratings[playlistName].playlistRating = idx;
+        setRatingsFilled(Object.values(ratings).every(x => x.playlistRating !== 0));
     }
  
     else
-        ratings[playlistName].songs[song] = idx;
+        ratings[playlistName].songsRatings[song] = idx;
 
     setRatings(ratings);
     setCurrentRating(idx);
@@ -167,6 +170,41 @@ export const loadFeedbackFromStorage = (sessionFeedback) => {
     return parseSessionFeedback(sessionObj);
 }
 
+/**
+ * Builds data object so that it can be processed by the backend correctly.
+ * @param {Number} userId user id
+ * @param {Object} ratings ratings object
+ * @param {Object} tracklists tracklists object
+ * @param {Object} feedback feedback object
+ * @returns 
+ */
+export const buildDataObject = (userId, ratings, tracklists, feedback) => {
+    return {
+        userId : userId,
+        values : {
+            ...ratings.values,
+            matchedUserId : tracklists[0].matchedUserId,
+            songUrls : tracklists[0].songs.map(x => x.spotify_url),
+            comment : feedback.values.comment,
+            questionFeedback : Array.from(feedback.values.questions.values())
+        },
+        personality : {
+            ...ratings.personality,
+            matchedUserId : tracklists[1].matchedUserId,
+            songUrls : tracklists[1].songs.map(x => x.spotify_url),
+            comment : feedback.personality.comment,
+            questionFeedback : Array.from(feedback.personality.questions.values())
+        },
+        random : {
+            ...ratings.random,
+            matchedUserId : tracklists[2].matchedUserId,
+            songUrls : tracklists[2].songs.map(x => x.spotify_url),
+            comment : feedback.random.comment,
+            questionFeedback : Array.from(feedback.random.questions.values())
+        }
+    }
+}
+
 export const loadFeedbackIfStored = (sessionFeedback) => sessionFeedback ? loadFeedbackFromStorage(sessionFeedback) : defaultFeedbackObj;
-export const loadRatingsIfStored = (sessionRatings) => sessionRatings ? JSON.parse(sessionRatings) : defaultRatingsObj;
+export const loadRatingsIfStored = (sessionRatings, userId) => sessionRatings ? JSON.parse(sessionRatings) : defaultRatingsObj(userId);
 export const loadTracklistsIfStored = (sessionTracklists) => sessionTracklists ? JSON.parse(sessionTracklists) : undefined;

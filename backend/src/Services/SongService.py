@@ -90,7 +90,7 @@ def add_song_ratings(song_ratings, db, cursor, database):
     """
     try:
         db, cursor, database = open_connection()
-        song_sql = "Insert into " + database + ".SongRating(userId, matchedUserId, spotify_url, rating, playlistNumber) " \
+        song_sql = "Insert into " + database + ".SongRating(userId, matchedUserId, spotifyUrl, rating, playlistNumber) " \
                                                "Values (%s,%s,%s,%s,%s) "
         for song_rating in song_ratings:
             val = (song_rating.userId, song_rating.matchedUserId, song_rating.spotify_url,
