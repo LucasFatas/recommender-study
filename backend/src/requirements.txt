@@ -1,0 +1,11 @@
+numpy
+io
+csv
+os
+flask
+flask-cors
+dotenv
+PyJWT
+json
+mysql-connector
+requests
