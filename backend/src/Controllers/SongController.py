@@ -90,6 +90,11 @@ def match_user():
 
 @songs.route('/ratings/add', methods=["POST"])
 def save_ratings():
+    """
+    Stores the ratings of a given user once he has provided all the feedback about his recommendations
+    :except DatabaseException: if there is a problem while storing the data in the database
+    :return: Success message
+    """
     try:
         data = request.get_json(force=True)
 
@@ -128,9 +133,15 @@ def save_ratings():
         return response, 502
 
 
-# Handle the Spotify login and access code retrieval.
 @songs.route('/callback')
 def spotify_log_in():
+    """
+    Handle the Spotify API communication: stores a new user and his top songs into the database
+    :except AuthorizationException: if there is a problem while logging in the Spotify account
+    :except InvalidAccountException: if there is a problem with the amount of top songs of the user
+    :except DatabaseException: if there is a problem while storing the data in the database
+    :return: redirect to start of the questionnaire on the frontend.
+    """
     try:
         # Retrieve the access token after user is logged in.
         access_token = get_access_token(request.args['code'])
@@ -154,6 +165,7 @@ def spotify_log_in():
 
     except InvalidAccountException as e:
         # Exception handling in case there is an Invalid account error.
+        # Happens when a user has less than 5 top songs in his Spotify account
         return redirect(frontend_url + "/error/invalid_account")
 
     except DatabaseException as e:
