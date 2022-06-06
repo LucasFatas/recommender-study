@@ -1,5 +1,3 @@
-import json
-
 from flask import request, redirect, Blueprint, jsonify
 
 from src.Entities.Match import Match
@@ -12,6 +10,7 @@ from src.Services.database_config import DatabaseException
 from src.Services.SongService import get_top_songs, add_top_songs, add_playlist_ratings, add_song_ratings
 from src.spotify import get_access_token, get_top_songs_api, AuthorizationException, InvalidAccountException
 from src.Computation.matching import match
+import os
 
 songs = Blueprint('spotify', __name__)
 frontend_url = "http://www.localhost.com/3000"

@@ -58,21 +58,6 @@ def get_all_songs(batch, db, cursor, database):
         raise DatabaseException("Error connecting to database when retrieving Scores.")
 
 
-# Method that gets all the total users that finished the questionnaire from a certain batch
-# Parameters: batch number
-# Returns: a number with total users in the specific batch
-def get_user_total(batch, db, cursor, database):
-    sql = """SELECT COUNT(DISTINCT(userId)) FROM old_recommender.Participant 
-                INNER JOIN old_recommender.Personality AS p ON p.personalityId = participant.userId
-                INNER JOIN old_recommender.Value AS v ON v.valueId = participant.userId
-                WHERE batch = %s"""
-
-    cursor.execute(sql, (batch,))
-    result = cursor.fetchall()
-
-    return str(result[0][0])
-
-
 # Method that gets all the feedback (except individual songs) of users.
 # Returns: a list of tuples containing userId and for each match, the id of the matched user, the rating of the match
 # and the answer to each question about the match answered by the user.
@@ -162,3 +147,21 @@ def get_song_ratings(db, cursor, database):
     except mysql.connector.errors.Error as e:
         print(e)
         raise DatabaseException("Error connecting to database when retrieving Song ratings.")
+
+
+"""Method about experiment manipulation """
+
+
+# Method that gets all the total users that finished the questionnaire from a certain batch
+# Parameters: batch number
+# Returns: a number with total users in the specific batch
+def get_user_total(batch, db, cursor, database):
+    sql = """SELECT COUNT(DISTINCT(userId)) FROM old_recommender.Participant 
+                INNER JOIN old_recommender.Personality AS p ON p.personalityId = participant.userId
+                INNER JOIN old_recommender.Value AS v ON v.valueId = participant.userId
+                WHERE batch = %s"""
+
+    cursor.execute(sql, (batch,))
+    result = cursor.fetchall()
+
+    return str(result[0][0])
