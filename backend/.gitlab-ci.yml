@@ -11,7 +11,7 @@ computation:
   cache:
     policy: push
   before_script:
-    - pip install pytest numpy mysql-connector
+    - pip install pytest numpy mysql-connector dotenv
     - cd backend
   script:
     - python -m pytest tests/TestComputation 
