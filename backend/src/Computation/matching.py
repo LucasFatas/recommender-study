@@ -21,8 +21,8 @@ def match(userId, values, personality, batch, metric):
     batch_personality = get_all_personalities(batch, db, cursor, database)
     batch_values = get_all_values(batch, db, cursor, database)
 
-    pers_user = closest_user(personality, batch_personality, metric)
-    val_user = closest_user(values, batch_values, metric)
+    pers_user = closest_user(personality, batch_personality, metric, 0)
+    val_user = closest_user(values, batch_values, metric, pers_user)
 
     random_user = get_random_user(userId, pers_user, val_user, batch, db, cursor, database)
     add_matches(userId, val_user, pers_user, random_user, db, cursor, database)
@@ -39,13 +39,14 @@ def calculate_distance(answer, batch_answer, metric):
         return camberan_distance(answer, batch_answer)
 
 
-def closest_user(answer, batch_answer, metric):
-
+def closest_user(answer, batch_answer, metric, id):
     closest = -1
     closest_distance = float("inf")
+    count = 0
     for x in batch_answer:
+        count += 1
         distance = calculate_distance(answer, x[-(len(x) - 1):], metric)
-        if distance < closest_distance:
+        if distance < closest_distance and count != id:
             closest_distance = distance
             closest = x[0]
     return closest
