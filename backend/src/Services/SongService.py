@@ -45,7 +45,7 @@ def get_top_songs(userId, db, cursor, database):
         for row in data:
             artist_sql = "SELECT DISTINCT name FROM " + database + ".Artist Where spotifyUrl = %(url)s"
 
-            cursor.execute(artist_sql, {'url': str(row[1])})
+            cursor.execute(artist_sql, {'url': str(row[2])})
 
             artists = []
 
