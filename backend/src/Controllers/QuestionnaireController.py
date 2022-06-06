@@ -27,18 +27,20 @@ def save_answer():
     for index, answer in enumerate(data['value_answers']):
         answers.append((data['user'], len(data['personality_answers']) + index, answer))
 
+    # Calculate value and personality scores.
+    value, personality = calculations(data['value_answers'], data['personality_answers'])
+
     try:
         # Add the newly formatted answers to our database.
         add_answers(answers, db, cursor, database)
+
+        # Add personality and value scores
+        add_personality(data['user'], personality, db, cursor, database)
+        add_value(data['user'], value, db, cursor, database)
     except DatabaseException as e:
         # Exception handling in case there is an error.
         response = jsonify({'message': str(e)})
         return response, 502
-
-    # Calculate value and personality scores.
-    value, personality = calculations(data['value_answers'], data['personality_answers'])
-    add_personality(data['user'], personality, db, cursor, database)
-    add_value(data['user'], value, db, cursor, database)
 
     # Process successful, return results for frontend to show to the user.
     return jsonify(values=value, personalities=personality)
