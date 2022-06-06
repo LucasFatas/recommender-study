@@ -21,7 +21,6 @@ export const Playlist = (props) => {
 							song={idx} 
 							songName={e.name}
 							artist={e.artists}
-							albumName={e.albumName}
 							idx={idx}
 							key={idx}
 							{...props}
