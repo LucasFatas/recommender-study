@@ -1,0 +1,29 @@
+image: node:latest
+
+cache:
+  paths:
+    - node_modules/
+
+stages:
+  - build
+  - test
+#  - controller
+#  - service
+
+build:
+  stage: build
+  script:
+    - yarn install
+    - yarn build
+  artifacts:
+    paths:
+      - build/
+
+test:
+  stage: test
+  script:
+    - CI=true
+    - yarn test
+  artifacts:
+    paths:
+      - ./
