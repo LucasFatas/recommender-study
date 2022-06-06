@@ -1,6 +1,4 @@
-import * as server from '../util/API.json';
-
-const { serverUrl, port } = server;
+const { serverUrl, port } = require('../util/API.json');
 
 // Send the answers
 export const sendAnswer = async (body) => {
