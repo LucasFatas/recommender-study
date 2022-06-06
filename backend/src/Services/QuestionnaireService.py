@@ -174,8 +174,8 @@ def get_all_personalities(batch, db, cursor, database):
     try:
         sql = "SELECT pa.userId, openness, honesty, emotionality," \
               "extroversion, agreeableness, conscientiousness " \
-              "FROM " + database + ".personality AS pe , " \
-              + database + ".participant AS pa " \
+              "FROM " + database + ".Personality AS pe , " \
+              + database + ".Participant AS pa " \
                            "WHERE pe.userId = pa.userId AND pa.Batch = %s"
 
         cursor.execute(sql, (batch,))

@@ -34,7 +34,7 @@ def add_top_songs(userId, songs, db, cursor, database):
 # Returns: a list of song objects
 def get_top_songs(userId, db, cursor, database):
     try:
-        song_sql = "SELECT name, previewUrl, spotifyUrl FROM " + database + ".song WHERE userId = %s"
+        song_sql = "SELECT name, previewUrl, spotifyUrl FROM " + database + ".Song WHERE userId = %s"
 
         cursor.execute(song_sql, (userId,))
 
