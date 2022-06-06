@@ -13,8 +13,8 @@ install_and_build:
   before_script:
     - cd frontend
   script:
-    - npm install
-    - npm build
+    - yarn install
+    - yarn build
   after_script:
     - cd ..
   artifacts:
