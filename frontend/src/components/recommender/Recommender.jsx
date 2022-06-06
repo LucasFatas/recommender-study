@@ -19,16 +19,16 @@ export const Recommender = (props) => {
 	const { defaultPage } = props;
 
 	const [tracklists, setTracklists] = useState(loadTracklistsIfStored(sessionStorage.getItem("tracklists")));
+	const [shuffledTracklist, setShuffled] = useState(loadTracklistsIfStored(sessionStorage.getItem("shuffled")))
 	const [ratingsFilled, setRatingsFilled] = useState(false);
 	const [loading, setLoading] = useState(true);
 
 	useEffect(
 		() => {
 			if (!tracklists) 
-				getSongs(sessionStorage.getItem("userID"), setTracklists, setLoading);
+				getSongs(sessionStorage.getItem("userID"), setTracklists, setLoading, setShuffled);
 		}, [loading]
 	);
-
 	
 	//Tries to retrieve feedback and ratings from storage, if they're not stored the defaultObject is used.
 	const [feedback, setFeedback] = useState(loadFeedbackIfStored(sessionStorage.getItem("feedback")));
@@ -65,8 +65,8 @@ export const Recommender = (props) => {
 	};
 	
 	const recommenderPage = (
-		<RecommenderPage 
-			trackLists={tracklists} 
+		<RecommenderPage
+		shuffledTracklist={shuffledTracklist}
 			ratings={ratings}
 			setRatings={setRatings}
 			ratingsFilled={ratingsFilled}
@@ -80,9 +80,9 @@ export const Recommender = (props) => {
 		<Routes>
 			<Route path="*" element={<PageNotFound redirect={defaultPage} />}/>
 			<Route path="/" element={<Navigate replace to="page1"/>} />
-			<Route path="page1" element={tracklists === undefined ? loadingComponent : recommenderPage} />
+			<Route path="page1" element={shuffledTracklist ? recommenderPage : loadingComponent} />
 			{[2, 3, 4].map((e, idx) => (
-				<Route path={`page${e}`} exact key={e} element={tracklists ? currentPage(tracklists[idx], e) : loadingComponent} />
+				<Route path={`page${e}`} exact key={e} element={shuffledTracklist ? currentPage(shuffledTracklist[idx], e) : loadingComponent} />
 			))}
 		</Routes>
 	)

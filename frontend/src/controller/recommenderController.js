@@ -6,6 +6,9 @@ export const ratingRange = 5;
 //Orders map entries based on key
 const orderMap = (map) => new Map([...map.entries()].sort());
 
+//Shuffles content of array
+export const shuffleArray = (arr) => arr ? arr.sort(() => Math.random() - 0.5) : undefined;
+
 /**
  * Stringifies feedback object in order for it to be stored in session storage
  * @param {object} feedback feeedback object

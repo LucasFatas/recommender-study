@@ -11,11 +11,11 @@ const buttonStyles = {
 export const RecommenderPage = (props) => {
   
 	const {
-		trackLists, 
 		ratings, 
 		setRatings, 
 		ratingsFilled, 
-		setRatingsFilled
+		setRatingsFilled,
+		shuffledTracklist
 	} = props;
 
 	useEffect(() => setRatingsFilled(Object.values(ratings).every(x => x.playlistRating !== 0)), [ratings, setRatingsFilled])
@@ -23,7 +23,7 @@ export const RecommenderPage = (props) => {
   return (
 		<div className='grid place-items-center'>
 			<div className="flex justify-center w-fit h-fit mt-5 space-x-5 ">
-				{trackLists.map((e, i) => (
+				{shuffledTracklist.map((e, i) => (
 						<Playlist
 							playlistName={e.name}
 							setRatings={setRatings}
@@ -42,5 +42,4 @@ export const RecommenderPage = (props) => {
       </Link>
 		</div>
 	)
-
 }
