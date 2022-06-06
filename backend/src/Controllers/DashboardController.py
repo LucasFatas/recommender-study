@@ -29,7 +29,6 @@ def retrieve_scores():
         return response, 401
 
     db, cursor, database = open_connection()
-    batchId = request.args['batchId']
 
     batchId = request.args['batchId']
 
@@ -65,7 +64,6 @@ def retrieve_answers():
         return response, 401
 
     db, cursor, database = open_connection()
-    batchId = request.args['batchId']
 
     batchId = request.args['batchId']
 
@@ -99,7 +97,6 @@ def retrieve_songs_from_batch():
         return response, 401
 
     db, cursor, database = open_connection()
-    batchId = request.args['batchId']
 
     batchId = request.args['batchId']
 
