@@ -21,10 +21,10 @@ frontend_url = os.getenv('FRONTEND_URL')
 db, cursor, database = open_connection()
 
 
-@songs.route('/songs/get', methods=["POST"])
+@songs.route('/songs/get')
 def retrieve_top_songs():
     try:
-        data = request.get_json(force=True)
+        data = request.args
 
         # Given the user id, retrieve top songs from database.
         top_songs = get_top_songs(data['userId'], db, cursor, database)
@@ -85,7 +85,7 @@ def save_ratings():
 
             for i, songRating in enumerate(rating["songsRatings"]):
                 if songRating != 0:
-                    songRatings.append(SongRating(userId, matchedUserId, rating["songUrls"][i], songRating))
+                    songRatings.append(SongRating(userId, matchedUserId, rating["songUrls"][i], songRating, i + 1))
 
             add_song_ratings(songRatings, db, cursor, database)
 

@@ -6,8 +6,14 @@ FRONTEND_URL=http://localhost/5000
 
 DB_HOST=localhost
 DB_DATABASE=Recommender
-DB_USER=root
-DB_PASSWORD=password
+DB_USER=
+DB_PASSWORD=
 
 IS_TESTING=FALSE
 DB_TEST_DATABASE=Recommender
+RESEARCHER_USERNAME=lucas
+RESEARCHER_PASSWORD=lucas
+KEY=secret
+
+BATCH='1'
+METRIC=euclidean
