@@ -2,7 +2,7 @@ image: node:latest
 
 stages:
   - build
-  - test
+  - jest
 
 cache:
   paths:
@@ -18,7 +18,7 @@ install_and_build:
       - build/
 
 test_application:
-  stage: test
+  stage: jest
   script:
     - CI=true
     - yarn test
