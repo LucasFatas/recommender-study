@@ -6,7 +6,7 @@ import { PlaylistPage } from "./PlaylistPage";
 import { Routes, Route, Navigate } from "react-router-dom";
 import { PageNotFound } from "../errors/PageNotFound";
 import questionsObj from '../../util/questions.json';
-import {	loadFeedbackIfStored, loadRatingsIfStored } from "../../controller/recommenderController";
+import {	loadFeedbackIfStored, loadRatingsIfStored, loadTracklistsIfStored } from "../../controller/recommenderController";
 import { getSongs } from "../../API/Recommender";
 import loadingGif from '../../assets/loading.gif';
 
@@ -18,14 +18,17 @@ export const Recommender = (props) => {
 
 	const { defaultPage } = props;
 
+	const [tracklists, setTracklists] = useState(loadTracklistsIfStored(sessionStorage.getItem("tracklists")));
 	const [ratingsFilled, setRatingsFilled] = useState(false);
-	const [tracklists, setTracklists] = useState(undefined);
 	const [loading, setLoading] = useState(true);
 
 	useEffect(
-		() => {getSongs(sessionStorage.getItem("userID"), setTracklists, setLoading)}, [loading]
+		() => {
+			if (!tracklists) 
+				getSongs(sessionStorage.getItem("userID"), setTracklists, setLoading);
+		}, [loading]
 	);
-	
+
 	
 	//Tries to retrieve feedback and ratings from storage, if they're not stored the defaultObject is used.
 	const [feedback, setFeedback] = useState(loadFeedbackIfStored(sessionStorage.getItem("feedback")));
@@ -78,11 +81,9 @@ export const Recommender = (props) => {
 			<Route path="*" element={<PageNotFound redirect={defaultPage} />}/>
 			<Route path="/" element={<Navigate replace to="page1"/>} />
 			<Route path="page1" element={tracklists === undefined ? loadingComponent : recommenderPage} />
-			{
-				[2, 3, 4].map((e, idx) => (
-					<Route path={`page${e}`} exact key={e} element={tracklists ? currentPage(tracklists[idx], e) : loadingComponent} />
-				))
-			}
+			{[2, 3, 4].map((e, idx) => (
+				<Route path={`page${e}`} exact key={e} element={tracklists ? currentPage(tracklists[idx], e) : loadingComponent} />
+			))}
 		</Routes>
 	)
 }

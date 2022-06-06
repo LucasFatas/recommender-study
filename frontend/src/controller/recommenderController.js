@@ -169,3 +169,4 @@ export const loadFeedbackFromStorage = (sessionFeedback) => {
 
 export const loadFeedbackIfStored = (sessionFeedback) => sessionFeedback ? loadFeedbackFromStorage(sessionFeedback) : defaultFeedbackObj;
 export const loadRatingsIfStored = (sessionRatings) => sessionRatings ? JSON.parse(sessionRatings) : defaultRatingsObj;
+export const loadTracklistsIfStored = (sessionTracklists) => sessionTracklists ? JSON.parse(sessionTracklists) : undefined;

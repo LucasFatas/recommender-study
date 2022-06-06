@@ -31,11 +31,13 @@ export const getSongs = async (userId, setTracklists, setLoading) => {
         .then(data => {
             const [valMatch, persMatch, randMatch] = data.match;
 
-            setTracklists([
+            const tracklists = [
                 {name : 'values', songs : valMatch.songs},
                 {name : 'personality', songs : persMatch.songs},
                 {name : 'random', songs : randMatch.songs},
-            ])
+            ];
+            setTracklists(tracklists);
+            sessionStorage.setItem("tracklists", JSON.stringify(tracklists));
         })
         .finally(() => setLoading(false))
 
