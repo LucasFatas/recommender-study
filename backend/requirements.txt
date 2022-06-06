@@ -5,3 +5,4 @@ python-dotenv
 PyJWT
 mysql-connector
 requests
+mysql-connector-python
