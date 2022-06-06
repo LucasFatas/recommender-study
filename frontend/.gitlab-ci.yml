@@ -7,10 +7,8 @@ cache:
 stages:
   - build
   - test
-#  - controller
-#  - service
 
-build:
+install_and_build:
   stage: build
   script:
     - yarn install
@@ -19,7 +17,7 @@ build:
     paths:
       - build/
 
-test:
+test_application:
   stage: test
   script:
     - CI=true
