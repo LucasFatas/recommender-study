@@ -5,7 +5,8 @@ import { RadioButton } from "../global/RadioButton";
 export const Answer = (props) => {
 
   const {
-    optionsPerAnswer //Number : defines the number of radio buttons per answer
+    optionsPerAnswer,
+    type
   } = props;
 
   const inputs = [];
@@ -15,9 +16,15 @@ export const Answer = (props) => {
 
   return (
     <div className="flex justify-center w-fit mt-5 space-x-7 ">
-      <h3 className="">Strongly disagree</h3>
+      {type === 'values'
+        ? ""
+        : <h3 className="">Disagree</h3>
+      }
       {inputs}
-      <h3 className="">Strongly agree</h3>
+      {type === 'values'
+        ? ""
+        : <h3 className="">Agree</h3>
+      }
     </div>
   )
 }

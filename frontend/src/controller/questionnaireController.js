@@ -54,9 +54,8 @@ export const stringifyAnswers = (answers) => {
  * Parses the session object into the answer object used in the useState
  * @param {{personality : string[][], values : string[][]}} obj 
  * object containing 2D array of size nx2 where n is
- * the number of questions and each item will become an entry
- * in a map where the first value is used as the key and the second as 
- * the value.
+ * the number of questions and each item will become an entry in a 
+ * map where the first value is used as the key and the second as the value.
  * @returns parsed object
  */
 export const parseSessionObj = (obj) => {
@@ -82,33 +81,16 @@ export const updateAnswersLogic = (element, questionNumber, answers, questionsNu
 
     const elementValue = element.target.value;
     const currentNumber = questionNumber + 1;
-
-
-    console.log(questionsNumberArr)
     
     //Set solution in answers map
     answers[type].set(currentNumber, parseInt(elementValue))
     setAnswers(orderAnswers(answers));
 
     //Save answers in session storage
-    window.sessionStorage.setItem("answers", stringifyAnswers(answers));
+    sessionStorage.setItem("answers", stringifyAnswers(answers));
     
     //Enable button to next page if all questions are answered
     setAnswered(questionsNumberArr.every(x => answers[type].has(x)));
-}
-
-
-/**
- * Checks if answers are stored in session storage, 
- * if they are parse and return them.
- * @param {?string} sessionAnswers stringified object that can be null
- * @returns the parsed object with the answer maps
- */
-export const loadAnswersFromStorage = (sessionAnswers) => {
-    if (sessionAnswers) {
-      const sessionObj = JSON.parse(sessionAnswers);
-      return parseSessionObj(sessionObj);
-    }
 }
 
 
