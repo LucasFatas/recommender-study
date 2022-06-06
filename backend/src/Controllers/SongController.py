@@ -17,13 +17,22 @@ frontend_url = "http://www.localhost.com/3000"
 db, cursor, database = open_connection()
 
 
+class BatchException(Exception):
+    pass
+
+
 @songs.route('/songs/get')
 def retrieve_top_songs():
+    """
+    Retrieves the top songs of a given user
+    :except DatabaseException: if there is a problem while fetching the data
+    :return: 5 top songs of a user
+    """
     try:
-        data = request.args
+        userId = request.args['userId']
 
         # Given the user id, retrieve top songs from database.
-        top_songs = get_top_songs(data['userId'], db, cursor, database)
+        top_songs = get_top_songs(userId, db, cursor, database)
 
         # Return JSON object with such a song list.
         return jsonify(songs=[song.__dict__ for song in top_songs])
@@ -34,8 +43,13 @@ def retrieve_top_songs():
 
 @songs.route('/match')
 def match_user():
+    """
+    Retrieves the matches of a given user: the userIds of the matches and their top songs
+    :except DatabaseException: if there is a problem while fetching the data from the database
+    :return: 5 top songs of a user.
+    """
     data = request.args
-    userId = data['user']
+    userId = data['userId']
 
     try:
         # Add the newly formatted answers to our database.
@@ -43,7 +57,13 @@ def match_user():
         personality = get_personality(userId, db, cursor, database)
 
         # Find IDs of the users more similar to the given user id
-        val_user, pers_user, random_user = match(userId, values, personality, 1, data['metric'])
+        batch = os.getenv("BATCH")
+        if batch == str(2):
+            batch = 1
+        elif batch == str(2):
+            raise BatchException("Not in the right batch to do matching.")
+
+        val_user, pers_user, random_user = match(userId, values, personality, batch, data['metric'])
 
         lst = [Match(val_user, get_top_songs(val_user, db, cursor, database)),
                Match(pers_user, get_top_songs(pers_user, db, cursor, database)),
@@ -62,6 +82,10 @@ def match_user():
         # Exception handling in case there is an error.
         response = jsonify({'message': str(e)})
         return response, 502
+    except BatchException as e:
+        print(e)
+        response = jsonify({'message': str(e)})
+        return response, 500
 
 
 @songs.route('/ratings/add', methods=["POST"])

@@ -10,9 +10,16 @@ questionnaire = Blueprint("questionnaire", __name__)
 db, cursor, database = open_connection()
 
 
-# Get answers and save them into the database.
 @questionnaire.route("/answer/add", methods=["POST"])
 def save_answer():
+    """
+    This method first takes the answers of a user to the PVQ and HEXACO questionnaires,
+    stores these answers in the database.
+    After that, it calculates the personality and value scores,
+    stores them in the database, and returns them to the frontend
+    :except DatabaseException: if there is a problem storing the answers or the scores.
+    :return: the personality and value scores of the user
+    """
     data = request.get_json(force=True)
 
     # Format answers retrieved from frontend into our database format to store the data.
@@ -42,5 +49,5 @@ def save_answer():
         response = jsonify({'message': str(e)})
         return response, 502
 
-    # Process successful, return results for frontend to show to the user.
+    # Process successful, return results to frontend and show to the user.
     return jsonify(values=value, personalities=personality)
