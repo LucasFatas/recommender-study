@@ -1,6 +1,3 @@
-image: node:latest
-image: python:3.8
-
 stages:
   - computation
   - build
@@ -12,6 +9,7 @@ cache:
 
 install_and_build:
   stage: build
+  image: node:latest
   script:
     - npm install
     - npm build
@@ -21,6 +19,7 @@ install_and_build:
 
 test_application:
   stage: jest
+  image: node:latest
   script:
     - CI=true
     - yarn test
