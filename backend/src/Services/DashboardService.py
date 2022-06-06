@@ -45,7 +45,7 @@ def get_all_answers(batch, db, cursor, database):
 def get_all_songs(batch, db, cursor, database):
     try:
         sql = "Select p.UserId, spotifyUrl from " + database + ".song as s Join recommender.participant" \
-              " as p on s.UserId=p.UserId Where p.Batch = %s"
+              " as p on s.UserId=p.UserId Where p.Batch = %s ORDER BY p.userId"
         cursor.execute(sql, (batch,))
         result = cursor.fetchall()
         return result

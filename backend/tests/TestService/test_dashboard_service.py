@@ -11,24 +11,29 @@ def test_get_all_scores(set_up):
 
 def test_get_all_answers(set_up):
     db, cursor, database = set_up
-    data = [(3, 0, 4), (3, 1, 1), (3, 2, 5), (3, 3, 4), (3, 4, 5), (3, 5, 5), (3, 6, 4), (3, 7, 3), (3, 8, 2), (3, 9, 1)
-        , (3, 10, 4), (3, 11, 1), (3, 12, 3), (3, 13, 1), (3, 14, 5), (3, 15, 2), (3, 16, 2), (3, 17, 2), (3, 18, 2),
-            (3, 19, 2), (3, 20, 3), (3, 21, 3), (3, 22, 3), (3, 23, 3), (3, 24, 3), (3, 25, 1), (3, 26, 5), (3, 27, 1),
-            (3, 28, 1), (3, 29, 4), (3, 30, 2), (3, 31, 5), (3, 32, 5), (3, 33, 2), (3, 34, 5), (3, 35, 2), (3, 36, 4),
-            (3, 37, 3), (3, 38, 4), (3, 39, 4), (3, 40, 3), (3, 41, 3), (3, 42, 3), (3, 43, 3), (3, 44, 3), (3, 45, 2),
-            (3, 46, 2), (3, 47, 4), (3, 48, 2), (3, 49, 2), (3, 50, 5), (3, 51, 1), (3, 52, 2), (3, 53, 1), (3, 54, 4),
-            (3, 55, 5), (3, 56, 2), (3, 57, 3), (3, 58, 4), (3, 59, 1), (3, 60, 1), (3, 61, 2), (3, 62, 1), (3, 63, 4),
-            (3, 64, 1), (3, 65, 1), (3, 66, 1), (3, 67, 2), (3, 68, 4), (3, 69, 3), (3, 70, 2), (3, 71, 1), (3, 72, 1),
-            (3, 73, 5), (3, 74, 1), (3, 75, 1), (3, 76, 1), (3, 77, 6), (3, 78, 5), (3, 79, 5), (3, 80, 1), (3, 81, 6),
-            (3, 82, 6), (3, 83, 1), (3, 84, 2), (3, 85, 5), (3, 86, 1), (3, 87, 6), (3, 88, 5), (3, 89, 2), (3, 90, 3),
-            (3, 91, 4), (3, 92, 3), (3, 93, 1), (3, 94, 2), (3, 95, 4), (3, 96, 3), (3, 97, 1), (3, 98, 5), (3, 99, 1)]
+    data = [(4, 0, 2), (4, 1, 4), (4, 2, 3)]
 
-    assert data == get_all_answers(1, db, cursor, database)
+    assert get_all_answers(2, db, cursor, database) == data
 
 
 def test_get_all_songs(set_up):
     db, cursor, database = set_up
-    data = []
+    data = [(1, 'https://open.spotify.com/track/03J7yqJA8a4eSjnFUSfCbp'),
+            (1, 'https://open.spotify.com/track/0LUwBqSMzszqZA7td5TjpK'),
+            (1, 'https://open.spotify.com/track/2hSBhzE4hbWRWl4PLMiJsu'),
+            (1, 'https://open.spotify.com/track/5JnASEjM04jp20CjK6PqfI'),
+            (1, 'https://open.spotify.com/track/6COq76th7tzFFi2wlcD6xj'),
+            (2, 'https://open.spotify.com/track/08o9yCplgxLM11ymhvkbl8'),
+            (2, 'https://open.spotify.com/track/3lrNU0pvwTaXsgDqa55A8j'),
+            (2, 'https://open.spotify.com/track/3NqwLwpzbpyvXB2wJE0Oe6'),
+            (2, 'https://open.spotify.com/track/4mK6NMhrACj0W3dWPiQ72G'),
+            (2, 'https://open.spotify.com/track/6X6BRvpa5Z9wW0SuxxlhmI'),
+            (3, 'https://open.spotify.com/track/1emB9tyqtTOH4xLVhZsbZZ'),
+            (3, 'https://open.spotify.com/track/2GiZ3sC2p1Cc2t2gbdMKsN'),
+            (3, 'https://open.spotify.com/track/3nAq2hCr1oWsIU54tS98pL'),
+            (3, 'https://open.spotify.com/track/4XJJCXGv7VDdmsHGwq6LCM'),
+            (3, 'https://open.spotify.com/track/4zFM2jL5OmDZAoIr3vwcZh')]
 
     assert data == get_all_songs(1, db, cursor, database)
+
 
