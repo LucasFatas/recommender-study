@@ -84,7 +84,8 @@ export const retrieveCSV = async (batchToDownload, dataToDownload, setCSVToDownl
  * @param {*} setBatchMetric Setter for Metric
  * @param {*} setChangeBatch Setter for changing batchs
  * @param {*} setMetricNextBatch Setter for MetricNextBatch
- * @param {String} metricNextBatch 
+ * @param {String} metricNextBatch the metric of the next batch
+ * @patam {*} switchCurrentBatch for the questionnaire and recommender part of the website 
  */
 export const backEndCreateNewBatch = (setBatch, setBatchNumber, setBatchMetric, setChangeBatch, setMetricNextBatch, metricNextBatch) => {
   console.log("create new batch with ", metricNextBatch, "metric")

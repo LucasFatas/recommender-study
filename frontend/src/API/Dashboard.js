@@ -51,15 +51,20 @@ export const getMatchData = async (token) => {
     const uri = typeof batchId === 'undefined' || batchId === null
         ? `${serverUrl}:${port}/dashboard/${endpoint}`
         : `${serverUrl}:${port}/dashboard/${endpoint}?batchId=${batchId}`;
+
+    const header = typeof token === 'undefined' || token === null
+        ? 
+            {'Content-Type': 'application/json'}
+        :
+            {
+                'Authorization': "Bearer " + token,
+                'Content-Type': 'application/json',
+            };
         
     try {
         await fetch(uri, {
             method: 'GET',
-            headers: {
-                'Authorization': "Bearer " + token,
-                'Content-Type': 'application/json',
-                
-            }
+            headers: header
         })
         .then(res => res.json())
         .then(data => setter(data[parameter]));
@@ -69,8 +74,8 @@ export const getMatchData = async (token) => {
     }
 }
 
-export const getBatch = async (setBatch, parameter, token) => {
-    getHelper({setter : setBatch, parameter : parameter,token : token , endpoint : "batch"})
+export const getBatch = async (setBatch, parameter) => {
+    getHelper({setter : setBatch, parameter : parameter , endpoint : "batch"})
 }
 
 export const getUsers = async (setBatch, parameter, token, batchId) => {
