@@ -23,22 +23,11 @@ import { LogIn } from './components/dashboard/LogIn';
 import * as data from './util/API.json'
 import intro from './util/introductions.json'
 
-import { switchBatch } from './controller/dashboardController';
-
 
 const defaultPage = '/consentPage';
 
 const App = () => {
-  
 
-  const [currentBatch, setCurrentBatch] = useState('questionnaire');
-
-  //Call this function to switch batch
-  /* 
-    TODO : once the dashboard is implemented, pass this function 
-    to the Dashboard component and call it from there.
-  */
-  const switchCurrentBatch = () => switchBatch(currentBatch, setCurrentBatch);
 
   return (
     <BrowserRouter>
@@ -48,7 +37,7 @@ const App = () => {
         <Route path="*" element={<PageNotFound redirect={defaultPage} />}/>
 
         <Route path="/login" element={<LogIn />} />
-        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/dashboard" element={<Dashboard/>} />
         <Route path="/websiteIntroduction" element={<WebsiteIntroduction data={data}/>} />
         <Route path="/introduction/values" element={<Introduction intro={intro.values} nextpage="/questionnaire/v/page1" />} />
         <Route path="/introduction/personality" element={<Introduction intro={intro.personality} nextpage={'/questionnaire/p/page1'} />} />

@@ -11,6 +11,7 @@ import {
   getRandomQuestionnaire,
   getDataObj
 } from "../../controller/questionnaireController";
+import { getBatch } from "../../API/Dashboard";
 
 
 const options = ['values', 'personality'];
@@ -21,6 +22,11 @@ const firstQuestionnaire = getRandomQuestionnaire(options);
 export const Questionnaire = (props) => {
   
   const { defaultPage } = props;
+
+
+  const [currentBatch, setCurrentBatch] = useState("");
+
+  getBatch(setCurrentBatch, "batch")
 
   const sessionAnswers = sessionStorage.getItem("answers");
 
@@ -34,6 +40,7 @@ export const Questionnaire = (props) => {
   );
   
   const initialPath = firstQuestionnaire === 'values' ? 'v' : 'p';
+  const lastPage = getLastPage(currentBatch === "1" ? "questionnaire" : "recommender");
 
   const valuesObj = questions.values;
   const personalityObj = questions.personality;
