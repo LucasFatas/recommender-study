@@ -1,5 +1,5 @@
 from flask import request, redirect, Blueprint, jsonify
-
+from dotenv import load_dotenv
 from src.Entities.Match import Match
 from src.Entities.PlaylistRating import PlaylistRating
 from src.Entities.SongRating import SongRating
@@ -12,8 +12,10 @@ from src.spotify import get_access_token, get_top_songs_api, AuthorizationExcept
 from src.Computation.matching import match
 import os
 
+load_dotenv()
+
 songs = Blueprint('spotify', __name__)
-frontend_url = "http://www.localhost.com/3000"
+frontend_url = os.getenv('FRONTEND_URL')
 db, cursor, database = open_connection()
 
 
@@ -29,21 +31,19 @@ def retrieve_top_songs():
         return jsonify(songs=[song.__dict__ for song in top_songs])
     except DatabaseException as e:
         # Exception handling in case there is a database error.
-        return redirect(frontend_url + "/error/database")
+        return redirect(os.getenv('FRONTEND_URL') + "/error/database")
 
 
 @songs.route('/match')
 def match_user():
-    data = request.args
-    userId = data['user']
-
+    userId = request.args['userId']
     try:
         # Add the newly formatted answers to our database.
         values = get_value(userId, db, cursor, database)
         personality = get_personality(userId, db, cursor, database)
 
         # Find IDs of the users more similar to the given user id
-        val_user, pers_user, random_user = match(userId, values, personality, 1, data['metric'])
+        val_user, pers_user, random_user = match(userId, values, personality, 1, os.environ.get("METRIC"))
 
         lst = [Match(val_user, get_top_songs(val_user, db, cursor, database)),
                Match(pers_user, get_top_songs(pers_user, db, cursor, database)),
@@ -55,7 +55,6 @@ def match_user():
             matched = {"user_id": single_match.userId, "songs": [song.__dict__ for song in single_match.songs]}
 
             data.append(matched)
-
         return jsonify(match=data)
 
     except DatabaseException as e:
@@ -122,7 +121,7 @@ def spotify_log_in():
         add_top_songs(userId, top_songs, db, cursor, database)
 
         # Redirect to first page of the questionnaire
-        return redirect(frontend_url + "/questionnaire/page1?userID = " + str(userId), 302)
+        return redirect(frontend_url + "/questionnaire?userID=" + str(userId), 302)
 
     except AuthorizationException as e:
         # Exception handling in case there is an authorization error.
