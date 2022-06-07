@@ -1,6 +1,3 @@
-import json
-import os
-
 from flask import request, redirect, Blueprint, jsonify
 from dotenv import load_dotenv
 from src.Entities.Match import Match
@@ -13,6 +10,7 @@ from src.Services.database_config import DatabaseException
 from src.Services.SongService import get_top_songs, add_top_songs, add_playlist_ratings, add_song_ratings
 from src.spotify import get_access_token, get_top_songs_api, AuthorizationException, InvalidAccountException
 from src.Computation.matching import match
+import os
 
 load_dotenv()
 
@@ -116,8 +114,8 @@ def spotify_log_in():
         top_songs = get_top_songs_api(access_token)
 
         # Store the user in the database.
-        userId = add_user(1, db, cursor, database)
-        # TODO: Batch Number hardcoded for now
+        batch_number = os.getenv('BATCH')
+        userId = add_user(batch_number, db, cursor, database)
 
         # Store top songs into our database.
         add_top_songs(userId, top_songs, db, cursor, database)

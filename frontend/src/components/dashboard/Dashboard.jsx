@@ -1,21 +1,19 @@
 import React from 'react';
 import { useEffect, useState } from "react";
 import { useNavigate } from 'react-router-dom';
-import { isLoggedIn, retrieveCSV } from "../../controller/dashboardController";
-import { CSVLink} from 'react-csv'
+import { backEndCreateNewBatch, isLoggedIn } from "../../controller/dashboardController";
 import { DownloadDashboard } from './DownloadDashboard';
+import { getBatch, getMetric, getUsers, setBatch } from '../../API/Dashboard';
 
-export const Dashboard = () => {
+export const Dashboard = ({switchCurrentBatch}) => {
   
 
   const navigate = useNavigate()
 
   
-// This part is temporary, it is going to change next sprint
-  const batchNumber = 1
-  const batchUsers = 1
-  const batchMetric = "euclidian"
-  const batchType = "Questionnaire"
+  const [batchNumber, setBatchNumber] = useState("");
+  const [batchUsers, setBatchUsers] = useState("");
+  const [batchMetric, setBatchMetric] = useState("");
 
   const downloadData = ["Songs", "Q&A", "Playlist Rating&Feedback", "Scores", "Song Ratings"]
   const batchs = [1,2]
@@ -33,7 +31,15 @@ export const Dashboard = () => {
   useEffect(() => {
     isLoggedIn(sessionStorage.getItem("token"), navigate)
 
-  }, [])
+    const token = sessionStorage.getItem("token")
+  
+    getBatch(setBatchNumber, "batch", token)
+    if(batchNumber){
+      getUsers(setBatchUsers, "users", token, batchNumber)
+      getMetric(setBatchMetric, "metric", token)
+    }
+
+  }, [batchNumber])
 
   const logout = () => {
     sessionStorage.removeItem("token")
@@ -41,17 +47,13 @@ export const Dashboard = () => {
   };
   const date = () => {
     var currentdate = new Date(); 
-    return `${currentdate.getDate()}/${(currentdate.getMonth()+1)}/${currentdate.getFullYear()} @ ${currentdate.getHours()}:${currentdate.getMinutes()}:${currentdate.getSeconds()}`;
+    return `${currentdate.getDate()}/${(currentdate.getMonth()+1)}/${currentdate.getFullYear()} `;
   }
   
 
-// This part is temporary, it is going to change next sprint
 
+  const createNewBatch = () => backEndCreateNewBatch(setBatch, setBatchNumber, setBatchMetric, setChangeBatch, setMetricNextBatch, metricNextBatch);
 
-  const createNewBatch = () => {
-    console.log("create new batch with ", metricNextBatch, "metric")
-    setChangeBatch(false)
-  }
   const showChangeBatchButtons = () => {
     setChangeBatch(true)
   }
@@ -71,7 +73,7 @@ export const Dashboard = () => {
             <span className="text-white text-center text-xl"> Current Batch </span>
             <div className='flex'>
               <span className="text-white pr-3"> Batch #: </span>
-              <span className="text-white pr-3"> {batchNumber} </span>
+              <span className="text-white pr-3"> {batchNumber ? batchNumber : ""} </span>
             </div>
             <div className='flex'>
               <span className="text-white pr-3"> Number of users: </span>
@@ -79,7 +81,7 @@ export const Dashboard = () => {
             </div>
             <div className='flex'>
               <span className="text-white pr-3"> Type of batch: </span>
-              <span className="text-white pr-3"> {batchType} </span>
+              <span className="text-white pr-3"> {batchNumber ? (batchNumber == 1 ? "Questionnaire" : "Reccomender") : ""} </span>
             </div>
             
             
@@ -116,13 +118,20 @@ export const Dashboard = () => {
                 </div>
               </>
             :
-              <div className='py-2 text-center'>
-                <button className=' bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full ' onClick={showChangeBatchButtons} >
-                  <div className='grid place-items-center '>
-                    <span className="text-white"> New Batch </span>
-                  </div>
-                </button> 
-              </div>
+            (
+              batchNumber == 2
+              ?
+                <></>
+              :
+            
+                <div className='py-2 text-center'>
+                  <button className=' bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full ' onClick={showChangeBatchButtons} >
+                    <div className='grid place-items-center '>
+                      <span className="text-white"> New Batch </span>
+                    </div>
+                  </button> 
+                </div>
+            )
           }          
         </div>
         <DownloadDashboard 

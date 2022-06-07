@@ -1,7 +1,5 @@
 import React from 'react';
-import { useEffect, useState } from "react";
-import { useNavigate } from 'react-router-dom';
-import { isLoggedIn, retrieveCSV } from "../../controller/dashboardController";
+import { retrieveCSV } from "../../controller/dashboardController";
 import { CSVLink} from 'react-csv'
 
 export const DownloadDashboard = ({downloadData, setDataToDownload, setBatchToDownload, batchs, canDownload, CSVToDownload, batchToDownload, dataToDownload, setCSVToDownload, setCanDownload, date}) => {
@@ -56,11 +54,11 @@ export const DownloadDashboard = ({downloadData, setDataToDownload, setBatchToDo
             data={CSVToDownload}
             separator={","}
             enclosingCharacter={`"`}
-            filename={dataToDownload + " "+ date() + ".csv"}
+            filename={dataToDownload + date() + ".csv"}
           >
             <button className=' bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full '  onClick={() => setCanDownload(false)}>
               <div className='grid place-items-center '>
-                <span className="text-white"> download </span>
+                <span className="text-white"> Download </span>
               </div>
             </button> 
           </CSVLink>
