@@ -16,15 +16,17 @@ export const sendAnswer = async (body) => {
     console.log(obj);
 
     try {
-        const response = await fetch(`${serverUrl}:${port}/questionnaire/answer/add`, {
+        await fetch(`${serverUrl}:${port}/questionnaire/answer/add`, {
             method: 'POST',
             mode: 'no-cors',
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(obj),
-        });
-        console.log(response);
+        })
+        .then(res => res.json())
+        .then(data => sessionStorage.setItem("questionnaireResults", JSON.stringify(data)))
+        
     } catch (error) {
         return console.log(error);
     }

@@ -117,18 +117,15 @@ export const getRandomQuestionnaire = (options) => {
  * @param {object} obj obect imported from questions.JSON file, all the entries are spread and included in the returned object
  * @param {string[][]} questionsMatrix 2D array containing questions text
  * @param {string} type 'values' for values object and 'personality' for personality
- * @param {string} lastPage last page path
  * @param {string} firstQuestionnaire 'values' for values object and 'personality' for personality
  * @returns data object containing useful information used in QuestionnairePage component.
  */
-export const getDataObj = (obj, questionsMatrix, type, lastPage, firstQuestionnaire) => {
-
-    const nextQuestionnaire = firstQuestionnaire === 'values' ? 'personality' : 'values';
+export const getDataObj = (obj, questionsMatrix, type, firstQuestionnaire) => {
 
     return {
         ...obj,
         matrix : questionsMatrix, 
-        pathOnSubmit : firstQuestionnaire === type ? `/introduction/${nextQuestionnaire}` : lastPage,
+        pathOnSubmit : '/results',
         lastPage : questionsMatrix.length,
         path : type === 'values' ? '/v' : '/p',
         type : type,

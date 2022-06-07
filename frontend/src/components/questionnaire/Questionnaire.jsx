@@ -9,7 +9,6 @@ import {
   splitArrayIntoMatrix, 
   parseSessionObj,
   getRandomQuestionnaire,
-  getLastPage,
   getDataObj
 } from "../../controller/questionnaireController";
 
@@ -21,10 +20,7 @@ const firstQuestionnaire = getRandomQuestionnaire(options);
 
 export const Questionnaire = (props) => {
   
-  const {
-    defaultPage,
-    currentBatch
-  } = props;
+  const { defaultPage } = props;
 
   const sessionAnswers = sessionStorage.getItem("answers");
 
@@ -38,7 +34,6 @@ export const Questionnaire = (props) => {
   );
   
   const initialPath = firstQuestionnaire === 'values' ? 'v' : 'p';
-  const lastPage = getLastPage(currentBatch);
 
   const valuesObj = questions.values;
   const personalityObj = questions.personality;
@@ -47,8 +42,8 @@ export const Questionnaire = (props) => {
   const personalityQuestionsMatrix = splitArrayIntoMatrix(personalityObj.questions, questionsPerPage);
   const valuesQuestionsMatrix = splitArrayIntoMatrix(valuesObj.questions, questionsPerPage);
 
-  const values = getDataObj(valuesObj, valuesQuestionsMatrix, 'values', lastPage, firstQuestionnaire);
-  const personality = getDataObj(personalityObj, personalityQuestionsMatrix, 'personality', lastPage, firstQuestionnaire);
+  const values = getDataObj(valuesObj, valuesQuestionsMatrix, 'values', firstQuestionnaire);
+  const personality = getDataObj(personalityObj, personalityQuestionsMatrix, 'personality', firstQuestionnaire);
 
   const questionnaireArray = firstQuestionnaire === 'values' ? [values, personality] : [personality, values];
 

@@ -16,10 +16,10 @@ import { ConsentPage } from './components/pages/ConsentPage';
 import { Thanks } from './components/pages/Thanks';
 import { ResultPage } from './components/pages/ResultPage';
 import { Dashboard } from './components/dashboard/Dashboard';
+import { QuestionnaireResult } from './components/result/QuestionnaireResult';
 
 import { LogIn } from './components/dashboard/LogIn';
 
-import questions from './util/questions.json';
 import * as data from './util/API.json'
 import intro from './util/introductions.json'
 
@@ -54,7 +54,8 @@ const App = () => {
         <Route path="/introduction/personality" element={<Introduction intro={intro.personality} nextpage={'/questionnaire/p/page1'} />} />
         <Route path="/introduction/playlist" element={<Introduction intro={intro.playlist} nextpage={'/recommender'} />} />
         <Route path="/consentPage"  element={<ConsentPage defaultPage={defaultPage}/>} />
-        <Route path="/questionnaire/*" element={<Questionnaire defaultPage={defaultPage} currentBatch={currentBatch}/>} />
+        <Route path="/questionnaire/*" element={<Questionnaire defaultPage={defaultPage} />} />
+        <Route path="/results" element={<QuestionnaireResult currentBatch={currentBatch}/>} />
         <Route path="/recommender/*" element={<Recommender  defaultPage={defaultPage}/>} />
         <Route path="/resultPage" element={<ResultPage/>} />
         <Route path="/thanks" element={<Thanks/>} />
