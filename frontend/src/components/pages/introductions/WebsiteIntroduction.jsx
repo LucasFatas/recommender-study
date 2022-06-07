@@ -1,5 +1,6 @@
 import React from "react";
 import { useState, useEffect } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import  spotifyLogo from "../../../assets/spotifyLogo.svg"
 
 
@@ -9,6 +10,8 @@ export const WebsiteIntroduction = (props) => {
     data
   } = props;
 
+  
+  const url = useLocation().pathname
 
   const callback =  data.serverUrl + ':' + data.port + '/callback&scope=user-top-read';
   const SpotifyUrl = `https://accounts.spotify.com/authorize?response_type=code&client_id=8073ee0f16a64774bd0e7f8fa955b9d6&redirect_uri=${callback}`;
@@ -16,13 +19,27 @@ export const WebsiteIntroduction = (props) => {
   const [clicked, setClicked] = useState(false);
 
   const buttonStyleActive = "bg-green-500 hover:bg-green-700 text-lg text-white font-bold py-2 px-4 rounded-full";
+
+  const navigate = useNavigate();
+
+
+
   
   useEffect(() => {
+    if(sessionStorage.getItem("currentUrl") !== "/websiteIntroduction"){
+      console.log("you are redirected to", sessionStorage.getItem("currentUrl"))
+      navigate(sessionStorage.getItem("currentUrl"))
+    }
+    else
+    {
+      console.log("you are in", sessionStorage.getItem("currentUrl"))
+    }
+
     if (clicked) {
       // do something meaningful, Promises, if/else, whatever, and then
       window.location.assign(SpotifyUrl);
     }
-  });
+  }, []);
 
   return (
 
