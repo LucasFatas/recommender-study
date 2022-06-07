@@ -1,30 +1,30 @@
 import React, { useState,  useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
-import { Loading } from '../global/Loading';
 import { Chart } from "./Chart";
+import { Loading } from '../global/Loading';
+
+import { loadResultsIfStored } from "../../controller/questionnaireController";
+import { getBatch } from "../../API/Dashboard";
 import { getLastPage } from "../../controller/questionnaireController";
+import { sendAnswer } from '../../API/Questionnaire';
 
-export const QuestionnaireResult = (props) => {
-  
-  const { currentBatch } = props;
+export const QuestionnaireResult = () => {
 
-  /*
-    Personality : [3.0, 2.7, 3.7, 3.9, 2.8, 3.3],
-    Values : [0.35, -0.65, 0.1, 1.18, -0.15, -1.32, -0.32, -0.15, 0.02, -0.05]
-  */
-  const [results, setResults] = useState(JSON.parse(sessionStorage.getItem("questionnaireResults")));
+  const navigate = useNavigate();
+
+  const [currentBatch, setCurrentBatch] = useState("");
+  getBatch(setCurrentBatch, "batch")
+  const lastPage = getLastPage(currentBatch === "1" ? "questionnaire" : "recommender");
+
+  const [loading, setLoading] = useState(true);
+  const [results, setResults] = useState(loadResultsIfStored(sessionStorage.getItem("questionnaireResults")));
 
   useEffect(() => {
-    if (!results)
-      //setResults(JSON.parse(sessionStorage.getItem("questionnaireResults")));
-      setResults({
-        personality : [3.0, 2.7, 3.7, 3.9, 2.8, 3.3],
-        values : [0.35, -0.65, 0.1, 1.18, -0.15, -1.32, -0.32, -0.15, 0.02, -0.05]
-      })
-  }, [results]);
-
-  const lastPage = getLastPage(currentBatch);
+    const flag = JSON.parse(sessionStorage.getItem("answerSent"));
+    if (!flag)
+      sendAnswer(navigate, setLoading, setResults);
+  }, [loading]);
 
   return (
     <>

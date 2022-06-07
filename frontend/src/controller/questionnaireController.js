@@ -26,7 +26,7 @@ export const splitArrayIntoMatrix = (array, rowSize) => {
  * @param {{personality : Map, values : Map}} answers answers object
  * @returns The same answers object but with ordered maps.
  */
-const orderAnswers = (answers) => {
+export const orderAnswers = (answers) => {
     return {
         "personality" : new Map([...answers.personality.entries()].sort()),
         "values" : new Map([...answers.values.entries()].sort())
@@ -122,10 +122,12 @@ export const getRandomQuestionnaire = (options) => {
  */
 export const getDataObj = (obj, questionsMatrix, type, firstQuestionnaire) => {
 
+    const nextQuestionnaire = firstQuestionnaire === 'values' ? 'personality' : 'values';
+
     return {
         ...obj,
         matrix : questionsMatrix, 
-        pathOnSubmit : '/results',
+        pathOnSubmit : firstQuestionnaire === type ? `/introduction/${nextQuestionnaire}` : '/questionnaire/results',
         lastPage : questionsMatrix.length,
         path : type === 'values' ? '/v' : '/p',
         type : type,
@@ -144,3 +146,5 @@ export const getAndStoreUserId = (search) => {
     console.log("user id : ", userID);
     sessionStorage.setItem("userID", userID);
 }
+
+export const loadResultsIfStored = (results) => results ? JSON.parse(results) : undefined;

@@ -4,16 +4,15 @@ import { Route, Routes, Navigate, useLocation } from 'react-router-dom';
 
 import questions from '../../util/questions.json';
 import { QuestionnairePage } from './QuestionnairePage';
+import { QuestionnaireResult } from './QuestionnaireResult';
 import { PageNotFound } from "../errors/PageNotFound";
 import { 
   splitArrayIntoMatrix, 
   parseSessionObj,
   getRandomQuestionnaire,
-  getLastPage,
   getDataObj,
   getAndStoreUserId
 } from "../../controller/questionnaireController";
-import { getBatch } from "../../API/Dashboard";
 
 
 const options = ['values', 'personality'];
@@ -25,16 +24,9 @@ export const Questionnaire = (props) => {
   
   const { defaultPage } = props;
 
-
   const search = useLocation().search;
   if (sessionStorage.getItem("userID") === null)
     getAndStoreUserId(search);
-
-
-  const [currentBatch, setCurrentBatch] = useState("");
-
-  getBatch(setCurrentBatch, "batch")
-
 
   const sessionAnswers = sessionStorage.getItem("answers");
 
@@ -48,7 +40,6 @@ export const Questionnaire = (props) => {
   );
   
   const initialPath = firstQuestionnaire === 'values' ? 'v' : 'p';
-  const lastPage = getLastPage(currentBatch === "1" ? "questionnaire" : "recommender");
 
   const valuesObj = questions.values;
   const personalityObj = questions.personality;
@@ -87,6 +78,7 @@ export const Questionnaire = (props) => {
     <Routes>
       <Route path="*" element={<PageNotFound redirect={defaultPage} />}/>
       <Route path="/" element={<Navigate replace to={`${initialPath}/page1`}/>} />
+      <Route path="results" element={<QuestionnaireResult/>} />
       {questionnaireArray.map(obj => 
         obj.matrix.map((questions, idx) => 
           <Route

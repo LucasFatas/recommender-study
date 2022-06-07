@@ -4,7 +4,6 @@ import { useState, useEffect, useMemo } from "react";
 import { Answer } from './Answer';
 import { Buttons } from "../global/Buttons";
 import { ProgressBar } from "./ProgressBar";
-import { sendAnswer } from '../../API/Questionnaire';
 import { 
   updateAnswersLogic, 
   checkEveryElementIsInMap
@@ -84,7 +83,6 @@ export const QuestionnairePage = (props) => {
           data={answers}
           currentPath={`/questionnaire${currentPath}`}
           pathOnSubmit={pathOnSubmit}
-          submitFunction={sendAnswer}
           answered={answered} 
           onNext={handleNext}
         />

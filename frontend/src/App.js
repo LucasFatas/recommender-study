@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import {
   BrowserRouter,
   Routes,
@@ -16,7 +15,6 @@ import { ConsentPage } from './components/pages/ConsentPage';
 import { Thanks } from './components/pages/Thanks';
 import { ResultPage } from './components/pages/ResultPage';
 import { Dashboard } from './components/dashboard/Dashboard';
-import { QuestionnaireResult } from './components/result/QuestionnaireResult';
 
 import { LogIn } from './components/dashboard/LogIn';
 
@@ -27,8 +25,7 @@ import intro from './util/introductions.json'
 const defaultPage = '/consentPage';
 
 const App = () => {
-
-
+  
   return (
     <BrowserRouter>
       <Routes>
@@ -44,7 +41,6 @@ const App = () => {
         <Route path="/introduction/playlist" element={<Introduction intro={intro.playlist} nextpage={'/recommender'} />} />
         <Route path="/consentPage"  element={<ConsentPage defaultPage={defaultPage}/>} />
         <Route path="/questionnaire/*" element={<Questionnaire defaultPage={defaultPage} />} />
-        <Route path="/results" element={<QuestionnaireResult currentBatch={currentBatch}/>} />
         <Route path="/recommender/*" element={<Recommender  defaultPage={defaultPage}/>} />
         <Route path="/resultPage" element={<ResultPage/>} />
         <Route path="/thanks" element={<Thanks/>} />
