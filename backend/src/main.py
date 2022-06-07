@@ -24,7 +24,6 @@ load_dotenv()
 
 
 def create_app():
-
     app.run(debug=True, port=os.getenv('PORT'))
 
 
