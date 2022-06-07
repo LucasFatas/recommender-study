@@ -1,6 +1,6 @@
 import React from "react";
 import { useState } from 'react';
-import { Route, Routes, Navigate } from 'react-router-dom';
+import { Route, Routes, Navigate, useLocation } from 'react-router-dom';
 
 import questions from '../../util/questions.json';
 import { QuestionnairePage } from './QuestionnairePage';
@@ -9,7 +9,9 @@ import {
   splitArrayIntoMatrix, 
   parseSessionObj,
   getRandomQuestionnaire,
-  getDataObj
+  getLastPage,
+  getDataObj,
+  getAndStoreUserId
 } from "../../controller/questionnaireController";
 import { getBatch } from "../../API/Dashboard";
 
@@ -24,9 +26,15 @@ export const Questionnaire = (props) => {
   const { defaultPage } = props;
 
 
+  const search = useLocation().search;
+  if (sessionStorage.getItem("userID") === null)
+    getAndStoreUserId(search);
+
+
   const [currentBatch, setCurrentBatch] = useState("");
 
   getBatch(setCurrentBatch, "batch")
+
 
   const sessionAnswers = sessionStorage.getItem("answers");
 
