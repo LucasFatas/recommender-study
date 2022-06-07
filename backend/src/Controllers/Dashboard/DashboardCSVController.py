@@ -39,7 +39,7 @@ def retrieve_scores():
     data = io.StringIO()
     writer = csv.writer(data)
     column_names = (
-        "UserID", "Openness", "Honesty", "Emotionality", "Extroversion", "Agreeableness", "Conscientiousness",
+        "UserID", "Honesty", "Emotionality", "Extroversion", "Agreeableness", "Conscientiousness", "Openness",
         "Stimulation", "SelfDirection", "Universalism", "Benevolence", "Tradition", "Conformity", "SecurityVal",
         "PowerVal", "Achievement", "Hedonism")
     writer.writerow(column_names)

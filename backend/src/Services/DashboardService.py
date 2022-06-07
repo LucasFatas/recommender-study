@@ -1,21 +1,31 @@
 import mysql.connector
-from src.Services.database_config import DatabaseException, open_connection
+from src.Services.database_config import DatabaseException
 from dotenv import load_dotenv
-import os
 
 load_dotenv()
 
 
-# Method that gets all the users of a certain batch and their questionnaire scores
-# Parameters: batch number
-# Returns: a list of tuples containing userId and their scores
 def get_all_scores(batch, db, cursor, database):
+    """
+    Retrieves all the personality and value scores of all users in a specific batch from the database
+    :param batch: batch to get the information about
+    :param db: database object, handles the connection to our database
+    :param cursor: cursor that executes the SQL commands in our database
+    :param database: string of the database name we will be using
+    :except mysql.connector.errors.Error: handles the case where the database has some errors
+    :raises DatabaseException: custom exception in our app, in order for better handling
+    :return: result with all the users of a provided batch along with their scores
+    """
     try:
-        sql = "SELECT pa.userId, openness, honesty, emotionality, extroversion, agreeableness, conscientiousness," \
-            " stimulation, selfDirection, universalism, benevolence, tradition, conformity, securityVal, powerVal, " \
-            "achievement, hedonism "\
-            "FROM " + database + ".Personality AS pe INNER JOIN " + database + ".Participant AS pa ON pe.userId = "\
-            "pa.userId INNER JOIN " + database + ".Value AS v ON v.userId = pa.userId WHERE pa.batch = %s"
+        sql = """ 
+            SELECT pa.userId, honesty, emotionality, extroversion, agreeableness, conscientiousness, openness,
+            stimulation, selfDirection, universalism, benevolence, tradition, conformity, securityVal, powerVal,
+            achievement, hedonism 
+            FROM """ + database + """.Personality AS pe 
+            INNER JOIN """ + database + """.Participant AS pa ON pe.userId = pa.userId 
+            INNER JOIN """ + database + """.Value AS v ON v.userId = pa.userId 
+            WHERE pa.batch = %s 
+        """
 
         cursor.execute(sql, (batch,))
         result = cursor.fetchall()
