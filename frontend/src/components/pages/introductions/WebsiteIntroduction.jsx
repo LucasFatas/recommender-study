@@ -35,12 +35,15 @@ export const WebsiteIntroduction = (props) => {
       console.log("you are in", sessionStorage.getItem("currentUrl"))
     }
 
-    if (clicked) {
-      // do something meaningful, Promises, if/else, whatever, and then
-      window.location.assign(SpotifyUrl);
-    }
   }, []);
 
+  useEffect(() => {
+    if (clicked) {
+      // do something meaningful, Promises, if/else, whatever, and then
+      sessionStorage.setItem("currentUrl", '/questionnaire')
+      window.location.assign(SpotifyUrl);
+    }
+  })
   return (
 
     <div className='flex flex-col items-center justify-between h-screen w-screen py-28'>

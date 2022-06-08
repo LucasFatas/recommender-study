@@ -1,6 +1,6 @@
 import React from "react";
-import { useState } from 'react';
-import { Route, Routes, Navigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { Route, Routes, Navigate, useNavigate } from 'react-router-dom';
 
 import questions from '../../util/questions.json';
 import { QuestionnairePage } from './QuestionnairePage';
@@ -20,7 +20,26 @@ const options = ['values', 'personality'];
 const firstQuestionnaire = getRandomQuestionnaire(options);
 
 export const Questionnaire = (props) => {
+
+  const navigate = useNavigate()
+
+  //moved here because needed in the useEffect
+  const initialPath = firstQuestionnaire === 'values' ? 'v' : 'p';
   
+  useEffect(() => {
+    if(sessionStorage.getItem("currentUrl") !== "/questionnaire"){
+      console.log("you are redirected to", sessionStorage.getItem("currentUrl"))
+      navigate(sessionStorage.getItem("currentUrl"))
+    }
+    else
+    {
+      console.log("you are in", sessionStorage.getItem("currentUrl"))
+      sessionStorage.setItem("currentUrl", "/questionnaire/" + initialPath + "/page1")
+    }
+
+  }, []);
+
+
   const {
     defaultPage,
     currentBatch
@@ -37,7 +56,6 @@ export const Questionnaire = (props) => {
       : parseSessionObj(JSON.parse(sessionAnswers))
   );
   
-  const initialPath = firstQuestionnaire === 'values' ? 'v' : 'p';
   const lastPage = getLastPage(currentBatch);
 
   const valuesObj = questions.values;
