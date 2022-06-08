@@ -36,7 +36,7 @@ export const RecommenderPage = (props) => {
 				}
 			</div>
 			<Link to="/recommender/page2" className={ratingsFilled ? "mt-5" : "mt-5 pointer-events-none"}>
-        <button className={ratingsFilled ? buttonStyles.active : buttonStyles.inactive}>
+        <button className={ratingsFilled ? buttonStyles.active : buttonStyles.inactive} onClick={sessionStorage.setItem("currentUrl", "/recommender/page2")} >
           Next
         </button> 
       </Link>

@@ -18,6 +18,7 @@ export const Introduction = (props) => {
 
   const handleNext = () => {
     //the navigated page is possibly going to change in the future 
+    sessionStorage.setItem("currentUrl", nextpage)
     navigate(nextpage)
   }
   const buttonStyleActive = "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full";

@@ -9,6 +9,7 @@ import {
   updateAnswersLogic, 
   checkEveryElementIsInMap
 } from "../../controller/questionnaireController";
+import { useNavigate } from "react-router-dom";
 
 const legendItems = [
   'Not like me at all',
@@ -33,6 +34,25 @@ export const QuestionnairePage = (props) => {
     currentPath
   } = props;
 
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    const token = sessionStorage.getItem("currentUrl")
+    if(token.includes("/questionnaire" + (type === 'values' ? 'v' : 'p'))){
+      const endOfToken = parseInt(token.replace("/questionnaire/" + (type === 'values' ? 'v' : 'p') + "/page", "").replaceAll(" ", ""));
+      console.log(endOfToken + typeof endOfToken)
+      if(!Number.isNaN(endOfToken) && endOfToken < pageNumber){
+        console.log("you are redirected to", sessionStorage.getItem("currentUrl"))
+        navigate(sessionStorage.getItem("currentUrl"))
+      }
+    }else {
+     
+      console.log("you are redirected to", sessionStorage.getItem("currentUrl"))
+      navigate(sessionStorage.getItem("currentUrl"))
+    }
+
+  }, []);
+
   //boolean value to check if all answers in the current page have been answered.
   const [ answered, setAnswered ] = useState(false);
   const questionsNumberArr = useMemo(() => [...questions.map(x => x[1] + 1)], [questions]);
@@ -47,7 +67,14 @@ export const QuestionnairePage = (props) => {
 
   const handleNext = () => {
     const nextQuestionsNumber = questionsNumberArr.map(x => x + questionsNumberArr.length);
+    
     setAnswered(checkEveryElementIsInMap(nextQuestionsNumber, answers[type]));
+    
+    const endOfToken = parseInt(sessionStorage.getItem("currentUrl").replace("/questionnaire/" + (type === 'values' ? 'v' : 'p') + "/page", "").replaceAll(" ", ""));
+    if(!Number.isNaN(endOfToken) && endOfToken < pageNumber){
+      sessionStorage.setItem("currentUrl", "/questionnaire/" + (type === 'values' ? 'v' : 'p') + "/page" + (pageNumber + 1) )
+    }
+
   }
 
   return (

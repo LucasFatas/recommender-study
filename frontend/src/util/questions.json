@@ -1,5 +1,5 @@
 {
-    "questionsPerPage" : 5,
+    "questionsPerPage" : 1,
     "personality" : {
         "answerOptions" : 5,
         "questions" : [

@@ -1,6 +1,6 @@
 import React from "react";
 import { useState, useEffect } from 'react';
-import { Route, Routes, Navigate, useNavigate } from 'react-router-dom';
+import { Route, Routes, Navigate, useNavigate, useLocation } from 'react-router-dom';
 
 import questions from '../../util/questions.json';
 import { QuestionnairePage } from './QuestionnairePage';
@@ -32,9 +32,7 @@ export const Questionnaire = (props) => {
     if(sessionStorage.getItem("currentUrl") !== "/questionnaire"){
       console.log("you are redirected to", sessionStorage.getItem("currentUrl"))
       navigate(sessionStorage.getItem("currentUrl"))
-    }
-    else
-    {
+    }else{
       console.log("you are in", sessionStorage.getItem("currentUrl"))
       sessionStorage.setItem("currentUrl", "/questionnaire/" + initialPath + "/page1")
     }
@@ -68,7 +66,6 @@ export const Questionnaire = (props) => {
       : parseSessionObj(JSON.parse(sessionAnswers))
   );
   
-  const initialPath = firstQuestionnaire === 'values' ? 'v' : 'p';
   const lastPage = getLastPage(currentBatch === "1" ? "questionnaire" : "recommender");
 
   const valuesObj = questions.values;

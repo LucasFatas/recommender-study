@@ -1,8 +1,20 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import correctLogo from '../../assets/correctLogo.svg'
 
 export const Thanks = () => {
 
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    if(sessionStorage.getItem("currentUrl") !== "/thanks"){
+      console.log("you are redirected to", sessionStorage.getItem("currentUrl"))
+      navigate(sessionStorage.getItem("currentUrl"))
+    }else{
+      console.log("you are in", sessionStorage.getItem("currentUrl"))
+    }
+
+  }, []);
 
   return (
     <div className='flex flex-col items-center justify-center h-screen w-screen '>

@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 
 import { RecommenderPage } from "./RecommenderPage";
 import { PlaylistPage } from "./PlaylistPage";
-import { Routes, Route, Navigate } from "react-router-dom";
+import { Routes, Route, Navigate, useNavigate } from "react-router-dom";
 import { PageNotFound } from "../errors/PageNotFound";
 import questionsObj from '../../util/questions.json';
 import {	loadFeedbackIfStored, loadRatingsIfStored, loadTracklistsIfStored } from "../../controller/recommenderController";
@@ -17,6 +17,21 @@ const questions = questionsObj.feedback.questions;
 export const Recommender = (props) => {
 
 	const { defaultPage } = props;
+
+	const navigate = useNavigate()
+
+  
+  useEffect(() => {
+    if(sessionStorage.getItem("currentUrl") !== "/recommender"){
+      console.log("you are redirected to", sessionStorage.getItem("currentUrl"))
+      navigate(sessionStorage.getItem("currentUrl"))
+    }else{
+      console.log("you are in", sessionStorage.getItem("currentUrl"))
+      sessionStorage.setItem("currentUrl", "/recommender/page1")
+    }
+
+  }, []);
+
 
 	const [tracklists, setTracklists] = useState(loadTracklistsIfStored(sessionStorage.getItem("tracklists")));
 	const [shuffledTracklist, setShuffled] = useState(loadTracklistsIfStored(sessionStorage.getItem("shuffled")))

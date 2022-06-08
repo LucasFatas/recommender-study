@@ -39,7 +39,6 @@ export const WebsiteIntroduction = (props) => {
 
   useEffect(() => {
     if (clicked) {
-      // do something meaningful, Promises, if/else, whatever, and then
       sessionStorage.setItem("currentUrl", '/questionnaire')
       window.location.assign(SpotifyUrl);
     }
