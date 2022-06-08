@@ -17,15 +17,15 @@ def test_calculate_distance_camberra():
 
 
 def test_closest_user_trivial_easy():
-    answer = closest_user([0, 0, 0, 0], [[20, 0, 0, 0, 0], [1, 1, 1, 1, 1], [2, 2, 2, 2, 2]], "manhattan")
+    answer = closest_user([0, 0, 0, 0], [[20, 0, 0, 0, 0], [1, 1, 1, 1, 1], [2, 2, 2, 2, 2]], "manhattan", -1)
     assert answer == 20
 
 
 def test_closest_user_trivial():
-    answer = closest_user([0, 0, 0, 0], [[1, 1, 1, 1, 1], [2, 2, 2, 2, 2], [20, 0, 0, 0, 0]], "manhattan")
+    answer = closest_user([0, 0, 0, 0], [[1, 1, 1, 1, 1], [2, 2, 2, 2, 2], [20, 0, 0, 0, 0]], "manhattan", -1)
     assert answer == 20
 
 
 def test_closest_user_nontrivial():
-    answer = closest_user([0, 0, 0, 0], [[1, 1, 1, 1, 1], [2, 2, 2, 2, 2], [20, 20, 20, 20, 20]], "manhattan")
+    answer = closest_user([0, 0, 0, 0], [[1, 1, 1, 1, 1], [2, 2, 2, 2, 2], [20, 20, 20, 20, 20]], "manhattan", -1)
     assert answer == 1
