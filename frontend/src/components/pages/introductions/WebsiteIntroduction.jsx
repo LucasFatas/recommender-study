@@ -13,7 +13,7 @@ export const WebsiteIntroduction = (props) => {
   
   const url = useLocation().pathname
 
-  const callback =  data.serverUrl + ':' + data.port + '/callback&scope=user-top-read';
+  const callback =  data.serverUrl + ':' + data.port + '/spotify/callback&scope=user-top-read';
   const SpotifyUrl = `https://accounts.spotify.com/authorize?response_type=code&client_id=8073ee0f16a64774bd0e7f8fa955b9d6&redirect_uri=${callback}`;
 
   const [clicked, setClicked] = useState(false);

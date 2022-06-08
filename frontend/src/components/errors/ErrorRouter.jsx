@@ -4,7 +4,7 @@ import { ErrorPage } from "./ErrorPage";
 import { PageNotFound } from "./PageNotFound";
 
 export const ErrorRouter = ({ defaultPage }) => {
-
+  
   return (
     <Routes>
       <Route path="*" element={<PageNotFound redirect={defaultPage} />}/>

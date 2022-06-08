@@ -147,3 +147,21 @@ def get_song_ratings(db, cursor, database):
     except mysql.connector.errors.Error as e:
         print(e)
         raise DatabaseException("Error connecting to database when retrieving Song ratings.")
+
+
+"""Method about experiment manipulation """
+
+
+# Method that gets all the total users that finished the questionnaire from a certain batch
+# Parameters: batch number
+# Returns: a number with total users in the specific batch
+def get_user_total(batch, db, cursor, database):
+    sql = """SELECT COUNT(DISTINCT(Participant.userId)) FROM """ + database + """.Participant 
+                INNER JOIN """ + database + """.Personality AS p ON p.userId = Participant.userId
+                INNER JOIN """ + database + """.Value AS v ON v.userId = Participant.userId
+                WHERE batch = %s"""
+
+    cursor.execute(sql, (batch,))
+    result = cursor.fetchall()
+
+    return str(result[0][0])

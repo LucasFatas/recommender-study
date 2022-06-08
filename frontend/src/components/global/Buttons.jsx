@@ -29,7 +29,7 @@ export const Buttons = (props) => {
 
   const handleSubmit = () => {
     if (submitResults)
-      submitFunction(data);
+      submitFunction(data, navigate);
       
     navigate(pathOnSubmit);
   }

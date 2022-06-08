@@ -21,7 +21,7 @@ def add_top_songs(userId, songs, db, cursor, database):
             for artist in song.artists:
                 val = (song.spotify_url, artist['artist_name'])
                 cursor.execute(artist_sql, val)
-        if not os.getenv('IS_TESTING'):
+        if os.getenv('IS_TESTING') == "FALSE":
             db.commit()
         return "Success storing of top songs"
     except mysql.connector.errors.Error as e:
@@ -35,7 +35,7 @@ def add_top_songs(userId, songs, db, cursor, database):
 # Returns: a list of song objects
 def get_top_songs(userId, db, cursor, database):
     try:
-        song_sql = "SELECT name, previewUrl, spotifyUrl FROM " + database + ".song WHERE userId = %s"
+        song_sql = "SELECT name, previewUrl, spotifyUrl FROM " + database + ".Song WHERE userId = %s"
 
         cursor.execute(song_sql, (userId,))
 
@@ -46,7 +46,7 @@ def get_top_songs(userId, db, cursor, database):
         for row in data:
             artist_sql = "SELECT DISTINCT name FROM " + database + ".Artist Where spotifyUrl = %(url)s"
 
-            cursor.execute(artist_sql, {'url': str(row[1])})
+            cursor.execute(artist_sql, {'url': str(row[2])})
 
             artists = []
 
@@ -71,7 +71,7 @@ def add_playlist_ratings(playlist, db, cursor, database):
         val = (playlist.userId, playlist.matchedUserId, playlist.rating)
         cursor.execute(playlist_sql, val)
 
-        if not os.getenv('IS_TESTING'):
+        if os.getenv('IS_TESTING') == "FALSE":
             db.commit()
         return "Success storing playlist ratings"
     except mysql.connector.errors.Error as e:
@@ -90,14 +90,14 @@ def add_song_ratings(song_ratings, db, cursor, database):
     """
     try:
         db, cursor, database = open_connection()
-        song_sql = "Insert into " + database + ".SongRating(userId, matchedUserId, spotify_url, rating, playlistNumber) " \
+        song_sql = "Insert into " + database + ".SongRating(userId, matchedUserId, spotifyUrl, rating, playlistNumber) " \
                                                "Values (%s,%s,%s,%s,%s) "
         for song_rating in song_ratings:
             val = (song_rating.userId, song_rating.matchedUserId, song_rating.spotify_url,
                    song_rating.rating, song_rating.playlistNumber)
             cursor.execute(song_sql, val)
 
-        if not os.getenv('IS_TESTING'):
+        if os.getenv('IS_TESTING') == "FALSE":
             db.commit()
         return "Success storing song ratings"
     except mysql.connector.errors.Error as e:

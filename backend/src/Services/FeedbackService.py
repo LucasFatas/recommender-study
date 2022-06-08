@@ -16,7 +16,7 @@ def add_feedback_questions(userId, matchedUserId, answers, db, cursor, database)
             params.append((userId, matchedUserId, i + 1, answer))
 
         cursor.executemany(sql, params)
-        if not os.getenv('IS_TESTING'):
+        if os.getenv('IS_TESTING') == "FALSE":
             db.commit()
 
         return "Success storing feedback questions."
@@ -32,9 +32,8 @@ def add_open_feedback(userId, matchedUserId, feedback, db, cursor, database):
         answer = (userId, matchedUserId, feedback)
 
         cursor.execute(sql, answer)
-        if not os.getenv('IS_TESTING'):
+        if os.getenv('IS_TESTING') == "FALSE":
             db.commit()
-
         return "Success storing open feedback."
     except mysql.connector.errors.Error as e:
         print(e)
