@@ -30,10 +30,14 @@ export const QuestionnaireResult = () => {
     <>
       {results 
         ?
-        <div className="flex flex-col w-screen h-screen flex justify-center items-center">
-          <div className="w-1/3 h-5/6 grid grid-rows-2 grid-cols-1 gap-20 items-center justify-center">
-            <Chart type="personality" result={results.personality}/>
-            <Chart type="values" result={results.values}/>
+        <div className="w-screen h-screen flex flex-col items-center justify-center">
+          <div className="w-full h-5/6 flex items-center justify-center">
+            <div className="w-2/5">
+              <Chart type="personality" result={results.personality}/>
+            </div>
+            <div className="w-2/5 ">
+              <Chart type="values" result={results.values}/>
+            </div>
           </div>
           <div className="mt-10">
             <Link to={lastPage}>

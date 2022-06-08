@@ -1,20 +1,20 @@
 import React from "react";
 import {
   Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  Title,
+  RadialLinearScale,
+  PointElement,
+  LineElement,
+  Filler,
   Tooltip,
   Legend,
 } from 'chart.js';
-import { Bar } from "react-chartjs-2";
+import { Radar } from "react-chartjs-2";
 
 ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  Title,
+  RadialLinearScale,
+  PointElement,
+  LineElement,
+  Filler,
   Tooltip,
   Legend
 );
@@ -51,19 +51,20 @@ export const Chart = (props) => {
     maintainAspectRatio: true,
     aspectRatio: 1.5,
     scales: {
-      x: {
-        ticks: {
-          font: { size: 14 }
-        }
+      r : {
+        pointLabels: {
+          font: {
+            size: 15
+          }
+        },
       },
-      y: {}
     },
     plugins: {
       legend: { display: false },
       title: {
         display: true,
         text: capitalizedTitle,
-        font: { size: 14 }
+        font: { size: 16 }
       },
     },
   };
@@ -78,5 +79,5 @@ export const Chart = (props) => {
     }]
   };
 
-  return <Bar options={options} data={data}/>
+  return <Radar options={options} data={data}/>
 }
