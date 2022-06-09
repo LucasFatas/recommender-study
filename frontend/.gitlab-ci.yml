@@ -23,9 +23,13 @@ cache:
 test_application:
   stage: jest
   image: node:latest
+  before_script:
+    - cd frontend
   script:
     - CI=true
     - yarn test
+  after_script:
+    - cd ..
   artifacts:
     paths:
       - ./
