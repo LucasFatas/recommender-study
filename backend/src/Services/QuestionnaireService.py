@@ -182,8 +182,7 @@ def get_personality(user_id, db, cursor, database):
     """
     try:
         sql = """
-            SELECT openness, honesty, emotionality,
-            extroversion, agreeableness, conscientiousness 
+            SELECT openness, honesty, emotionality, extroversion, agreeableness, conscientiousness 
             FROM """ + database + """.Personality AS pe 
             WHERE pe.userId = %s
         """
@@ -231,7 +230,7 @@ def add_matches(user_id, val_user, pers_user, random_user, db, cursor, database)
         raise DatabaseException("Error connecting to database when adding personalities.")
 
 
-def get_all_values(batch, db, cursor, database):
+def get_all_values(batch, db, cursor, database, pers_user):
     """
         Returns value scores of all users in a batch
         :param batch: batch to retrieve information about
@@ -244,13 +243,13 @@ def get_all_values(batch, db, cursor, database):
         """
     try:
         v_sql = """
-            SELECT userId, stimulation, selfDirection, universalism, benevolence, 
+            SELECT pa.userId, stimulation, selfDirection, universalism, benevolence, 
             tradition, conformity, securityVal, powerVal, achievement, hedonism 
-            FROM """ + database + """.Value AS v , """ + database + """.Participant AS p 
-            WHERE v.ValueId = p.userId AND p.batch = %s
+            FROM """ + database + """.Value AS v , """ + database + """.Participant AS pa
+            WHERE v.userId = pa.userId AND pa.batch = %s AND NOT pa.userId = %s
         """
 
-        cursor.execute(v_sql, (batch,))
+        cursor.execute(v_sql, (batch, pers_user))
         result = cursor.fetchall()
         return result
     except mysql.connector.errors.Error as e:
@@ -271,9 +270,9 @@ def get_all_personalities(batch, db, cursor, database):
     """
     try:
         p_sql = """
-            SELECT userID, openness, honesty, emotionality, extroversion, agreeableness, conscientiousness 
+            SELECT pa.userID, openness, honesty, emotionality, extroversion, agreeableness, conscientiousness 
             FROM """ + database + """.personality AS pe , """ + database + """.participant AS pa 
-            WHERE pe.PersonalityId = pa.UserId AND pa.Batch = %s
+            WHERE pe.userId = pa.UserId AND pa.Batch = %s
         """
 
         cursor.execute(p_sql, (batch,))
@@ -300,8 +299,8 @@ def get_random_user(user1, user2, batch, db, cursor, database):
         """
     try:
         sql = """
-                SELECT userId FROM """ + database + """.Participant AS p 
-                WHERE p.batch = %s AND NOT (p.userId = %s or p.userId = %s)
+                SELECT pa.userId FROM """ + database + """.Participant AS pa
+                WHERE pa.batch = %s AND NOT (pa.userId = %s OR pa.userId = %s)
             """
 
         cursor.execute(sql, (batch, user1, user2))

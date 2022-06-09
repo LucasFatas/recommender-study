@@ -58,16 +58,14 @@ def match_user():
         values = get_value(userId, db, cursor, database)
         personality = get_personality(userId, db, cursor, database)
 
-        # Find IDs of the users more similar to the given user id
-        val_user, pers_user, random_user = match(userId, values, personality, 1, os.environ.get("METRIC"))
-
         batch = os.getenv("BATCH")
         if batch == str(2):
             batch = 1
-        elif batch == str(2):
+        elif batch == str(1):
             raise BatchException("Not in the right batch to do matching.")
 
-        val_user, pers_user, random_user = match(userId, values, personality, batch, req['metric'])
+        # Find IDs of the users more similar to the given user id
+        val_user, pers_user, random_user = match(userId, values, personality, batch, os.environ.get("METRIC"))
 
         lst = [Match(val_user, get_top_songs(val_user, db, cursor, database)),
                Match(pers_user, get_top_songs(pers_user, db, cursor, database)),
