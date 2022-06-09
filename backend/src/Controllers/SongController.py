@@ -159,7 +159,7 @@ def spotify_log_in():
         add_top_songs(userId, top_songs, db, cursor, database)
 
         # Redirect to first page of the questionnaire
-        return redirect(frontend_url + "/questionnaire?userID=" + str(userId), 302)
+        return redirect(frontend_url + "/introduction?userID=" + str(userId), 302)
 
     except AuthorizationException as e:
         # Exception handling in case there is an authorization error.

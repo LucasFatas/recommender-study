@@ -1,42 +1,29 @@
 import React from "react";
+import { Routes, Route, useLocation, Navigate } from "react-router-dom";
 
-import { useNavigate } from 'react-router-dom';
+import { IntroductionPage } from "./IntroductionPage";
+import { getAndStoreUserId, getRandomQuestionnaire } from "../../../controller/questionnaireController";
 
-
-
-//TODO use port and url in json file
+const options = ['values', 'personality'];
+const firstQuestionnaire = getRandomQuestionnaire(options);
 
 export const Introduction = (props) => {
-  
 
-  const {
-    intro,
-    nextpage
-  } = props;
+  const { intro } = props;
 
-  const navigate = useNavigate();
+  console.log(firstQuestionnaire);
 
-  const handleNext = () => {
-    //the navigated page is possibly going to change in the future 
-    navigate(nextpage)
-  }
-  const buttonStyleActive = "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full";
-
- 
+  const search = useLocation().search;
+  if (sessionStorage.getItem("userID") === null)
+    getAndStoreUserId(search);
 
   return (
-    <div className='flex flex-col items-center justify-between h-screen w-screen py-28'>
-    <h1 className="text-2xl py-5"> {intro.title} </h1>
-    <div className="w-1/2 h-3/4 overflow-y-scroll">
-      <p>{intro.introduction}</p>    
-    </div>
-    <div className="flex items-center justify-center w-fit mb-5 space-x-7 py-10">
-      <button className={buttonStyleActive} onClick={handleNext} >
-        <div className='grid place-items-center '>
-          <span className="text-white"> next </span>
-        </div>
-      </button> 
-    </div>
-  </div>
+    <Routes>
+      <Route path="/" element={<Navigate replace to={firstQuestionnaire}/>}/>
+      <Route path="values" element={<IntroductionPage intro={intro.values} nextpage="/questionnaire/v/page1" />} />
+      <Route path="personality" element={<IntroductionPage intro={intro.personality} nextpage={'/questionnaire/p/page1'} />} />
+      <Route path="playlist" element={<IntroductionPage intro={intro.playlist} nextpage={'/recommender'} />} />
+    </Routes>
   )
+
 }
