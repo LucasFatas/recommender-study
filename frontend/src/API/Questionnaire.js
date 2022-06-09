@@ -18,7 +18,7 @@ export const sendAnswer = async (navigate, setLoading, setResults) => {
     
     //TODO : uncomment beofre deploying, remove hard-coded values
     
-    const answers = sessionStorage.getItem("answers");
+    /* const answers = sessionStorage.getItem("answers");
     const parsedAnswers = parseSessionObj(JSON.parse(answers));
     const body = orderAnswers(parsedAnswers);
     const personalityArray = Array.from(body.personality.values());
@@ -28,13 +28,13 @@ export const sendAnswer = async (navigate, setLoading, setResults) => {
         user : userID,
         personality_answers : personalityArray,
         value_answers : valuesArray
-    }
+    } */
 
-    /* const obj = {
+    const obj = {
         user : userID,
         personality_answers : personality_answers,
         value_answers : value_answers
-    } */
+    }
 
 
     try {

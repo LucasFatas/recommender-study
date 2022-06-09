@@ -5,7 +5,9 @@
         "questions" : [
             "I would be quite bored by a visit to an art gallery.",
             "I plan ahead and organize things, to avoid scrambling at the last minute.",
-            "I rarely hold a grudge, even against people who have badly wronged me.",
+            "I rarely hold a grudge, even against people who have badly wronged me."
+        ],
+        "hiddenQuestions" : [
             "I feel reasonably satisfied with myself overall.",
             "I would feel afraid if I had to travel in bad weather conditions.",
             "I wouldn't use flattery to get a raise or promotion at work, even if I thought it would succeed.",
@@ -63,9 +65,6 @@
             "When I’m in a group of people, I’m often the one who speaks on behalf of the group.",
             "I remain unemotional even in situations where most people get very sentimental.",
             "I’d be tempted to use counterfeit money, if I were sure I could get away with it."
-        ],
-        "hiddenQuestions" : [
-            
         ]
     },
     "values" : {
@@ -73,7 +72,9 @@
         "questions" : [
             "Thinking up new ideas and being creative is important to him. He likes to do things in his own original way",
             "It is important to him to be rich. He wants to have a lot of money and expensive things",
-            "He thinks it is important that every person in the world be treated equally. He believes everyone should have equal opportunities in life",
+            "He thinks it is important that every person in the world be treated equally. He believes everyone should have equal opportunities in life"
+        ],
+        "hiddenQuestions" : [
             "It's very important to him to show his abilities. He wants people to admire what he does",
             "It is important to him to live in secure surroundings. He avoids anything that might endanger his safety",
             "He thinks it is important to do lots of different things in life. He always looks for new things to try.",
@@ -111,9 +112,6 @@
             "It is important to him to be humble and modest. He tries not to draw attention to himself",
             "He always wants to be the one who makes the decisions. He likes to be the leader",
             "It is important to him to adapt to nature and to fit into it. He believes that people should not change nature"
-        ],
-        "hiddenQuestions" : [
-            
         ]
     },
     "feedback" : {
