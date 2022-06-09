@@ -19,13 +19,22 @@ frontend_url = os.getenv('FRONTEND_URL')
 db, cursor, database = open_connection()
 
 
+class BatchException(Exception):
+    pass
+
+
 @songs.route('/songs/get')
 def retrieve_top_songs():
+    """
+    Retrieves the top songs of a given user
+    :except DatabaseException: if there is a problem while fetching the data
+    :return: 5 top songs of a user
+    """
     try:
-        data = request.args
+        userId = request.args['userId']
 
         # Given the user id, retrieve top songs from database.
-        top_songs = get_top_songs(data['userId'], db, cursor, database)
+        top_songs = get_top_songs(userId, db, cursor, database)
 
         # Return JSON object with such a song list.
         return jsonify(songs=[song.__dict__ for song in top_songs])
@@ -36,7 +45,14 @@ def retrieve_top_songs():
 
 @songs.route('/match')
 def match_user():
-    userId = request.args['userId']
+    """
+    Retrieves the matches of a given user: the userIds of the matches and their top songs
+    :except DatabaseException: if there is a problem while fetching the data from the database
+    :return: 5 top songs of a user.
+    """
+    req = request.args
+    userId = req['userId']
+
     try:
         # Add the newly formatted answers to our database.
         values = get_value(userId, db, cursor, database)
@@ -44,6 +60,14 @@ def match_user():
 
         # Find IDs of the users more similar to the given user id
         val_user, pers_user, random_user = match(userId, values, personality, 1, os.environ.get("METRIC"))
+
+        batch = os.getenv("BATCH")
+        if batch == str(2):
+            batch = 1
+        elif batch == str(2):
+            raise BatchException("Not in the right batch to do matching.")
+
+        val_user, pers_user, random_user = match(userId, values, personality, batch, req['metric'])
 
         lst = [Match(val_user, get_top_songs(val_user, db, cursor, database)),
                Match(pers_user, get_top_songs(pers_user, db, cursor, database)),
@@ -56,15 +80,23 @@ def match_user():
 
             data.append(matched)
         return jsonify(match=data)
-
     except DatabaseException as e:
         # Exception handling in case there is an error.
         response = jsonify({'message': str(e)})
         return response, 502
+    except BatchException as e:
+        print(e)
+        response = jsonify({'message': str(e)})
+        return response, 500
 
 
 @songs.route('/ratings/add', methods=["POST"])
 def save_ratings():
+    """
+   Stores the ratings of a given user once he has provided all the feedback about his recommendations
+   :except DatabaseException: if there is a problem while storing the data in the database
+   :return: Success message
+    """
     try:
         data = request.get_json(force=True)
 
@@ -103,9 +135,15 @@ def save_ratings():
         return response, 502
 
 
-# Handle the Spotify login and access code retrieval.
 @songs.route('/callback')
 def spotify_log_in():
+    """
+    Handle the Spotify API communication: stores a new user and his top songs into the database
+    :except AuthorizationException: if there is a problem while logging in the Spotify account
+    :except InvalidAccountException: if there is a problem with the amount of top songs of the user
+    :except DatabaseException: if there is a problem while storing the data in the database
+    :return: redirect to start of the questionnaire on the frontend.
+    """
     try:
         # Retrieve the access token after user is logged in.
         access_token = get_access_token(request.args['code'])
@@ -129,6 +167,7 @@ def spotify_log_in():
 
     except InvalidAccountException as e:
         # Exception handling in case there is an Invalid account error.
+        # Happens when a user has less than 5 top songs in his Spotify account
         return redirect(frontend_url + "/error/invalid_account")
 
     except DatabaseException as e:

@@ -29,8 +29,15 @@ def match(userId, values, personality, batch, metric):
     return val_user, pers_user, random_user
 
 
-# Calculates Distance of two vectors based on a defined metric
 def calculate_distance(answer, batch_answer, metric):
+    """
+    Method that calculates which distance metric we are going to use to match users.
+    :param answer: score of the user that we are matching against.
+    :param batch_answer: one of the scores for the users that are in the batch that is going to be matched
+    against this user.
+    :param metric: The specific metric that will be used for this matching process.
+    :return: distance computation of the user and the specific user
+    """
     if metric.casefold() == "Manhattan".casefold():
         return manhattan_distance(answer, batch_answer)
     elif metric.casefold() == "Euclidean".casefold():
@@ -38,6 +45,13 @@ def calculate_distance(answer, batch_answer, metric):
 
 
 def closest_user(answer, batch_answer, metric):
+    """
+    Calculates the closest user to the given participant through the use of the distance calculation method.
+    :param answer: answer of the user to be matched.
+    :param batch_answer: list of answers and userIds of the participants in the specific batch
+    :param metric:
+    :return:
+    """
     closest = -1
     closest_distance = float("inf")
     for x in batch_answer:
