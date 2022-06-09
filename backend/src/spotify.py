@@ -64,7 +64,7 @@ def get_top_songs_api(access_token):
     # Create the list of songs from the user.
     songs = []
     index = 0
-    # Keep retrieving the next song if the current one's link is null and we still haven't reached 5 songs.
+    # Keep retrieving the next song if the current one's link is null, and we still haven't reached 5 songs.
     while len(songs) < 5:
         item = user_data['items'][index]
         artists = []

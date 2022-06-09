@@ -1,15 +1,15 @@
-import io, csv
-import os
-
-import numpy as np
+import csv
 import flask
+import io
+import jwt
+import numpy as np
+import os
+from dotenv import load_dotenv, set_key, find_dotenv
 from flask import request, Blueprint, jsonify, make_response
+
 from src.Services.DashboardService import get_all_scores, get_all_answers, get_all_songs, get_all_match_data, \
     get_song_ratings, get_user_total
 from src.Services.database_config import open_connection
-from dotenv import load_dotenv, set_key, find_dotenv
-import jwt
-
 from src.spotify import AuthorizationException
 
 dashboard = Blueprint('dashboard', __name__)

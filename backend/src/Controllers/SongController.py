@@ -37,6 +37,7 @@ def retrieve_top_songs():
         # Return JSON object with such a song list.
         return jsonify(songs=[song.__dict__ for song in top_songs])
     except DatabaseException as e:
+        print(e)
         # Exception handling in case there is a database error.
         return redirect(frontend_url + "/error/database")
 
@@ -104,7 +105,7 @@ def save_ratings():
         userId = data['userId']
 
         # Add song ratings into our database.
-        # In order to do that, we need to format the data retrieved. We use a helper Entity SongRating
+        # In order to do that, we need to format the data retrieved. We use a helper Entity SongRating:
         # SongRating(user id, matched user, spotify preview url, rating)
         songRatings = []
 
@@ -160,14 +161,17 @@ def spotify_log_in():
         return redirect(frontend_url + "/questionnaire/page1?userID = " + str(userId), 302)
 
     except AuthorizationException as e:
+        print(e)
         # Exception handling in case there is an authorization error.
         return redirect(frontend_url + "/error/login")
 
     except InvalidAccountException as e:
+        print(e)
         # Exception handling in case there is an Invalid account error.
         # Happens when a user has less than 5 top songs in his Spotify account
         return redirect(frontend_url + "/error/invalid_account")
 
     except DatabaseException as e:
+        print(e)
         # Exception handling in case there is a database error.
         return redirect(frontend_url + "/error/database")

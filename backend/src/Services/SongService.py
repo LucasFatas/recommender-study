@@ -114,9 +114,7 @@ def add_playlist_ratings(playlist, db, cursor, database):
 # Parameters: a userId and a list of song objects with a name, spotify_url and list of artist(s)
 # Returns: a confirmation message
 def add_song_ratings(song_ratings, db, cursor, database):
-
     try:
-        db, cursor, database = open_connection()
         sql = """
             INSERT INTO """ + database + """.SongRating(userId, matchedUserId, spotifyUrl, 
             rating, playlistNumber)

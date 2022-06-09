@@ -20,9 +20,9 @@ def manhattan_distance(arg1, arg2):
 
 def euclidean_distance(arg1, arg2):
     """
-    This method calculates the euclidean distance between two personality/value vectors.
-    :param arg1: first vector representing the personality/value scores of a user.
-    :param arg2: second vector representing the personality/value scores of a user.
+    This method calculates the euclidean distance between two personality/value vectors
+    :param arg1: first vector representing the personality/value scores of a user
+    :param arg2: second vector representing the personality/value scores of a user
     :return: euclidean distance between the two points.
     """
     point1 = np.array(arg1)
@@ -32,4 +32,3 @@ def euclidean_distance(arg1, arg2):
     distance = np.linalg.norm(point1 - point2)
 
     return distance
-
