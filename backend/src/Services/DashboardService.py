@@ -48,14 +48,14 @@ def get_all_answers(batch, db, cursor, database):
 def get_all_songs(batch, db, cursor, database):
     try:
         sql = "SELECT p.userId, spotifyUrl FROM " + database + ".Song AS s LEFT JOIN " + database + ".Participant" \
-              " AS p ON s.userId = p.userId WHERE p.batch = %s"
+              " AS p ON s.userId = p.userId WHERE p.batch = %s ORDER BY p.userId"
         cursor.execute(sql, (batch,))
         result = cursor.fetchall()
         return result
 
     except mysql.connector.errors.Error as e:
         print(e)
-        raise DatabaseException("Error connecting to database when retrieving Scores.")
+        raise DatabaseException("Error connecting to database when retrieving Songs.")
 
 
 # Method that gets all the feedback (except individual songs) of users.

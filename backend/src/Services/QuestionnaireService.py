@@ -146,7 +146,7 @@ def add_matches(userId, val_user, pers_user, random_user, db, cursor, database):
     except mysql.connector.errors.Error as e:
         print(e)
         db.rollback()
-        raise DatabaseException("Error connecting to database when adding personalities.")
+        raise DatabaseException("Error connecting to database when adding matches.")
 
 
 # Method that gets all the users of a certain batch and their values
@@ -190,12 +190,12 @@ def get_all_personalities(batch, db, cursor, database):
 # Method that gets all the users of a certain batch apart from the value user and personality user
 # Parameters: batch number
 # Returns: one random user id
-def get_random_user(user1, user2, batch, db, cursor, database):
+def get_random_user(user1, user2, user3, batch, db, cursor, database):
     try:
         sql = "SELECT userId FROM " + database + ".Participant AS p " \
-                                                 "WHERE p.batch = %s AND NOT (p.UserID = %s or p.userId = %s)"
+                "WHERE p.batch = %s AND NOT (p.UserID = %s or p.userId = %s or p.userId = %s)"
 
-        cursor.execute(sql, (batch, user1, user2))
+        cursor.execute(sql, (batch, user1, user2, user3))
         result = cursor.fetchall()
         return random.choice(result)[0]
     except mysql.connector.errors.Error as e:
