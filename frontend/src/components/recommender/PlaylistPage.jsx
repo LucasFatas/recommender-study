@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 
-
 import { Playlist } from "./Playlist"
 import { Feedback } from "./Feedback";
 import { Buttons } from "../global/Buttons";
@@ -31,7 +30,7 @@ export const PlaylistPage = (props) => {
 	useEffect(() => {	
 			setAnswered(checkEveryElementIsInMap(questionsNumberArr, currentFeedback.questions));
 			setFeedback(feedback);
-		},[currentFeedback.questions, questionsNumberArr, props] //parameters that, if changed, trigger the function above
+		},[currentFeedback.questions, questionsNumberArr, props, feedback, setFeedback] //parameters that, if changed, trigger the function above
   );
 
 	const onAnswerChange = (e, questionNumber) => updateAnswersLogic(e, questionNumber, feedback, setFeedback, currentFeedback, setAnswered, questionsNumberArr);
@@ -53,7 +52,8 @@ export const PlaylistPage = (props) => {
 				data={{"ratings" : ratings, "comment" : comment, "playlistName" : playlistName}}
 				pathOnSubmit="/thanks"
 				currentPath="/recommender"
-				submitFunction={sendRatings} 
+				submitFunction={() => sendRatings(ratings, feedback)}
+				submitResults={playlistName === 'random'}
 				answered={answered}
 			/>
 		</div>

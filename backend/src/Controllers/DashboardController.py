@@ -4,14 +4,17 @@ import os
 import numpy as np
 import flask
 from flask import request, Blueprint, jsonify, make_response
-from src.Services.DashboardService import get_all_scores, get_all_answers, get_all_songs, get_all_match_data, get_song_ratings
+from src.Services.DashboardService import get_all_scores, get_all_answers, get_all_songs, get_all_match_data, \
+    get_song_ratings, get_user_total
 from src.Services.database_config import open_connection
-from dotenv import load_dotenv
+from dotenv import load_dotenv, set_key, find_dotenv
 import jwt
 
 from src.spotify import AuthorizationException
 
 dashboard = Blueprint('dashboard', __name__)
+
+"""Start of CSV retrieval methods."""
 
 
 # Method that gets all the users of a certain batch and their questionnaire scores
@@ -36,9 +39,10 @@ def retrieve_scores():
 
     data = io.StringIO()
     writer = csv.writer(data)
-    column_names = ("UserID", "Openness", "Honesty", "Emotionality", "Extroversion", "Agreeableness", "Conscientiousness",
-                    "Stimulation", "SelfDirection", "Universalism", "Benevolence", "Tradition", "Conformity", "SecurityVal",
-                    "PowerVal", "Achievement", "Hedonism")
+    column_names = (
+        "UserID", "Openness", "Honesty", "Emotionality", "Extroversion", "Agreeableness", "Conscientiousness",
+        "Stimulation", "SelfDirection", "Universalism", "Benevolence", "Tradition", "Conformity", "SecurityVal",
+        "PowerVal", "Achievement", "Hedonism")
     writer.writerow(column_names)
     for row in scores:
         writer.writerow(row)
@@ -227,6 +231,109 @@ def retrieve_song_ratings():
     output.headers["Content-Disposition"] = "attachment; filename=export.csv"
     output.headers["Content-type"] = "text/csv"
     return output
+
+
+"""Start of experiment parameter manipulation methods."""
+
+
+# Method that gets all the total users of a certain batch
+# Parameters: batch number
+# Returns: total number of users.
+@dashboard.route("/users")
+def total_users():
+    try:
+        check_token(request.headers['Authorization'].replace("Bearer ", ""))
+    except AuthorizationException:
+        response = jsonify({'message': "Incorrect Token"})
+        return response, 401
+    except KeyError:
+        response = jsonify({'message': "Missing Token"})
+        return response, 401
+
+    batch = request.args['batchId']
+    db, cursor, database = open_connection()
+
+    users = get_user_total(batch, db, cursor, database)
+
+    return jsonify(users=users)
+
+
+# Method that gets the batch the experiment is at.
+# Returns: the stored batch number.
+@dashboard.route("/batch")
+def get_batch():
+    # Authentication not needed because this needs to be accessed from other places (not just dashboard).
+    batch = os.getenv('BATCH')
+
+    return jsonify(batch=batch)
+
+
+# Method that gets the batch the experiment is at.
+# Returns: the stored batch number.
+@dashboard.route("/revert", methods=['POST'])
+def revert_batch():
+    # Authentication not needed because this needs to be accessed from other places (not just dashboard).
+    os.environ["BATCH"] = str(1)
+    set_key(find_dotenv(), "BATCH", os.getenv("BATCH"))
+    batch = os.environ["BATCH"]
+
+    os.environ["METRIC"] = "Euclidean"
+    set_key(find_dotenv(), "METRIC", os.getenv("METRIC"))
+    metric = os.environ["METRIC"]
+
+    return jsonify(batch=batch)
+
+
+# Method that gets the metric employed by the experiment
+# Returns: a string with either "euclidean" or "manhattan"
+@dashboard.route("/metric")
+def get_metric():
+    try:
+        check_token(request.headers['Authorization'].replace("Bearer ", ""))
+    except AuthorizationException:
+        response = jsonify({'message': "Incorrect Token"})
+        return response, 401
+    except KeyError:
+        response = jsonify({'message': "Missing Token"})
+        return response, 401
+
+    # If batch number is 1, then metric will be euclidean as default,
+    # but it's not used at any point by the app when batch is 1
+    metric = os.environ['METRIC']
+
+    return jsonify(metric=metric)
+
+
+# Method that sets the experiment to the next batch.
+# Parameters: metric employed.
+# Returns: the batch number and the metric employed.
+@dashboard.route("/setBatch")
+def set_batch():
+    try:
+        check_token(request.headers['Authorization'].replace("Bearer ", ""))
+    except AuthorizationException:
+        response = jsonify({'message': "Incorrect Token"})
+        return response, 401
+    except KeyError:
+        response = jsonify({'message': "Missing Token"})
+        return response, 401
+
+    asked_metric = request.args['metric']
+
+    os.environ["BATCH"] = str(2)
+    set_key(find_dotenv(), "BATCH", os.getenv("BATCH"))
+    batch = os.environ["BATCH"]
+
+    os.environ["METRIC"] = asked_metric
+    set_key(find_dotenv(), "METRIC", os.getenv("METRIC"))
+    metric = os.environ["METRIC"]
+
+    return jsonify(batch=batch, metric=metric)
+
+
+"""Authentication related methods"""
+
+
 # Method that creates the JWT token of the researcher
 # Parameters: username, password
 # Returns: jwt token
@@ -264,8 +371,3 @@ def check_token(token):
             return True
     except jwt.exceptions.DecodeError:
         raise AuthorizationException("Incorrect Token")
-
-
-
-
-

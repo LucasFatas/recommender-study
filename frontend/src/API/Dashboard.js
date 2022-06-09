@@ -46,6 +46,73 @@ export const getMatchData = async (token) => {
     return retrieveCSVHelperFunction({token : token, endpoint : "match"})
 }
 
+ const getHelper = async ({setter, parameter, token, batchId, endpoint}) => {
+
+    const uri = typeof batchId === 'undefined' || batchId === null
+        ? `${serverUrl}:${port}/dashboard/${endpoint}`
+        : `${serverUrl}:${port}/dashboard/${endpoint}?batchId=${batchId}`;
+
+    const header = typeof token === 'undefined' || token === null
+        ? 
+            {'Content-Type': 'application/json'}
+        :
+            {
+                'Authorization': "Bearer " + token,
+                'Content-Type': 'application/json',
+            };
+        
+    try {
+        await fetch(uri, {
+            method: 'GET',
+            headers: header
+        })
+        .then(res => res.json())
+        .then(data => setter(data[parameter]));
+
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+export const getBatch = async (setBatch, parameter) => {
+    getHelper({setter : setBatch, parameter : parameter , endpoint : "batch"})
+}
+
+export const getUsers = async (setBatch, parameter, token, batchId) => {
+    getHelper({setter : setBatch, parameter : parameter, token : token, batchId : batchId , endpoint : "users"})
+}
+
+export const getMetric = async (setBatch, parameter, token) => {
+    getHelper({setter : setBatch, parameter : parameter, token : token, endpoint : "metric"})
+}
+
+export const setBatch = async ( setBatch, setMetric, setChangeBatch, setMetricNextBatch, token, metric) => {
+
+    const uri = `${serverUrl}:${port}/dashboard/setBatch?metric=${metric}`
+        
+    try {
+        await fetch(uri, {
+            method: 'GET',
+            headers: {
+                'Authorization': "Bearer " + token,
+                'Content-Type': 'application/json'
+
+            },
+        })
+        .then(res => res.json())
+        .then(data => {
+            setBatch(data.batch)
+            setMetric(data.metric)
+            setChangeBatch(false)
+            setMetricNextBatch("")
+        });
+
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+
 
 
 export const logIn = async (credentials) => {

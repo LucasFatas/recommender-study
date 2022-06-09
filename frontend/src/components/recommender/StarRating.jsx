@@ -15,13 +15,13 @@ export const StarRating = (props) => {
 
   //Hover caused issues with the code. Might be reimplemented later on.
   //const [hover, setHover] = useState(0);
-  const [currentRating, setCurrentRating] = useState(song === undefined ? ratings[playlistName].playlist : ratings[playlistName].songs[song]);
+  const [currentRating, setCurrentRating] = useState(song === undefined ? ratings[playlistName].playlistRating : ratings[playlistName].songsRatings[song]);
 
   useEffect(() => {
       if (song === undefined) 
-        setCurrentRating(ratings[playlistName].playlist);
+        setCurrentRating(ratings[playlistName].playlistRating);
       else 
-        setCurrentRating(ratings[playlistName].songs[song]);
+        setCurrentRating(ratings[playlistName].songsRatings[song]);
     }, [song, ratings, playlistName]
   );
 
