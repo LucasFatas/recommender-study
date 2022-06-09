@@ -10,12 +10,6 @@ def test_calculate_distance_euclidean():
     answer = calculate_distance([0, 2, 3, 6], [0, 6, 6, 6], "Euclidean")
     assert answer == 5
 
-
-def test_calculate_distance_camberra():
-    answer = calculate_distance([0, 2, 3, 6], [0, 6, 6, 6], "")
-    assert answer == 1
-
-
 def test_closest_user_trivial_easy():
     answer = closest_user([0, 0, 0, 0], [[20, 0, 0, 0, 0], [1, 1, 1, 1, 1], [2, 2, 2, 2, 2]], "manhattan", -1)
     assert answer == 20
