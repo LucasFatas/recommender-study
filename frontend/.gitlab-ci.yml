@@ -1,25 +1,24 @@
 stages:
   - computation
-  - build
   - jest
 
 cache:
   paths:
     - node_modules/
 
-install_and_build:
-  stage: build
-  image: node:latest
-  before_script:
-    - cd frontend
-  script:
-    - yarn install
-    - yarn build
-  after_script:
-    - cd ..
-  artifacts:
-    paths:
-      - build/
+#install_and_build:
+#  stage: build
+#  image: node:latest
+#  before_script:
+#    - cd frontend
+#  script:
+#    - yarn install
+#    - yarn build
+#  after_script:
+#    - cd ..
+#  artifacts:
+#    paths:
+#      - build/
 
 test_application:
   stage: jest

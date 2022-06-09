@@ -18,9 +18,9 @@ it('Check stars', () => {
             song={0} //Number containing index of current song
             setRatings={() => x++} //Function to change ratings object
             ratings={{
-                random : { playlist: 0, songs: Array(5).fill(0) },
-                personality : { playlist: 0, songs: Array(5).fill(0) },
-                values : { playlist: 0, songs: Array(5).fill(0) },
+                random : { playlistRating: 0, songsRatings: Array(5).fill(0) },
+                personality : { playlistRating: 0, songsRatings: Array(5).fill(0) },
+                values : { playlistRating: 0, songsRatings: Array(5).fill(0) },
             }}  //Object, to see structure go to recommenderController and check initialRatingsObj
             setRatingsFilled={() => x++}  //Function to change value of boolean ratingsFilled
           />
