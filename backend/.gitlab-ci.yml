@@ -11,7 +11,7 @@ computation:
   cache:
     policy: push
   before_script:
-    - pip install pytest numpy mysql-connector dotenv --use-deprecated=backtrack-on-build-failures
+    - pip install pytest numpy mysql-connector python-dotenv --use-deprecated=backtrack-on-build-failures
     - cd backend
   script:
     - python -m pytest tests/TestComputation 
