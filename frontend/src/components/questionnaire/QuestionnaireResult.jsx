@@ -14,6 +14,18 @@ export const QuestionnaireResult = () => {
 
   const navigate = useNavigate();
 
+  useEffect(() => {
+    if(sessionStorage.getItem("currentUrl") !== "/questionnaire/results"){
+      console.log("you are redirected to", sessionStorage.getItem("currentUrl"))
+      navigate(sessionStorage.getItem("currentUrl"))
+    }
+    else
+    {
+      console.log("you are in", sessionStorage.getItem("currentUrl"))
+    }
+
+  }, []);
+
   const [currentBatch, setCurrentBatch] = useState("");
   getBatch(setCurrentBatch, "batch")
   const lastPage = getLastPage(currentBatch === "1" ? "questionnaire" : "recommender");
@@ -44,7 +56,7 @@ export const QuestionnaireResult = () => {
           </div>
           <div className="mt-10">
             <Link to={lastPage}>
-              <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full ">Next</button>
+              <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full " onClick={sessionStorage.setItem("currentUrl", lastPage)}>Next</button>
             </Link> 
           </div>
         </div>

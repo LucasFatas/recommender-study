@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 import { useNavigate } from 'react-router-dom';
 
@@ -9,6 +9,7 @@ export const IntroductionPage = (props) => {
   
 
   const {
+    type,
     intro,
     nextpage
   } = props;
@@ -17,8 +18,32 @@ export const IntroductionPage = (props) => {
 
   const navigate = useNavigate();
 
+  useEffect(() => {
+    const url = sessionStorage.getItem("currentUrl")
+    if(sessionStorage.getItem("userID") === null){
+      console.log("you have no Id, you are redirected to the consent page")
+      sessionStorage.setItem("currentUrl", "/consentPage")
+      navigate("/consentPage")
+    } 
+    else if(url === "/introduction") {
+      console.log("This is the first questionnaire")
+      sessionStorage.setItem("currentUrl", "/introduction/" + type)
+    }
+    else if(url.includes("introduction")){
+      console.log("you are in" + url)
+
+    }
+    else{
+      console.log("you are redirected to", url)
+      navigate(sessionStorage.getItem("currentUrl"))
+
+    }
+
+  }, []);
+
   const handleNext = () => {
     //the navigated page is possibly going to change in the future 
+    sessionStorage.setItem("currentUrl", nextpage)
     navigate(nextpage)
   }
   const buttonStyleActive = "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full";

@@ -39,7 +39,7 @@ export const WebsiteIntroduction = (props) => {
 
   useEffect(() => {
     if (clicked) {
-      sessionStorage.setItem("currentUrl", '/questionnaire')
+      sessionStorage.setItem("currentUrl", "/introduction")
       window.location.assign(SpotifyUrl);
     }
   })
