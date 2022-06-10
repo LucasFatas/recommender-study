@@ -1,62 +1,71 @@
 import numpy as np
 
 
-# Calculates value scores of a user given the answers to the quiz.
-# Parameters: answers related to value theory.
-# Returns an array of floats representing the personality scores.
 def val_calc(val_answers):
+    """
+    Calculates the scores of a user based on his answers to the PVQ questionnaire.
+    Scoring key is commented over each array entry
+    :param val_answers: Answers of the user, an array of size 40
+    :return: an array of 10 scores representing the rating for each of the 10 values for the user
+    """
+    # We have to subtract the total mean of the values to each score.
     grand_mean = np.mean(val_answers)
 
     # List with the 10 value fields.
     values = np.array([
-        # Conformity - 7,16,28,36
-        np.mean([val_answers[6], val_answers[15], val_answers[27], val_answers[35]]),
+        # Stimulation - 6,15,30
+        np.mean([val_answers[5], val_answers[14], val_answers[29]]),
 
-        # Tradition - 9,20,25,38
-        np.mean([val_answers[8], val_answers[19], val_answers[24], val_answers[37]]),
-
-        # Benevolence - 12,18,27,33
-        np.mean([val_answers[11], val_answers[17], val_answers[26], val_answers[32]]),
+        # Self-Direction - 1,11,22,34
+        np.mean([val_answers[0], val_answers[10], val_answers[21], val_answers[33]]),
 
         # Universalism - 3,8,19,23,29,40
         np.mean([val_answers[2], val_answers[7], val_answers[18],
                  val_answers[22], val_answers[28], val_answers[39]]),
 
-        # Self-Direction - 1,11,22,34
-        np.mean([val_answers[0], val_answers[10], val_answers[21], val_answers[33]]),
+        # Benevolence - 12,18,27,33
+        np.mean([val_answers[11], val_answers[17], val_answers[26], val_answers[32]]),
 
-        # Stimulation - 6,15,30
-        np.mean([val_answers[5], val_answers[14], val_answers[29]]),
+        # Tradition - 9,20,25,38
+        np.mean([val_answers[8], val_answers[19], val_answers[24], val_answers[37]]),
 
-        # Hedonism - 10,26,37
-        np.mean([val_answers[9], val_answers[25], val_answers[36]]),
+        # Conformity - 7,16,28,36
+        np.mean([val_answers[6], val_answers[15], val_answers[27], val_answers[35]]),
 
-        # Achievement - 4,13,24,32
-        np.mean([val_answers[3], val_answers[12], val_answers[23], val_answers[31]]),
+        # Security - 5,14,21,31,35
+        np.mean([val_answers[4], val_answers[13], val_answers[20], val_answers[30], val_answers[34]]),
 
         # Power - 2,17,39
         np.mean([val_answers[1], val_answers[16], val_answers[38]]),
 
-        # Security - 5,14,21,31,35
-        np.mean([val_answers[4], val_answers[13], val_answers[20], val_answers[30], val_answers[34]])
+        # Achievement - 4,13,24,32
+        np.mean([val_answers[3], val_answers[12], val_answers[23], val_answers[31]]),
+
+        # Hedonism - 10,26,37
+        np.mean([val_answers[9], val_answers[25], val_answers[36]])
     ])
 
     norm = values - grand_mean
     return norm.round(2).tolist()
 
 
-# Calculates the reverse of the HEXACO score, in order to compute the scores of the questionnaire
 def reverse(score):
+    """
+    Calculates the reverse of a 1-5 score, in order to compute the scores of the HEXACO questionnaire
+    Thus, 1 becomes 5, 2 becomes 4, 3 stays as 3, 4 becomes 2 and 5 becomes 1.
+    :param score: the number to reverse
+    :return: the reversed score.
+    """
     return 6 - score
 
 
-# Calculates HEXACO personality scores of a user given the answers to the quiz.
-# Parameters: answers related to personality.
-# Returns an array of floats representing the personality scores.
 def pers_calc(pers_answers):
-
-    # List with the 6 personality fields. Comment on top of each entry is coding key for personality calculation.
-    # R after a number corresponds to the reverse of that score. Explained in the corresponding method.
+    """
+    Calculates the scores of a user based on his answers to the HEXACO questionnaire.
+    Scoring key is commented over each array entry. The letter R after a number symbolizes the reverse of the score.
+    :param pers_answers: Answers of the user, an array of size 60
+    :return: an array of 6 scores representing the rating for each of the 6 personality traits for the user.
+    """
     personalities = np.array([
         # Honesty-Humility - 6, 30R, 54, 12R, 36, 60R, 18, 42R, 24R, 48R
         np.mean([pers_answers[5], reverse(pers_answers[29]), pers_answers[53], reverse(pers_answers[11]),
@@ -93,8 +102,11 @@ def pers_calc(pers_answers):
     return personalities
 
 
-# Connecting method, called from QuestionnaireController.py. Includes both previous methods.
-# Parameters: answers related to value theory, answers related to personality.
-# Returns a tuple consisting of calculated value and personality scores, in that order.
 def calculations(val_answers, pers_answers):
+    """
+    Divides the calculations so that there is only one method called from the controllers and services
+    :param val_answers: answers of the user for the PVQ questionnaire
+    :param pers_answers: answers of the user for the HEXACO questionnaire
+    :return: a tuple with the scores calculated based on the answers. Two arrays of size 10 and 6
+    """
     return val_calc(val_answers), pers_calc(pers_answers)
