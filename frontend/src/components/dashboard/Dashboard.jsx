@@ -1,9 +1,21 @@
 import React from 'react';
 import { useEffect, useState } from "react";
 import { useNavigate } from 'react-router-dom';
-import { backEndCreateNewBatch, isLoggedIn } from "../../controller/dashboardController";
 import { DownloadDashboard } from './DownloadDashboard';
-import { getBatch, getMetric, getUsers, setBatch, revertBatch } from '../../API/Dashboard';
+import { 
+  backEndCreateNewBatch, 
+  isLoggedIn,
+  handleResetData, 
+  handleRevertData 
+} from "../../controller/dashboardController";
+import { 
+  getBatch, 
+  getMetric, 
+  getUsers, 
+  setBatch, 
+  revertBatch, 
+  resetData 
+} from '../../API/Dashboard';
 
 const buttonStyle = 'bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 my-2 px-4 rounded-full text-white text-center mt-4';
 
@@ -45,22 +57,26 @@ export const Dashboard = ({switchCurrentBatch}) => {
     sessionStorage.removeItem("token")
     navigate("/login")
   };
+
   const date = () => {
     var currentdate = new Date(); 
     return `${currentdate.getDate()}/${(currentdate.getMonth()+1)}/${currentdate.getFullYear()} `;
   }
-  
+
+  const downloadAllData = () => {
+    //TODO: add functionality
+    console.log('Download all');
+  }
 
   const createNewBatch = () => {
     //Shows the user a confirmation pop-up that sets confirmBox to true if they press ok and false otherwise
     const confirmBox = window.confirm("Do you really want to change batch?");
-
+  
     if (confirmBox) 
       backEndCreateNewBatch(setBatch, setBatchNumber, setBatchMetric, setChangeBatch, setMetricNextBatch, metricNextBatch);
   };
-
+  
   const showChangeBatchButtons = () => setChangeBatch(true)
-
 
   return (
     <div className='flex flex-col items-center justify-between py-28'>
@@ -134,12 +150,15 @@ export const Dashboard = ({switchCurrentBatch}) => {
       </div>
       <button className={buttonStyle} onClick={logout} >
         Log out
-      </button> 
-      <button className={buttonStyle} onClick={revertBatch} >
+      </button>
+      <button className={buttonStyle} onClick={() => handleRevertData(revertBatch)} >
         Revert batch
       </button>
-      <button className={buttonStyle} onClick={logout} >
+      <button className={buttonStyle} onClick={() => handleResetData(resetData)} >
         Reset data
+      </button> 
+      <button className={buttonStyle} onClick={downloadAllData} >
+        Dowload All data
       </button> 
     </div>
   )
