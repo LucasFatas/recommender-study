@@ -1,6 +1,6 @@
 import React from 'react';
 import { retrieveCSV } from "../../controller/dashboardController";
-import { CSVLink} from 'react-csv'
+import { CSVLink } from 'react-csv'
 
 export const DownloadDashboard = (props) => {
 
@@ -41,8 +41,8 @@ export const DownloadDashboard = (props) => {
         <div className='flex'>
           <span className="text-white pr-3"> Data: </span>
           {downloadData.map((data, index) => {
-            if (batchToDownload === "1" && data === "Playlist Rating&Feedback" ||  
-              batchToDownload === "1" && data === "Song Ratings" )
+            if ((batchToDownload === "1" && data === "Playlist Rating&Feedback") ||  
+              (batchToDownload === "1" && data === "Song Ratings") )
               return <></>
             else 
               return(
