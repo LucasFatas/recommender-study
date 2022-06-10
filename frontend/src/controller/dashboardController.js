@@ -88,3 +88,17 @@ const helperCSVDownload = (res, setCSVToDownload, setCanDownload) => {
   setCSVToDownload(res.toString())
   setCanDownload(true)
 }
+
+export const handleResetData = (resetData) => {
+  const confirmBox = window.confirm("This option will remove all existing data stored in the database, are you sure you want to proceed? This action is irreversible");
+  const token = sessionStorage.getItem("token");
+  if (confirmBox)
+    resetData(token);
+}
+
+export const handleRevertData = (revertBatch) => {
+  const confirmBox = window.confirm("This option will set the current batch to questionnaire (first batch) and set the distance metric to euclidean. Are you sure you want to proceed? This action is irreversible");
+  const token = sessionStorage.getItem("token");
+  if (confirmBox)
+    revertBatch(token);
+}
