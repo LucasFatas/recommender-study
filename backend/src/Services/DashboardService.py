@@ -108,38 +108,45 @@ def get_all_match_data(db, cursor, database):
         # Retrieve all data from the database based on the matches made by our app. We use three different temporary
         # tables with the feedback from each match and then join them.
         sql = """
-            WITH table1 AS (
-                SELECT m.userId, m.valueId, pr1.rating, 
-                    GROUP_CONCAT(qf1.answer ORDER BY qf1.questionNumber), of1.feedback
-                FROM """ + database + """.Matches AS m 
-                JOIN """ + database + """.PlaylistRating AS pr1 
-                    ON pr1.userId = m.userId AND pr1.matchedUserId = m.ValueId
-                JOIN """ + database + """.QuestionFeedback AS qf1 
-                    ON qf1.userId = m.userId AND qf1.matchedUserId = m.ValueId
-                JOIN """ + database + """.OpenFeedback AS of1 
-                    ON of1.userId = m.userId AND of1.matchedUserId = m.ValueId)
+            WITH 
+                table1 AS (
+                    SELECT m.userId, m.valueId, pr1.rating, 
+                        GROUP_CONCAT(qf1.answer ORDER BY qf1.questionNumber), of1.feedback
+                    FROM """ + database + """.Matches AS m 
+                    JOIN """ + database + """.PlaylistRating AS pr1 
+                        ON pr1.userId = m.userId AND pr1.matchedUserId = m.ValueId
+                    JOIN """ + database + """.QuestionFeedback AS qf1 
+                        ON qf1.userId = m.userId AND qf1.matchedUserId = m.ValueId
+                    LEFT JOIN """ + database + """.OpenFeedback AS of1 
+                        ON of1.userId = m.userId AND of1.matchedUserId = m.ValueId
+                    GROUP BY m.userId, m.valueId
+                )
             
-            , table2 AS (
-                SELECT m.userId, m.personalityId, pr2.rating, 
-                    GROUP_CONCAT(qf2.answer ORDER BY qf2.questionNumber), of2.feedback
-                FROM """ + database + """.Matches AS m 
-                JOIN """ + database + """.PlaylistRating AS pr2 
-                    ON pr2.userId = m.userId AND pr2.matchedUserId = m.personalityId 
-                JOIN """ + database + """.QuestionFeedback AS qf2 
-                    ON qf2.userId = m.userId AND qf2.matchedUserId = m.personalityId 
-                JOIN """ + database + """.OpenFeedback AS of2 
-                    ON of2.userId = m.userId AND of2.matchedUserId = m.personalityId)
+                , table2 AS (
+                    SELECT m.userId, m.personalityId, pr2.rating, 
+                        GROUP_CONCAT(qf2.answer ORDER BY qf2.questionNumber), of2.feedback
+                    FROM """ + database + """.Matches AS m 
+                    JOIN """ + database + """.PlaylistRating AS pr2 
+                        ON pr2.userId = m.userId AND pr2.matchedUserId = m.personalityId 
+                    JOIN """ + database + """.QuestionFeedback AS qf2 
+                        ON qf2.userId = m.userId AND qf2.matchedUserId = m.personalityId 
+                    LEFT JOIN """ + database + """.OpenFeedback AS of2 
+                        ON of2.userId = m.userId AND of2.matchedUserId = m.personalityId
+                    GROUP BY m.userId, m.personalityId
+                )
             
-            , table3 AS (
-                SELECT m.userId, m.randomId, pr3.rating, 
-                    GROUP_CONCAT(qf3.answer ORDER BY qf3.questionNumber), of3.feedback 
-                FROM """ + database + """.Matches AS m 
-                JOIN """ + database + """.PlaylistRating AS pr3 
-                    ON pr3.userId = m.userId AND pr3.matchedUserId = m.randomId 
-                JOIN """ + database + """.QuestionFeedback AS qf3 
-                    ON qf3.userId = m.userId AND qf3.matchedUserId = m.randomId 
-                JOIN """ + database + """.OpenFeedback AS of3 
-                    ON of3.userId = m.userId AND of3.matchedUserId = m.randomId)
+                , table3 AS (
+                    SELECT m.userId, m.randomId, pr3.rating, 
+                        GROUP_CONCAT(qf3.answer ORDER BY qf3.questionNumber), of3.feedback 
+                    FROM """ + database + """.Matches AS m 
+                    JOIN """ + database + """.PlaylistRating AS pr3 
+                        ON pr3.userId = m.userId AND pr3.matchedUserId = m.randomId 
+                    JOIN """ + database + """.QuestionFeedback AS qf3 
+                        ON qf3.userId = m.userId AND qf3.matchedUserId = m.randomId 
+                    LEFT JOIN """ + database + """.OpenFeedback AS of3 
+                        ON of3.userId = m.userId AND of3.matchedUserId = m.randomId
+                    GROUP BY m.userId, m.randomId    
+                )
                 
             SELECT * FROM table1 
             JOIN table2 ON table1.userId = table2.userId
@@ -169,27 +176,36 @@ def get_song_ratings(db, cursor, database):
         # Retrieve all data from the database based on the matches made by our app.
         sql = """
             WITH 
-            table1 AS (
-                SELECT m.userId, GROUP_CONCAT(sr1.playlistNumber, '-', sr1.rating ORDER BY sr1.playlistNumber) 
-                AS answers
-                FROM """ + database + """.Matches AS m 
-                JOIN """ + database + """.songRating AS sr1 ON m.userId = sr1.userId AND m.valueId = sr1.matchedUserId)
-            
-            , table2 AS (
-                SELECT m.userId, GROUP_CONCAT(sr2.playlistNumber, '-', sr2.rating ORDER BY sr2.playlistNumber) 
-                AS answers
-                FROM """ + database + """.songRating AS sr2 
-                JOIN """ + database + """.Matches AS m ON m.userId = sr2.userId AND m.personalityId = sr2.matchedUserId)
+                table1 AS (
+                    SELECT m.userId, GROUP_CONCAT(sr1.playlistNumber, '-', sr1.rating ORDER BY sr1.playlistNumber) 
+                    AS answers
+                    FROM """ + database + """.Matches AS m 
+                    LEFT JOIN """ + database + """.songRating AS sr1 
+                        ON m.userId = sr1.userId AND m.valueId = sr1.matchedUserId
+                    GROUP BY m.userId
+                )
                 
-            , table3 AS (
-                SELECT m.userId, GROUP_CONCAT(sr3.playlistNumber, '-', sr3.rating ORDER BY sr3.playlistNumber) 
-                AS answers
-                FROM """ + database + """.songRating AS sr3 
-                JOIN """ + database + """.Matches AS m ON m.userId = sr3.userId AND m.randomId = sr3.matchedUserId)
+                , table2 AS (
+                    SELECT m.userId, GROUP_CONCAT(sr2.playlistNumber, '-', sr2.rating ORDER BY sr2.playlistNumber) 
+                    AS answers
+                    FROM """ + database + """.songRating AS sr2 
+                    LEFT JOIN """ + database + """.Matches AS m 
+                        ON m.userId = sr2.userId AND m.personalityId = sr2.matchedUserId 		
+                    GROUP BY m.userId
+                )
+                    
+                , table3 AS (
+                    SELECT m.userId, GROUP_CONCAT(sr3.playlistNumber, '-', sr3.rating ORDER BY sr3.playlistNumber) 
+                    AS answers
+                    FROM """ + database + """.songRating AS sr3 
+                    LEFT JOIN """ + database + """.Matches AS m 
+                        ON m.userId = sr3.userId AND m.randomId = sr3.matchedUserId
+                    GROUP BY m.userId
+                )
             
             SELECT table1.userId, table1.answers, table2.answers, table3.answers FROM table1 
-            JOIN table2 ON table1.userId = table2.userId
-            JOIN table3 ON table1.userId = table3.userId;
+            LEFT JOIN table2 ON table1.userId = table2.userId
+            LEFT JOIN table3 ON table1.userId = table3.userId;
         """
 
         cursor.execute(sql)
