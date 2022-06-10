@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { useState } from "react";
 
 import { useLocation, useNavigate } from 'react-router-dom';
+import { constentPageSecurity } from "../../controller/pathSecurityController";
 
 
 
@@ -19,10 +20,7 @@ export const ConsentPage = () => {
   }
 
   useEffect(() => {
-    if(sessionStorage.getItem("currentUrl") !== "/consentPage"){
-      console.log("you are redirected to", sessionStorage.getItem("currentUrl"))
-      navigate(sessionStorage.getItem("currentUrl"))
-    }
+    constentPageSecurity(navigate)
   }, []);
     
   console.log(sessionStorage.getItem("currentUrl"))

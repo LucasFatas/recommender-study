@@ -9,21 +9,14 @@ import { loadResultsIfStored } from "../../controller/questionnaireController";
 import { getBatch } from "../../API/Dashboard";
 import { getLastPage } from "../../controller/questionnaireController";
 import { sendAnswer } from '../../API/Questionnaire';
+import { questionnaireResultSecurity } from "../../controller/pathSecurityController";
 
 export const QuestionnaireResult = () => {
 
   const navigate = useNavigate();
 
   useEffect(() => {
-    if(sessionStorage.getItem("currentUrl") !== "/questionnaire/results"){
-      console.log("you are redirected to", sessionStorage.getItem("currentUrl"))
-      navigate(sessionStorage.getItem("currentUrl"))
-    }
-    else
-    {
-      console.log("you are in", sessionStorage.getItem("currentUrl"))
-    }
-
+    questionnaireResultSecurity(navigate)
   }, []);
 
   const [currentBatch, setCurrentBatch] = useState("");

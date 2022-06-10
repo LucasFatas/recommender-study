@@ -12,6 +12,7 @@ import {
   getRandomQuestionnaire,
   getDataObj
 } from "../../controller/questionnaireController";
+import { questionnaireSecurity } from "../../controller/pathSecurityController";
 
 
 const options = ['values', 'personality'];
@@ -27,13 +28,7 @@ export const Questionnaire = (props) => {
   const initialPath = firstQuestionnaire === 'values' ? 'v' : 'p';
   
   useEffect(() => {
-    if(sessionStorage.getItem("currentUrl") !== "/questionnaire"){
-      console.log("you are redirected to", sessionStorage.getItem("currentUrl"))
-      navigate(sessionStorage.getItem("currentUrl"))
-    }else{
-      console.log("you are in", sessionStorage.getItem("currentUrl"))
-      sessionStorage.setItem("currentUrl", "/questionnaire/" + initialPath + "/page1")
-    }
+    questionnaireSecurity(navigate, initialPath)
 
   }, []);
   

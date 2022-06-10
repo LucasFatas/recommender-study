@@ -7,6 +7,7 @@ import { sendRatings } from "../../API/Recommender";
 import { checkEveryElementIsInMap } from "../../controller/questionnaireController";
 import { updateAnswersLogic } from "../../controller/recommenderController";
 import { useNavigate } from "react-router-dom";
+import { PlaylistPageSecurity } from "../../controller/pathSecurityController";
 
 
 export const PlaylistPage = (props) => {
@@ -33,19 +34,7 @@ export const PlaylistPage = (props) => {
 	const navigate = useNavigate()
 
   useEffect(() => {
-    const url = sessionStorage.getItem("currentUrl")
-    if(url.includes("/recommender")){
-      const endOfToken = parseInt(url.replace("/recommender/page", "").replaceAll(" ", ""));
-      console.log(endOfToken + typeof endOfToken)
-      if(!Number.isNaN(endOfToken) && endOfToken < (nextPage - 1)){
-        console.log("you are redirected to", sessionStorage.getItem("currentUrl"))
-        navigate(sessionStorage.getItem("currentUrl"))
-      }
-    }else {
-     
-      console.log("you are redirected to", sessionStorage.getItem("currentUrl"))
-      navigate(sessionStorage.getItem("currentUrl"))
-    }
+    PlaylistPageSecurity(navigate)
 
   }, []);
 	

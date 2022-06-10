@@ -9,6 +9,7 @@ import questionsObj from '../../util/questions.json';
 import {	loadFeedbackIfStored, loadRatingsIfStored, loadTracklistsIfStored } from "../../controller/recommenderController";
 import { getSongs } from "../../API/Recommender";
 import loadingGif from '../../assets/loading.gif';
+import { recommenderSecurity } from "../../controller/pathSecurityController";
 
 
 const lastPageIdx = 4;
@@ -22,14 +23,7 @@ export const Recommender = (props) => {
 
   
   useEffect(() => {
-    if(sessionStorage.getItem("currentUrl") !== "/recommender"){
-      console.log("you are redirected to", sessionStorage.getItem("currentUrl"))
-      navigate(sessionStorage.getItem("currentUrl"))
-    }else{
-      console.log("you are in", sessionStorage.getItem("currentUrl"))
-      sessionStorage.setItem("currentUrl", "/recommender/page1")
-    }
-
+		recommenderSecurity(navigate)
   }, []);
 
 

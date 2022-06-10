@@ -2,6 +2,7 @@ import React from "react";
 import { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import  spotifyLogo from "../../../assets/spotifyLogo.svg"
+import { websiteIntroductionSecurity } from "../../../controller/pathSecurityController";
 
 
 export const WebsiteIntroduction = (props) => {
@@ -26,14 +27,7 @@ export const WebsiteIntroduction = (props) => {
 
   
   useEffect(() => {
-    if(sessionStorage.getItem("currentUrl") !== "/websiteIntroduction"){
-      console.log("you are redirected to", sessionStorage.getItem("currentUrl"))
-      navigate(sessionStorage.getItem("currentUrl"))
-    }
-    else
-    {
-      console.log("you are in", sessionStorage.getItem("currentUrl"))
-    }
+   websiteIntroductionSecurity(navigate)
 
   }, []);
 

@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 
 import { useNavigate } from 'react-router-dom';
+import { introductionPagesSecurity } from "../../../controller/pathSecurityController";
 
 
 //TODO use port and url in json file
@@ -19,26 +20,7 @@ export const IntroductionPage = (props) => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const url = sessionStorage.getItem("currentUrl")
-    if(sessionStorage.getItem("userID") === null){
-      console.log("you have no Id, you are redirected to the consent page")
-      sessionStorage.setItem("currentUrl", "/consentPage")
-      navigate("/consentPage")
-    } 
-    else if(url === "/introduction") {
-      console.log("This is the first questionnaire")
-      sessionStorage.setItem("currentUrl", "/introduction/" + type)
-    }
-    else if(url.includes("introduction") && url === "introduction/" + type){
-      console.log("you are in" + url)
-
-    }
-    else{
-      console.log("you are redirected to", url)
-      navigate(sessionStorage.getItem("currentUrl"))
-
-    }
-
+    introductionPagesSecurity(navigate, type)
   }, []);
 
   const handleNext = () => {

@@ -1,18 +1,14 @@
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import correctLogo from '../../assets/correctLogo.svg'
+import { thanksPageSecurity } from "../../controller/pathSecurityController";
 
 export const Thanks = () => {
 
   const navigate = useNavigate()
 
   useEffect(() => {
-    if(sessionStorage.getItem("currentUrl") !== "/thanks"){
-      console.log("you are redirected to", sessionStorage.getItem("currentUrl"))
-      navigate(sessionStorage.getItem("currentUrl"))
-    }else{
-      console.log("you are in", sessionStorage.getItem("currentUrl"))
-    }
+    thanksPageSecurity(navigate)
 
   }, []);
 

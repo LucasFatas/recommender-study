@@ -9,6 +9,7 @@ import {
   checkEveryElementIsInMap
 } from "../../controller/questionnaireController";
 import { useNavigate } from "react-router-dom";
+import { questionnairePageSecurity } from "../../controller/pathSecurityController";
 
 const legendItems = [
   'Not like me at all',
@@ -36,19 +37,7 @@ export const QuestionnairePage = (props) => {
   const navigate = useNavigate()
 
   useEffect(() => {
-    const token = sessionStorage.getItem("currentUrl")
-    if(token.includes("/questionnaire/" + (type === 'values' ? 'v' : 'p'))){
-      const endOfToken = parseInt(token.replace("/questionnaire/" + (type === 'values' ? 'v' : 'p') + "/page", "").replaceAll(" ", ""));
-      console.log(endOfToken + typeof endOfToken)
-      if(!Number.isNaN(endOfToken) && endOfToken < pageNumber){
-        console.log("you are redirected to", sessionStorage.getItem("currentUrl"))
-        navigate(sessionStorage.getItem("currentUrl"))
-      }
-    }else {
-     
-      console.log("you are redirected to", sessionStorage.getItem("currentUrl"))
-      navigate(sessionStorage.getItem("currentUrl"))
-    }
+    questionnairePageSecurity(navigate, type, pageNumber)
 
   }, []);
 
