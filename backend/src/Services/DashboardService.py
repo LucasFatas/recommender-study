@@ -1,3 +1,5 @@
+import os
+
 import mysql.connector
 from src.Services.database_config import DatabaseException
 from dotenv import load_dotenv
@@ -226,4 +228,37 @@ def get_user_total(batch, db, cursor, database):
         return str(result[0][0])
     except mysql.connector.errors.Error as e:
         print(e)
-        raise DatabaseException("Error connecting to database when retrieving Song ratings.")
+        raise DatabaseException("Error connecting to database when retrieving total users.")
+
+
+def reset_database(db, cursor, database):
+    """
+    SQL queries that delete all entries in the database
+    :param db: database object, handles the connection to our database
+    :param cursor: cursor that executes the SQL commands in our database
+    :param database: string of the database name we will be using
+    :except mysql.connector.errors.Error: handles the case where the database has some errors
+    :raises DatabaseException: custom exception in our app, in order for better handling
+    :return: Success message
+    """
+    try:
+        safe_update_sql = """SET SQL_SAFE_UPDATES = %s"""
+
+        delete_entries_sql = """TRUNCATE  """ + database + """.{table_name}"""
+        tables = ['Answer', 'Artist', 'Matches', 'OpenFeedback', 'Participant', 'Personality',
+                  'PlaylistRating', 'QuestionFeedback', 'Song', 'SongRating', 'Value']
+
+        cursor.execute(safe_update_sql, (0,))
+        for table in tables:
+            a = delete_entries_sql.format(table_name=table)
+            cursor.execute(delete_entries_sql.format(table_name=table))
+        cursor.execute(safe_update_sql, (1,))
+
+        # Commit only if we are not testing the application
+        if os.getenv('IS_TESTING') == "FALSE":
+            db.commit()
+
+    except mysql.connector.errors.Error as e:
+        print(e)
+        raise DatabaseException("Error connecting to database when resetting the database.")
+
