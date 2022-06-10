@@ -11,9 +11,16 @@ questionnaire = Blueprint("questionnaire", __name__)
 db, cursor, database = open_connection()
 
 
-# Get answers and save them into the database.
 @questionnaire.route("/answer/add", methods=["POST"])
 def save_answer():
+    """
+    This method first takes the answers of a user to the PVQ and HEXACO questionnaires,
+    stores these answers in the database.
+    After that, it calculates the personality and value scores,
+    stores them in the database, and returns them to the frontend
+    :except DatabaseException: if there is a problem storing the answers or the scores.
+    :return: the personality and value scores of the user
+    """
     data = request.get_json(force=True)
 
     # Format answers retrieved from frontend into our database format to store the data.
@@ -28,18 +35,20 @@ def save_answer():
     for index, answer in enumerate(data['value_answers']):
         answers.append((data['user'], len(data['personality_answers']) + index, answer))
 
+    # Calculate value and personality scores.
+    value, personality = calculations(data['value_answers'], data['personality_answers'])
+
     try:
         # Add the newly formatted answers to our database.
         add_answers(answers, db, cursor, database)
+
+        # Add personality and value scores
+        add_personality(data['user'], personality, db, cursor, database)
+        add_value(data['user'], value, db, cursor, database)
     except DatabaseException as e:
         # Exception handling in case there is an error.
         response = jsonify({'message': str(e)})
         return response, 502
 
-    # Calculate value and personality scores.
-    value, personality = calculations(data['value_answers'], data['personality_answers'])
-    add_personality(data['user'], personality, db, cursor, database)
-    add_value(data['user'], value, db, cursor, database)
-
-    # Process successful, return results for frontend to show to the user.
+    # Process successful, return results to frontend and show to the user.
     return jsonify(values=value, personalities=personality)
