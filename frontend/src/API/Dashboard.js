@@ -112,7 +112,19 @@ export const setBatch = async ( setBatch, setMetric, setChangeBatch, setMetricNe
     }
 }
 
+export const revertBatch = async () => {
+    try {
+        await fetch(`${serverUrl}:${port}/dashboard/parameters/revert`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }).then(res => res)
 
+    } catch (error) {
+        console.log(error);    
+    }
+}
 
 
 export const logIn = async (credentials) => {

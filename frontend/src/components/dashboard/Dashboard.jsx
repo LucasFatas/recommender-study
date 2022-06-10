@@ -3,20 +3,20 @@ import { useEffect, useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import { backEndCreateNewBatch, isLoggedIn } from "../../controller/dashboardController";
 import { DownloadDashboard } from './DownloadDashboard';
-import { getBatch, getMetric, getUsers, setBatch } from '../../API/Dashboard';
+import { getBatch, getMetric, getUsers, setBatch, revertBatch } from '../../API/Dashboard';
+
+const buttonStyle = 'bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 my-2 px-4 rounded-full text-white text-center mt-4';
 
 export const Dashboard = ({switchCurrentBatch}) => {
   
-
   const navigate = useNavigate()
-
   
   const [batchNumber, setBatchNumber] = useState("");
   const [batchUsers, setBatchUsers] = useState("");
   const [batchMetric, setBatchMetric] = useState("");
 
   const downloadData = ["Songs", "Q&A", "Playlist Rating&Feedback", "Scores", "Song Ratings"]
-  const batchs = [1,2]
+  const batches = [1,2]
   const metric = ["Euclidean", "Manhattan"]
 
   const [dataToDownload, setDataToDownload] = useState("");
@@ -51,23 +51,22 @@ export const Dashboard = ({switchCurrentBatch}) => {
   }
   
 
+  const createNewBatch = () => {
+    //Shows the user a confirmation pop-up that sets confirmBox to true if they press ok and false otherwise
+    const confirmBox = window.confirm("Do you really want to change batch?");
 
-  const createNewBatch = () => backEndCreateNewBatch(setBatch, setBatchNumber, setBatchMetric, setChangeBatch, setMetricNextBatch, metricNextBatch);
+    if (confirmBox) 
+      backEndCreateNewBatch(setBatch, setBatchNumber, setBatchMetric, setChangeBatch, setMetricNextBatch, metricNextBatch);
+  };
 
-  const showChangeBatchButtons = () => {
-    setChangeBatch(true)
-  }
+  const showChangeBatchButtons = () => setChangeBatch(true)
 
 
-  
   return (
-    
-  
     <div className='flex flex-col items-center justify-between py-28'>
       <div className='flex rounded-[20px] mx-10 px-5 py-6 border-solid border-4 border-gray-300 bg-gray-700' >
         <div className='flex flex-col'>
           <div className='flex flex-col rounded-[10px] mx-10 px-12 py-6 border-solid border-2 border-gray-300 bg-gray-700' >
-          
          
             {/* This is temporary, It is going to change Next Sprint in branch 33 Experiment Parameters  */}
             <span className="text-white text-center text-xl"> Current Batch </span>
@@ -81,18 +80,15 @@ export const Dashboard = ({switchCurrentBatch}) => {
             </div>
             <div className='flex'>
               <span className="text-white pr-3"> Type of batch: </span>
-              <span className="text-white pr-3"> {batchNumber ? (batchNumber == 1 ? "Questionnaire" : "Reccomender") : ""} </span>
+              <span className="text-white pr-3"> {batchNumber ? (batchNumber == 1 ? "Questionnaire" : "Recommender") : ""} </span>
             </div>
-            
-            
-            
             <div className='flex'>
               <span className="text-white pr-3"> Metric: </span>
               <span className="text-white pr-3"> {batchMetric} </span>
             </div>
+
           </div>
-          {
-            changeBatch
+          {changeBatch
             ?
               <>
                 <div className='flex py-2'>
@@ -109,28 +105,16 @@ export const Dashboard = ({switchCurrentBatch}) => {
                     </div>)
                   )}
                 </div>
-                <div className='py-2 text-center'>
-                  <button className=' bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full ' onClick={createNewBatch} >
-                    <div className='grid place-items-center '>
-                      <span className="text-white"> Create and Change to New Batch </span>
-                    </div>
-                  </button> 
-                </div>
+                <button className={buttonStyle} onClick={createNewBatch} >
+                  Create and Change to New Batch 
+                </button>  
               </>
-            :
-            (
-              batchNumber == 2
-              ?
-                <></>
+            : (batchNumber == 2
+              ? <></>
               :
-            
-                <div className='py-2 text-center'>
-                  <button className=' bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full ' onClick={showChangeBatchButtons} >
-                    <div className='grid place-items-center '>
-                      <span className="text-white"> New Batch </span>
-                    </div>
-                  </button> 
-                </div>
+              <button className={buttonStyle} onClick={showChangeBatchButtons} >
+                New Batch
+              </button>  
             )
           }          
         </div>
@@ -138,7 +122,7 @@ export const Dashboard = ({switchCurrentBatch}) => {
           downloadData={downloadData} 
           setDataToDownload={setDataToDownload} 
           setBatchToDownload={setBatchToDownload} 
-          batchs={batchs} 
+          batches={batches} 
           canDownload={canDownload} 
           CSVToDownload={CSVToDownload} 
           batchToDownload={batchToDownload} 
@@ -147,17 +131,16 @@ export const Dashboard = ({switchCurrentBatch}) => {
           setCanDownload={setCanDownload} 
           date={date}
         />
-        
       </div>
-      <div className='py-2'>
-        <button className=' bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full ' onClick={logout} >
-          <div className='grid place-items-center '>
-            <span className="text-white"> log out </span>
-          </div>
-        </button> 
-      </div>
-      
-      
+      <button className={buttonStyle} onClick={logout} >
+        Log out
+      </button> 
+      <button className={buttonStyle} onClick={revertBatch} >
+        Revert batch
+      </button>
+      <button className={buttonStyle} onClick={logout} >
+        Reset data
+      </button> 
     </div>
   )
 }
