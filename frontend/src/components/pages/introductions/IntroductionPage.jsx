@@ -29,7 +29,7 @@ export const IntroductionPage = (props) => {
       console.log("This is the first questionnaire")
       sessionStorage.setItem("currentUrl", "/introduction/" + type)
     }
-    else if(url.includes("introduction")){
+    else if(url.includes("introduction") && url === "introduction/" + type){
       console.log("you are in" + url)
 
     }

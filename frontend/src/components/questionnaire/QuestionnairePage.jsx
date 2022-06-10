@@ -37,7 +37,7 @@ export const QuestionnairePage = (props) => {
 
   useEffect(() => {
     const token = sessionStorage.getItem("currentUrl")
-    if(token.includes("/questionnaire" + (type === 'values' ? 'v' : 'p'))){
+    if(token.includes("/questionnaire/" + (type === 'values' ? 'v' : 'p'))){
       const endOfToken = parseInt(token.replace("/questionnaire/" + (type === 'values' ? 'v' : 'p') + "/page", "").replaceAll(" ", ""));
       console.log(endOfToken + typeof endOfToken)
       if(!Number.isNaN(endOfToken) && endOfToken < pageNumber){
@@ -69,10 +69,8 @@ export const QuestionnairePage = (props) => {
     
     setAnswered(checkEveryElementIsInMap(nextQuestionsNumber, answers[type]));
     
-    const endOfToken = parseInt(sessionStorage.getItem("currentUrl").replace("/questionnaire/" + (type === 'values' ? 'v' : 'p') + "/page", "").replaceAll(" ", ""));
-    if(!Number.isNaN(endOfToken) && endOfToken < pageNumber){
+    
       sessionStorage.setItem("currentUrl", "/questionnaire/" + (type === 'values' ? 'v' : 'p') + "/page" + (pageNumber + 1) )
-    }
 
   }
 

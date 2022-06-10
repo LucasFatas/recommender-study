@@ -33,9 +33,9 @@ export const PlaylistPage = (props) => {
 	const navigate = useNavigate()
 
   useEffect(() => {
-    const token = sessionStorage.getItem("currentUrl")
-    if(token.includes("/recommender")){
-      const endOfToken = parseInt(token.replace("recommender/page", "").replaceAll(" ", ""));
+    const url = sessionStorage.getItem("currentUrl")
+    if(url.includes("/recommender")){
+      const endOfToken = parseInt(url.replace("/recommender/page", "").replaceAll(" ", ""));
       console.log(endOfToken + typeof endOfToken)
       if(!Number.isNaN(endOfToken) && endOfToken < (nextPage - 1)){
         console.log("you are redirected to", sessionStorage.getItem("currentUrl"))
@@ -78,7 +78,7 @@ export const PlaylistPage = (props) => {
 				submitFunction={() => sendRatings(ratings, feedback)}
 				submitResults={playlistName === 'random'}
 				answered={answered}
-				onNext={sessionStorage.setItem("currentUrl", "/recommender/page" + nextPage)}
+				onNext={() => sessionStorage.setItem("currentUrl", "/recommender/page" + (nextPage))}
 			/>
 		</div>
 	)
