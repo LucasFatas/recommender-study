@@ -2,7 +2,6 @@ const { serverUrl, port } = require('../util/API.json');
 
 
 const retrieveCSVHelperFunction = async ({batchId, token, endpoint}) => {
-    console.log(batchId);
 
     const uri = typeof batchId === 'undefined' || batchId === null
         ? `${serverUrl}:${port}/dashboard/${endpoint}`

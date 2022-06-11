@@ -1,6 +1,8 @@
 import React from 'react';
 import { retrieveCSV } from "../../controller/dashboardController";
-import { CSVLink } from 'react-csv'
+import { CSVLink } from 'react-csv';
+
+const buttonStyle = 'bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 my-2 px-4 rounded-full text-white text-center mt-4';
 
 export const DownloadDashboard = (props) => {
 
@@ -59,16 +61,11 @@ export const DownloadDashboard = (props) => {
             )
           })}
         </div>
-      : <></>
+      : ""
     }
-    
-    <div className='text-center py-5'>
-      <button type="submit" className=' bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-2 rounded-full ' onClick={() => retrieveCSV(batchToDownload, dataToDownload, setCSVToDownload, setCanDownload)} >
-        <div className='grid place-items-center align-text-bottom'>
-          <span className="text-white"> Retrieve Data </span>
-        </div>
-      </button> 
-    </div>
+    <button className={buttonStyle} onClick={() => retrieveCSV(batchToDownload, dataToDownload, setCSVToDownload, setCanDownload)} >
+      Retrieve Data
+    </button>  
     {
       canDownload
       ?
@@ -79,14 +76,12 @@ export const DownloadDashboard = (props) => {
             enclosingCharacter={`"`}
             filename={dataToDownload + date() + ".csv"}
           >
-            <button className=' bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full '  onClick={() => setCanDownload(false)}>
-              <div className='grid place-items-center '>
-                <span className="text-white"> Download </span>
-              </div>
+            <button className={buttonStyle} onClick={() => setCanDownload(false)} >
+              Download
             </button> 
           </CSVLink>
         </div>
-      : <></>
+      : ""
     }
     
   </div>

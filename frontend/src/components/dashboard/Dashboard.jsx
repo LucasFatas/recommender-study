@@ -63,10 +63,6 @@ export const Dashboard = ({switchCurrentBatch}) => {
     return `${currentdate.getDate()}/${(currentdate.getMonth()+1)}/${currentdate.getFullYear()} `;
   }
 
-  const downloadAllData = () => {
-    //TODO: add functionality
-    console.log('Download all');
-  }
 
   const createNewBatch = () => {
     //Shows the user a confirmation pop-up that sets confirmBox to true if they press ok and false otherwise
@@ -156,10 +152,7 @@ export const Dashboard = ({switchCurrentBatch}) => {
       </button>
       <button className={buttonStyle} onClick={() => handleResetData(resetData)} >
         Reset data
-      </button> 
-      <button className={buttonStyle} onClick={downloadAllData} >
-        Dowload All data
-      </button> 
+      </button>
     </div>
   )
 }

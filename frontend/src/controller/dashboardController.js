@@ -23,8 +23,6 @@ export const isLoggedIn = (token, navigate) => {
  * @param {*} setCanDownload Setter to change the useState
  */
 export const retrieveCSV = async (batchToDownload, dataToDownload, setCSVToDownload, setCanDownload) => {
-  console.log("download CSV")
-  console.log(batchToDownload, dataToDownload)
 
   switch(dataToDownload) {
     case "Songs":
