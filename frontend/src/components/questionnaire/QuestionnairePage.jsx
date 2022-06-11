@@ -63,8 +63,11 @@ export const QuestionnairePage = (props) => {
           <li className="mx-3" key={e}>{e}</li>  
         )}
       </ol>
-    
+
       : ""}
+      <div className="absolute text-2xl text-right p-10 text-green-600 top-0 right-0">
+        <h2 className="">{pageNumber} / {numberOfPages}</h2>
+      </div>
       <div className='grid place-items-center'>
         {questions.map(([text, index]) => 
           <div className='flex flex-col py-10 items-center' key={index}>

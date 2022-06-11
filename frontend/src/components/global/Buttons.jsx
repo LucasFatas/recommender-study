@@ -3,11 +3,13 @@ import { Link, useNavigate } from 'react-router-dom';
 
 const buttonStyles = {
   active : "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full ",
-  disabled : "select-none text-transparent fonted bg-transparent hover:bg-transparent py-2 px-4 rounded-full pointer-events-none ",
-  inactive : "select-none bg-blue-300 text-white font-bold py-2 px-4 rounded-full pointer-events-none "
+  disabled : "select-none text-transparent fonted bg-transparent hover:bg-transparent py-2 px-4 rounded-full  ",
+  inactive : "select-none bg-blue-300 text-white font-bold py-2 px-4 rounded-full  "
 }
 
 export const Buttons = (props) => {
+
+  const [showWarning, setShowWarning] = React.useState(false);
 
   const { 
     prevPage, //boolean condition to decide whether to show previous button
@@ -55,12 +57,27 @@ export const Buttons = (props) => {
         Submit
       </button>
 
-      <Link to={ `${currentPath}/page${ nextPage }` } className={ nextPage && answered ? "" : "pointer-events-none"}>
-        <button {...setStyleAndDisabled(nextPage, answered)} onClick={ onNext }>
-          Next
-        </button>
+      <Link 
+        to={ nextPage && answered ? `${currentPath}/page${ nextPage }` : '#' }  
+        onMouseEnter={() => {
+          if (!(nextPage && answered))
+            setShowWarning(true)
+        }}
+        onMouseLeave={() => setShowWarning(false)}
+      >
+        <div>
+          <button {...setStyleAndDisabled(nextPage, answered)} onClick={ onNext }>
+            Next
+          </button>
+          
+        </div>
       </Link>
-
+      <div className={`${showWarning ? 'opacity-100' : 'opacity-0' } absolute w-1/5 text-center bg-neutral-100 rounded-lg bottom-10 border-solid border-2 border-rose-500 p-1 transition-all ease-in-out duration-200`}>
+        <h3 className='text-rose-700'>Please fill out all questions before proceeding to next the page</h3>
+      </div>
+      
+      
+      
     </div>
   );
 }   
