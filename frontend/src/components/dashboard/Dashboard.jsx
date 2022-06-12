@@ -147,9 +147,14 @@ export const Dashboard = ({switchCurrentBatch}) => {
       <button className={buttonStyle} onClick={logout} >
         Log out
       </button>
-      <button className={buttonStyle} onClick={() => handleRevertData(revertBatch)} >
-        Revert batch
-      </button>
+      {
+        batchNumber === "2" 
+        ? 
+        <button className={buttonStyle} onClick={() => handleRevertData(revertBatch)} >
+          Revert batch
+        </button>
+        : ""
+      }
       <button className={buttonStyle} onClick={() => handleResetData(resetData)} >
         Reset data
       </button>
