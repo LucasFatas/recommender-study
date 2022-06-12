@@ -1,8 +1,8 @@
+import sys
+
 from src.Services.QuestionnaireService import get_all_values, get_all_personalities, get_random_user, add_matches
 from src.Computation.distance import manhattan_distance, euclidean_distance, camberan_distance
 from src.Services.database_config import open_connection
-
-db, cursor, database = open_connection()
 
 
 def match(userId, values, personality, batch, metric):
@@ -18,6 +18,7 @@ def match(userId, values, personality, batch, metric):
     #random_user = get_random_user(val_user, pers_user, batch)
     return val_user, pers_user, random_user
     """
+    db, cursor, database = open_connection()
     batch_personality = get_all_personalities(batch, db, cursor, database)
     batch_values = get_all_values(batch, db, cursor, database)
 
@@ -41,12 +42,16 @@ def calculate_distance(answer, batch_answer, metric):
 
 def closest_user(answer, batch_answer, metric, id):
     closest = -1
-    closest_distance = float("inf")
+    closest_distance = sys.maxsize
     count = 0
     for x in batch_answer:
         count += 1
-        distance = calculate_distance(answer, x[-(len(x) - 1):], metric)
+        distance = calculate_distance(answer, x[1:], metric)
+        print(distance, answer, x[1:], metric)
         if distance < closest_distance and count != id:
             closest_distance = distance
             closest = x[0]
     return closest
+
+
+a = closest_user([0, 0], [[1, 0, 2], [2, 2, 1], [3, 1, 1]], "euclidian", -1)
