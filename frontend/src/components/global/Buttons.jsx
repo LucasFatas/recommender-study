@@ -1,12 +1,22 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
 const { buttonDefault, buttonInactive, buttonDisabled } = require('../../util/style.json');
 
 export const Buttons = (props) => {
 
-  const [showWarning, setShowWarning] = React.useState(false);
+  const [showWarning, setShowWarning] = useState(false);
 
+  useEffect(() => {
+    //Because of the functions onMouseEnter/Leave, sometimes the warning error gets stuck 
+    //This function hides it if it's still visible after 2 seconds.
+    if (showWarning) {
+      const timeout = setTimeout(() => setShowWarning(false), 2000);
+      return () => clearTimeout(timeout);
+    }
+  }, [showWarning])
+
+  console.log(showWarning)
   const { 
     prevPage, //boolean condition to decide whether to show previous button
     showSubmit, //boolean condition to decide whether to show submit button
@@ -64,12 +74,16 @@ export const Buttons = (props) => {
           <button {...setStyleAndDisabled(nextPage, answered)} onClick={ onNext }>
             Next
           </button>
-          
         </div>
       </Link>
-      <div className={`${showWarning ? 'opacity-100' : 'opacity-0' } absolute w-1/4 text-center bg-neutral-100 rounded-lg text-xl top-40 border-solid border-2 border-rose-500 p-2 transition-all ease-in-out duration-200`}>
-        <h3 className='text-rose-700'>Please fill out all questions before proceeding to next the page</h3>
-      </div>
+      {
+        showWarning 
+        ?
+        <div className={'absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-1/4 text-center bg-neutral-100 rounded-lg text-xl border-solid border-2 border-rose-500 p-2'}>
+          <h3 className='text-rose-700'>Please fill out all questions before proceeding to next the page</h3>
+        </div>
+        : ""
+      } 
     </div>
   );
 }   
