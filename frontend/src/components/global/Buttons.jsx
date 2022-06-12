@@ -1,11 +1,7 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
-const buttonStyles = {
-  active : "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full ",
-  disabled : "select-none text-transparent fonted bg-transparent hover:bg-transparent py-2 px-4 rounded-full  ",
-  inactive : "select-none bg-blue-300 text-white font-bold py-2 px-4 rounded-full  "
-}
+const { buttonDefault, buttonInactive, buttonDisabled } = require('../../util/style.json');
 
 export const Buttons = (props) => {
 
@@ -37,9 +33,8 @@ export const Buttons = (props) => {
   }
 
   const setStyleAndDisabled = (pageCondition, answerCondition) => {
-    const { active, disabled, inactive } = buttonStyles;
     return { 
-      className : pageCondition && answerCondition ? active : (pageCondition ? inactive : disabled),
+      className : pageCondition && answerCondition ? buttonDefault : (pageCondition ? buttonInactive : buttonDisabled),
       disabled : pageCondition && answerCondition === false ? true : false
     }
   }
@@ -72,12 +67,9 @@ export const Buttons = (props) => {
           
         </div>
       </Link>
-      <div className={`${showWarning ? 'opacity-100' : 'opacity-0' } absolute w-1/5 text-center bg-neutral-100 rounded-lg bottom-10 border-solid border-2 border-rose-500 p-1 transition-all ease-in-out duration-200`}>
+      <div className={`${showWarning ? 'opacity-100' : 'opacity-0' } absolute w-1/4 text-center bg-neutral-100 rounded-lg text-xl top-40 border-solid border-2 border-rose-500 p-2 transition-all ease-in-out duration-200`}>
         <h3 className='text-rose-700'>Please fill out all questions before proceeding to next the page</h3>
       </div>
-      
-      
-      
     </div>
   );
 }   

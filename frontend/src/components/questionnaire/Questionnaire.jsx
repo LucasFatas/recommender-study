@@ -38,10 +38,9 @@ export const Questionnaire = (props) => {
 
   const valuesObj = questions.values;
   const personalityObj = questions.personality;
-  const questionsPerPage = questions.questionsPerPage;
 
-  const personalityQuestionsMatrix = splitArrayIntoMatrix(personalityObj.questions, questionsPerPage);
-  const valuesQuestionsMatrix = splitArrayIntoMatrix(valuesObj.questions, questionsPerPage);
+  const personalityQuestionsMatrix = splitArrayIntoMatrix(personalityObj.questions, personalityObj.questionsPerPage);
+  const valuesQuestionsMatrix = splitArrayIntoMatrix(valuesObj.questions, valuesObj.questionsPerPage);
 
   const values = getDataObj(valuesObj, valuesQuestionsMatrix, 'values', firstQuestionnaire);
   const personality = getDataObj(personalityObj, personalityQuestionsMatrix, 'personality', firstQuestionnaire);
