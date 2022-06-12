@@ -2,8 +2,8 @@ const { serverUrl, port } =  require('../util/API.json');
 const { parseSessionObj, orderAnswers } = require('../controller/questionnaireController');
 
 //TODO: remove 2 arrays below when properly implemented
-const value_answers =  [1, 2, 1, 4, 1, 1, 1, 5, 4, 3, 2, 1, 1, 6, 1, 1, 1, 6, 5, 1, 1, 6, 6, 1, 2, 1, 1, 6, 5, 2, 3, 4, 3, 1, 2, 4, 3, 1, 5, 1];
-const personality_answers = [4, 1, 5, 4, 5, 5, 4, 3, 2, 1, 4, 1, 3, 1, 5, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 1, 5, 1, 1, 4, 2, 5, 5, 2, 5, 2, 4, 3, 4, 4, 3, 3, 3, 3, 3, 2, 2, 4, 2, 2, 5, 1, 2, 1, 4, 5, 2, 3, 4, 1];
+const value_answers =  Array(40).fill().map(() => Math.floor(Math.random() * 6) + 1);
+const personality_answers =  Array(60).fill().map(() => Math.floor(Math.random() * 5) + 1);
 
 // Send the answers
 export const sendAnswer = async (navigate, setLoading, setResults) => {
