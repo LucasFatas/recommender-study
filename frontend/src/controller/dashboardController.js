@@ -87,6 +87,11 @@ const helperCSVDownload = (res, setCSVToDownload, setCanDownload) => {
   setCanDownload(true)
 }
 
+/**
+ * Prompts a confirmation pop-up to the user, if the user accepts it, the function is triggered
+ * Otherwise nothing happens.
+ * @param {function} resetData function that triggers call to backend to reset all database data
+ */
 export const handleResetData = (resetData) => {
   const confirmBox = window.confirm("This option will remove all existing data stored in the database, are you sure you want to proceed? This action is irreversible");
   const token = sessionStorage.getItem("token");
@@ -94,6 +99,13 @@ export const handleResetData = (resetData) => {
     resetData(token);
 }
 
+/**
+ * Prompts a confirmation pop-up to the user, if the user accepts it, the function is triggered
+ * Otherwise nothing happens.
+ * @param {function} revertBatch function that triggers call to backend to perform the following actions
+ * - Set current batch to batch 1
+ * - Set distance metric to euclidean
+ */
 export const handleRevertData = (revertBatch) => {
   const confirmBox = window.confirm("This option will set the current batch to questionnaire (first batch) and set the distance metric to euclidean. Are you sure you want to proceed? This action is irreversible");
   const token = sessionStorage.getItem("token");
