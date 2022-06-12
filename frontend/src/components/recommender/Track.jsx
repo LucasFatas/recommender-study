@@ -9,8 +9,8 @@ export const Track = (props) => {
   } = props;
 
   return (
-    <div className=" px-3">
-      <div className="grid pt-5 pb-2 px-2 text-white" >
+    <div className="px-3">
+      <div className="grid py-3 mt-3 text-center text-white" >
         <h3>Song : {songName}</h3>
         <h3>Artist : {artist.join(', ')}</h3>
       </div>

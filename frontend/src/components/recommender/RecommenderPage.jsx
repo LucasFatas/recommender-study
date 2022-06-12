@@ -3,10 +3,7 @@ import { Link } from "react-router-dom";
 
 import { Playlist } from "./Playlist"
 
-const buttonStyles = {
-  active : "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full ",
-  inactive : "select-none bg-blue-300 text-white font-bold py-2 px-4 rounded-full"
-}
+const { buttonDefault, buttonInactive } = require('../../util/style.json');
 
 export const RecommenderPage = (props) => {
   
@@ -21,8 +18,8 @@ export const RecommenderPage = (props) => {
 	useEffect(() => setRatingsFilled(Object.values(ratings).every(x => x.playlistRating !== 0)), [ratings, setRatingsFilled])
 
   return (
-		<div className='grid place-items-center'>
-			<div className="flex justify-center w-fit h-fit mt-5 space-x-5 ">
+		<div className='h-screen w-screen grid place-items-center pt-5'>
+			<div className="flex">
 				{shuffledTracklist.map((e, i) => (
 						<Playlist
 							playlistName={e.name}
@@ -35,8 +32,8 @@ export const RecommenderPage = (props) => {
 					))
 				}
 			</div>
-			<Link to="/recommender/page2" className={ratingsFilled ? "mt-5" : "mt-5 pointer-events-none"}>
-        <button className={ratingsFilled ? buttonStyles.active : buttonStyles.inactive}>
+			<Link to="/recommender/page2" className={`${ratingsFilled ? "" : "pointer-events-none"}  pt-4 pb-8`}>
+        <button className={ratingsFilled ? buttonDefault : buttonInactive}>
           Next
         </button> 
       </Link>

@@ -11,7 +11,7 @@ export const Playlist = (props) => {
 
 	return (
 		<div>
-			<div className=" rounded-[20px] mx-10 px-12 py-6 border-solid border-8 border-green-300 bg-gray-900 hover:border-green-500">
+			<div className=" rounded-[20px] mx-10 px-16 border-solid border-8 border-green-300 bg-gray-900 hover:border-green-500">
 				{trackList.map((e, idx) => (
 					<div key={idx}>
 						<Track 
