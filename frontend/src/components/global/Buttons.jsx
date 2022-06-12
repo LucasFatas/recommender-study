@@ -15,8 +15,7 @@ export const Buttons = (props) => {
       return () => clearTimeout(timeout);
     }
   }, [showWarning])
-
-  console.log(showWarning)
+  
   const { 
     prevPage, //boolean condition to decide whether to show previous button
     showSubmit, //boolean condition to decide whether to show submit button
