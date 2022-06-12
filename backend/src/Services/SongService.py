@@ -54,7 +54,7 @@ def get_top_songs(userId, db, cursor, database):
     :return: a tuple with userId and their 5 top songs
     """
     try:
-        sql = """SELECT name, previewUrl, spotifyUrl FROM """ + database + """.song WHERE userId = %s"""
+        sql = """SELECT name, previewUrl, spotifyUrl FROM """ + database + """.Song WHERE userId = %s"""
 
         cursor.execute(sql, (userId,))
 
