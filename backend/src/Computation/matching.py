@@ -52,4 +52,3 @@ def closest_user(answer, batch_answer, metric, id):
     return closest
 
 
-a = closest_user([0, 0], [[1, 0, 2], [2, 2, 1], [3, 1, 1]], "euclidian", -1)
