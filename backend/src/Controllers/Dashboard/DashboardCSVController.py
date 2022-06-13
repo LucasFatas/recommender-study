@@ -225,11 +225,11 @@ def retrieve_song_ratings():
 
     # Since the number of questions is set, we can build our column titles straight away.
     column_names = (
-                    "UserId", "Values_Song_1_Rating", "Values_Song_2_Rating", "Values_Song_3_Rating",
-                    "Values_Song_4_Rating",	"Values_Song_5_Rating",	"Personality_Song_1_Rating",
-                    "Personality_Song_2_Rating", "Personality_Song_3_Rating", "Personality_Song_4_Rating",
-                    "Personality_Song_5_Rating", "Random_Song_1_Rating", "Random_Song_2_Rating", "Random_Song_3_Rating",
-                    "Random_Song_4_Rating", "Random_Song_5_Rating"
+        "UserId", "Values_Song_1_Rating", "Values_Song_2_Rating", "Values_Song_3_Rating",
+        "Values_Song_4_Rating", "Values_Song_5_Rating", "Personality_Song_1_Rating",
+        "Personality_Song_2_Rating", "Personality_Song_3_Rating", "Personality_Song_4_Rating",
+        "Personality_Song_5_Rating", "Random_Song_1_Rating", "Random_Song_2_Rating", "Random_Song_3_Rating",
+        "Random_Song_4_Rating", "Random_Song_5_Rating"
     )
 
     # Write the columns calculated to the CSV file.
@@ -241,20 +241,23 @@ def retrieve_song_ratings():
 
         # Add ratings to value related songs. Result is given in a string, so some string formatting needed.
         value_song_ratings = np.zeros(5)
-        for rating in row[1].split(","):
-            value_song_ratings[int(rating.split('-')[0]) - 1] = int(rating.split('-')[1])
+        if row[1] is not None:
+            for rating in row[1].split(","):
+                value_song_ratings[int(rating.split('-')[0]) - 1] = int(rating.split('-')[1])
         final_row.extend(value_song_ratings)
 
         # Add ratings to personality related songs. Result is given in a string, so some string formatting needed.
         personality_song_ratings = np.zeros(5)
-        for rating in row[2].split(","):
-            personality_song_ratings[int(rating.split('-')[0]) - 1] = int(rating.split('-')[1])
+        if row[2] is not None:
+            for rating in row[2].split(","):
+                personality_song_ratings[int(rating.split('-')[0]) - 1] = int(rating.split('-')[1])
         final_row.extend(personality_song_ratings)
 
         # Add ratings to randomly recommended songs. Result is given in a string, so some string formatting needed.
         random_song_ratings = np.zeros(5)
-        for rating in row[3].split(","):
-            random_song_ratings[int(rating.split('-')[0]) - 1] = int(rating.split('-')[1])
+        if row[3] is not None:
+            for rating in row[3].split(","):
+                random_song_ratings[int(rating.split('-')[0]) - 1] = int(rating.split('-')[1])
         final_row.extend(random_song_ratings)
 
         # Write the final formatted row.
