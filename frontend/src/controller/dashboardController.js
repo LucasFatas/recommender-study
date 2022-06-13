@@ -106,9 +106,9 @@ export const handleResetData = (resetData) => {
  * - Set current batch to batch 1
  * - Set distance metric to euclidean
  */
-export const handleRevertData = (revertBatch) => {
+export const handleRevertData = (revertBatch, setBatchNumber) => {
   const confirmBox = window.confirm("This option will set the current batch to questionnaire (first batch) and set the distance metric to euclidean. Are you sure you want to proceed? This action is irreversible");
   const token = sessionStorage.getItem("token");
   if (confirmBox)
-    revertBatch(token);
+    revertBatch(token, setBatchNumber);
 }

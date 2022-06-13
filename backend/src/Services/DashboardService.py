@@ -80,6 +80,7 @@ def get_all_songs(batch, db, cursor, database):
             SELECT p.userId, spotifyUrl FROM """ + database + """.Song AS s 
             LEFT JOIN """ + database + """.Participant AS p ON s.userId = p.userId 
             WHERE p.batch = %s
+            ORDER BY p.userId, s.playlistNumber
         """
         cursor.execute(sql, (batch,))
         result = cursor.fetchall()
