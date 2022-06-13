@@ -40,11 +40,11 @@ export const QuestionnaireResult = () => {
           <div className="w-full h-5/6 flex items-center justify-center">
             <div className="w-2/5">
               <RadarChart result={results.personality}/>
-              <p className="mt-20">Lorem ipsum dolor sit amet consectetur adipisicing elit. Repudiandae quia ipsa, saepe illum commodi, laudantium nihil magni quasi quas asperiores totam, dignissimos odio corrupti obcaecati. Exercitationem aliquam rerum amet quod eveniet, nobis reprehenderit numquam voluptatum maiores sequi dolores cupiditate consequuntur praesentium nihil omnis! Aut nemo nostrum aliquid, autem commodi corporis?</p>
+              <p className="mt-20 mx-5">Lorem ipsum dolor sit amet consectetur adipisicing elit. Repudiandae quia ipsa, saepe illum commodi, laudantium nihil magni quasi quas asperiores totam, dignissimos odio corrupti obcaecati. Exercitationem aliquam rerum amet quod eveniet, nobis reprehenderit numquam voluptatum maiores sequi dolores cupiditate consequuntur praesentium nihil omnis! Aut nemo nostrum aliquid, autem commodi corporis?</p>
             </div>
             <div className="w-2/5 ">
               <BarChart  result={results.values}/>
-              <p className="mt-20">Lorem ipsum dolor sit amet consectetur adipisicing elit. Repudiandae quia ipsa, saepe illum commodi, laudantium nihil magni quasi quas asperiores totam, dignissimos odio corrupti obcaecati. Exercitationem aliquam rerum amet quod eveniet, nobis reprehenderit numquam voluptatum maiores sequi dolores cupiditate consequuntur praesentium nihil omnis! Aut nemo nostrum aliquid, autem commodi corporis?</p>
+              <p className="mt-20 mx-5">Lorem ipsum dolor sit amet consectetur adipisicing elit. Repudiandae quia ipsa, saepe illum commodi, laudantium nihil magni quasi quas asperiores totam, dignissimos odio corrupti obcaecati. Exercitationem aliquam rerum amet quod eveniet, nobis reprehenderit numquam voluptatum maiores sequi dolores cupiditate consequuntur praesentium nihil omnis! Aut nemo nostrum aliquid, autem commodi corporis?</p>
             </div>
           </div>
           <div className="mt-10">

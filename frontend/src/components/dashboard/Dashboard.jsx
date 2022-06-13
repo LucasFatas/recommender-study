@@ -19,10 +19,10 @@ import {
 
 const buttonStyle = 'bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 my-2 px-4 rounded-full text-white text-center mt-4';
 
+
 export const Dashboard = ({switchCurrentBatch}) => {
   
   const navigate = useNavigate()
-  
   const [batchNumber, setBatchNumber] = useState("");
   const [batchUsers, setBatchUsers] = useState("");
   const [batchMetric, setBatchMetric] = useState("");
@@ -75,26 +75,30 @@ export const Dashboard = ({switchCurrentBatch}) => {
   const showChangeBatchButtons = () => setChangeBatch(true)
 
   return (
-    <div className='flex flex-col items-center justify-between py-28'>
-      <div className='flex rounded-[20px] mx-10 px-5 py-6 border-solid border-4 border-gray-300 bg-gray-700' >
+    <div className='w-screen h-screen flex flex-col items-center justify-center'>
+      <div className='flex rounded-[20px] h-3/4 p-8 justify-center items-center border-solid border-4 border-gray-300 bg-gray-700 text-xl' >
         <div className='flex flex-col'>
-          <div className='flex flex-col rounded-[10px] mx-10 px-12 py-6 border-solid border-2 border-gray-300 bg-gray-700' >
+          <div className='flex flex-col rounded-[10px] mx-10 px-12 py-6 border-solid border-2 border-gray-300 bg-gray-700'>
+          
          
             {/* This is temporary, It is going to change Next Sprint in branch 33 Experiment Parameters  */}
-            <span className="text-white text-center text-xl"> Current Batch </span>
-            <div className='flex'>
+            <span className="text-white text-center text-2xl py-5"> Current Batch </span>
+            <div className='flex py-2'>
               <span className="text-white pr-3"> Batch #: </span>
               <span className="text-white pr-3"> {batchNumber ? batchNumber : ""} </span>
             </div>
-            <div className='flex'>
+            <div className='flex py-2'>
               <span className="text-white pr-3"> Number of users: </span>
               <span className="text-white pr-3"> {batchUsers} </span>
             </div>
-            <div className='flex'>
+            <div className='flex pt-2'>
               <span className="text-white pr-3"> Type of batch: </span>
               <span className="text-white pr-3"> {batchNumber ? (batchNumber == 1 ? "Questionnaire" : "Recommender") : ""} </span>
             </div>
-            <div className='flex'>
+            
+
+            
+            <div className='flex py-4 '>
               <span className="text-white pr-3"> Metric: </span>
               <span className="text-white pr-3"> {batchMetric} </span>
             </div>
@@ -103,30 +107,40 @@ export const Dashboard = ({switchCurrentBatch}) => {
           {changeBatch
             ?
               <>
-                <div className='flex py-2'>
-                  <span className="text-white pr-3"> Metric: </span>
+                <div className='flex justify-center py-4'>
+                  <span className="text-white"> Metric: </span>
                   {metric.map((metric, index) => 
-                    (<div className='pr-3 '>
+                    (<div>
                       <input 
+                        className='ml-4'
                         type="radio" 
                         value={metric}
                         name={"metric"}
                         onChange={e => setMetricNextBatch(e.target.value)}
                       /> 
-                      <span className="text-white"> {metric} </span>
+                      <span className="text-white ml-1"> {metric} </span>
                     </div>)
                   )}
                 </div>
-                <button className={buttonStyle} onClick={createNewBatch} >
-                  Create and Change to New Batch 
-                </button>  
+                <div className='py-4 text-center'>
+                  <button className=' bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full ' onClick={createNewBatch} >
+                    <div className='grid place-items-center '>
+                      <span className="text-white"> Create and Change to New Batch </span>
+                    </div>
+                  </button> 
+                </div>
               </>
             : (batchNumber == 2
               ? <></>
               :
-              <button className={buttonStyle} onClick={showChangeBatchButtons} >
-                New Batch
-              </button>  
+            
+                <div className='pt-10 text-center'>
+                  <button className=' bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full ' onClick={showChangeBatchButtons} >
+                    <div className='grid place-items-center '>
+                      <span className="text-white"> New Batch </span>
+                    </div>
+                  </button> 
+                </div>
             )
           }          
         </div>
@@ -143,21 +157,25 @@ export const Dashboard = ({switchCurrentBatch}) => {
           setCanDownload={setCanDownload} 
           date={date}
         />
+        
       </div>
-      <button className={buttonStyle} onClick={logout} >
-        Log out
-      </button>
-      {
-        batchNumber === "2" 
-        ? 
-        <button className={buttonStyle} onClick={() => handleRevertData(revertBatch, setBatchNumber)} >
-          Revert batch
+      
+      <div className='py-2 flex items-center justify-around w-1/2'>
+        <button className={buttonStyle} onClick={logout} >
+          Log out
         </button>
-        : ""
-      }
-      <button className={buttonStyle} onClick={() => handleResetData(resetData)} >
-        Reset data
-      </button>
+        {
+          batchNumber === "2" 
+          ? 
+          <button className={buttonStyle} onClick={() => handleRevertData(revertBatch)} >
+            Revert batch
+          </button>
+          : ""
+        }
+        <button className={buttonStyle} onClick={() => handleResetData(resetData)} >
+          Reset data
+        </button>
+      </div>
     </div>
   )
 }

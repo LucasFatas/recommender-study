@@ -84,8 +84,8 @@ export const QuestionnairePage = (props) => {
       </div>
       <div className='grid place-items-center'>
         {questions.map(([text, index]) => 
-          <div className='flex flex-col py-10 items-center' key={index}>
-            <h1 className='text-blue-500 text-center text-2xl'>{text}</h1>
+          <div className='flex flex-col py-6 items-center' key={index}>
+            <h1 className='text-blue-500 text-center text-[20px]'>{text}</h1>
             <Answer 
               answers={answers[type]} 
               questionNumber={index}  
