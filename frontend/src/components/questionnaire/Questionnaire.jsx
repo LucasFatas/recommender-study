@@ -1,6 +1,6 @@
 import React from "react";
 import { useState } from 'react';
-import { Route, Routes, Navigate, useLocation } from 'react-router-dom';
+import { Route, Routes, Navigate } from 'react-router-dom';
 
 import questions from '../../util/questions.json';
 import { QuestionnairePage } from './QuestionnairePage';
@@ -10,10 +10,8 @@ import {
   parseSessionObj,
   getRandomQuestionnaire,
   getLastPage,
-  getDataObj,
-  getAndStoreUserId
+  getDataObj
 } from "../../controller/questionnaireController";
-import { getBatch } from "../../API/Dashboard";
 
 
 const options = ['values', 'personality'];
@@ -25,18 +23,8 @@ export const Questionnaire = (props) => {
   
   const {
     defaultPage,
+    currentBatch
   } = props;
-
-
-  const search = useLocation().search;
-  if (sessionStorage.getItem("userID") === null)
-    getAndStoreUserId(search);
-
-
-  const [currentBatch, setCurrentBatch] = useState("");
-
-  getBatch(setCurrentBatch, "batch")
-
 
   const sessionAnswers = sessionStorage.getItem("answers");
 
@@ -50,7 +38,7 @@ export const Questionnaire = (props) => {
   );
   
   const initialPath = firstQuestionnaire === 'values' ? 'v' : 'p';
-  const lastPage = getLastPage(currentBatch === "1" ? "questionnaire" : "recommender");
+  const lastPage = getLastPage(currentBatch);
 
   const valuesObj = questions.values;
   const personalityObj = questions.personality;

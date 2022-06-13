@@ -1,9 +1,9 @@
 import mysql.connector
+from random import randint
 from src.Services.database_config import DatabaseException, open_connection
 from dotenv import load_dotenv
 import os
 import time
-import random
 
 load_dotenv()
 
@@ -172,11 +172,11 @@ def get_all_values(batch, db, cursor, database):
 # Returns: a list of tuples containing user and his personalities
 def get_all_personalities(batch, db, cursor, database):
     try:
-        sql = "SELECT pa.userId, openness, honesty, emotionality," \
+        sql = "SELECT pe.userID, openness, honesty, emotionality," \
               "extroversion, agreeableness, conscientiousness " \
-              "FROM " + database + ".Personality AS pe , " \
-              + database + ".Participant AS pa " \
-                           "WHERE pe.userId = pa.userId AND pa.Batch = %s"
+              "FROM " + database + ".personality AS pe , " \
+              + database + ".participant AS pa " \
+                           "WHERE pe.userID = pa.UserId AND pa.Batch = %s"
 
         cursor.execute(sql, (batch,))
         result = cursor.fetchall()
@@ -197,7 +197,8 @@ def get_random_user(user1, user2, user3, batch, db, cursor, database):
 
         cursor.execute(sql, (batch, user1, user2, user3))
         result = cursor.fetchall()
-        return random.choice(result)[0]
+
+        return result[randint(0, len(result)-1)][0]
     except mysql.connector.errors.Error as e:
         print(e)
         raise DatabaseException("Error connecting to database when retrieving users.")

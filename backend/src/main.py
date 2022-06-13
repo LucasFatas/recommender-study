@@ -15,7 +15,7 @@ app.register_blueprint(questionnaire, url_prefix='/questionnaire')
 app.register_blueprint(dashboard, url_prefix='/dashboard')
 
 
-CORS(app, resources={r"/*": {"origins": "*"}})
+CORS(app)
 load_dotenv()
 
 

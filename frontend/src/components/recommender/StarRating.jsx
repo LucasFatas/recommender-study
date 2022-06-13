@@ -5,23 +5,23 @@ import { handleRating } from "../../controller/recommenderController";
 export const StarRating = (props) => {  
 
   const { 
-    starStyle, //String containing CSS style of the star buttons
-    playlistName, //String with playlist name, either 'random', 'personality' or 'values'
-    song, //Number containing index of current song
-    setRatings, //Function to change ratings object
-    ratings,  //Object, to see structure go to recommenderController and check initialRatingsObj
-    setRatingsFilled  //Function to change value of boolean ratingsFilled
+    starStyle, 
+    playlistName, 
+    song, 
+    setRatings, 
+    ratings, 
+    setRatingsFilled 
   } = props;
 
   //Hover caused issues with the code. Might be reimplemented later on.
   //const [hover, setHover] = useState(0);
-  const [currentRating, setCurrentRating] = useState(song === undefined ? ratings[playlistName].playlistRating : ratings[playlistName].songsRatings[song]);
+  const [currentRating, setCurrentRating] = useState(song === undefined ? ratings[playlistName].playlist : ratings[playlistName].songs[song]);
 
   useEffect(() => {
       if (song === undefined) 
-        setCurrentRating(ratings[playlistName].playlistRating);
+        setCurrentRating(ratings[playlistName].playlist);
       else 
-        setCurrentRating(ratings[playlistName].songsRatings[song]);
+        setCurrentRating(ratings[playlistName].songs[song]);
     }, [song, ratings, playlistName]
   );
 

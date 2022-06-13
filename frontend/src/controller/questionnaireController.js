@@ -132,18 +132,6 @@ export const getDataObj = (obj, questionsMatrix, type, lastPage, firstQuestionna
         lastPage : questionsMatrix.length,
         path : type === 'values' ? '/v' : '/p',
         type : type,
-        submitResults : firstQuestionnaire !== type
+        submitResults : firstQuestionnaire === type
     }
-}
-
-/**
- * Retrieves userID from url (given from backend) and stores it in local storage
- * 
- * @param {*} search 
- */
-export const getAndStoreUserId = (search) => {
-    const userID = new URLSearchParams(search).get('userID');
-
-    console.log("user id : ", userID);
-    sessionStorage.setItem("userID", userID);
 }

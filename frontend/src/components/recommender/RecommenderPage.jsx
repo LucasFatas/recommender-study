@@ -11,29 +11,28 @@ const buttonStyles = {
 export const RecommenderPage = (props) => {
   
 	const {
+		trackLists, 
 		ratings, 
 		setRatings, 
 		ratingsFilled, 
-		setRatingsFilled,
-		shuffledTracklist
+		setRatingsFilled
 	} = props;
 
-	useEffect(() => setRatingsFilled(Object.values(ratings).every(x => x.playlistRating !== 0)), [ratings, setRatingsFilled])
+	useEffect(() => setRatingsFilled(Object.values(ratings).every(x => x.playlist !== 0)), [ratings, setRatingsFilled])
 
   return (
 		<div className='grid place-items-center'>
 			<div className="flex justify-center w-fit h-fit mt-5 space-x-5 ">
-				{shuffledTracklist.map((e, i) => (
-						<Playlist
-							playlistName={e.name}
-							setRatings={setRatings}
-							ratings={ratings}
-							key={i}
-							setRatingsFilled={setRatingsFilled}
-							trackList={e.songs}
-						/>
-					))
-				}
+				{trackLists.map((e, i) => (
+					<Playlist
+						playlistName={e.name}
+						setRatings={setRatings}
+						ratings={ratings}
+						key={i}
+						setRatingsFilled={setRatingsFilled}
+						trackList={e.list}
+					/>
+				))}
 			</div>
 			<Link to="/recommender/page2" className={ratingsFilled ? "mt-5" : "mt-5 pointer-events-none"}>
         <button className={ratingsFilled ? buttonStyles.active : buttonStyles.inactive}>
@@ -42,4 +41,5 @@ export const RecommenderPage = (props) => {
       </Link>
 		</div>
 	)
+
 }

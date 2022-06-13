@@ -5,7 +5,7 @@ import numpy as np
 # Parameters: answers related to value theory.
 # Returns an array of floats representing the personality scores.
 def val_calc(val_answers):
-    grand_mean = np.mean(val_answers)
+    mrat = np.mean(val_answers)
 
     # List with the 10 value fields.
     values = np.array([
@@ -39,10 +39,10 @@ def val_calc(val_answers):
 
         # Security - 5,14,21,31,35
         np.mean([val_answers[4], val_answers[13], val_answers[20], val_answers[30], val_answers[34]])
-    ])
+    ]).round(2).tolist()
 
-    norm = values - grand_mean
-    return norm.round(2).tolist()
+    mean_values = values - mrat
+    return values
 
 
 # Calculates the reverse of the HEXACO score, in order to compute the scores of the questionnaire

@@ -1,3 +1,6 @@
+import json
+import os
+
 from flask import request, redirect, Blueprint, jsonify
 from dotenv import load_dotenv
 from src.Entities.Match import Match
@@ -10,19 +13,16 @@ from src.Services.database_config import DatabaseException
 from src.Services.SongService import get_top_songs, add_top_songs, add_playlist_ratings, add_song_ratings
 from src.spotify import get_access_token, get_top_songs_api, AuthorizationException, InvalidAccountException
 from src.Computation.matching import match
-import os
-
-load_dotenv()
 
 songs = Blueprint('spotify', __name__)
-frontend_url = os.getenv('FRONTEND_URL')
+frontend_url = "http://www.localhost.com/3000"
 db, cursor, database = open_connection()
 
 
-@songs.route('/songs/get')
+@songs.route('/songs/get', methods=["POST"])
 def retrieve_top_songs():
     try:
-        data = request.args
+        data = request.get_json(force=True)
 
         # Given the user id, retrieve top songs from database.
         top_songs = get_top_songs(data['userId'], db, cursor, database)
@@ -31,12 +31,13 @@ def retrieve_top_songs():
         return jsonify(songs=[song.__dict__ for song in top_songs])
     except DatabaseException as e:
         # Exception handling in case there is a database error.
-        return redirect(os.getenv('FRONTEND_URL') + "/error/database")
+        return redirect(frontend_url + "/error/database")
 
 
 @songs.route('/match')
 def match_user():
     userId = request.args['userId']
+    load_dotenv()
     try:
         # Add the newly formatted answers to our database.
         values = get_value(userId, db, cursor, database)
@@ -55,6 +56,7 @@ def match_user():
             matched = {"user_id": single_match.userId, "songs": [song.__dict__ for song in single_match.songs]}
 
             data.append(matched)
+
         return jsonify(match=data)
 
     except DatabaseException as e:
@@ -81,7 +83,7 @@ def save_ratings():
             matchedUserId = rating["matchedUserId"]
             for i, songRating in enumerate(rating["songsRatings"]):
                 if songRating != 0:
-                    songRatings.append(SongRating(userId, matchedUserId, rating["songUrls"][i], songRating, i + 1))
+                    songRatings.append(SongRating(userId, matchedUserId, rating["songUrls"][i], songRating))
 
             add_song_ratings(songRatings, db, cursor, database)
 
@@ -112,14 +114,14 @@ def spotify_log_in():
         top_songs = get_top_songs_api(access_token)
 
         # Store the user in the database.
-        batch_number = os.getenv('BATCH')
-        userId = add_user(batch_number, db, cursor, database)
+        userId = add_user(1, db, cursor, database)
+        # TODO: Batch Number hardcoded for now
 
         # Store top songs into our database.
         add_top_songs(userId, top_songs, db, cursor, database)
 
         # Redirect to first page of the questionnaire
-        return redirect(frontend_url + "/questionnaire?userID=" + str(userId), 302)
+        return redirect(frontend_url + "/questionnaire/page1?userID = " + str(userId), 302)
 
     except AuthorizationException as e:
         # Exception handling in case there is an authorization error.

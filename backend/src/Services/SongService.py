@@ -1,7 +1,6 @@
 from src.Services.database_config import DatabaseException, open_connection
 import mysql.connector
 from src.Entities.Song import Song
-from src.Entities.SongRating import SongRating
 from dotenv import load_dotenv
 import os
 
@@ -35,7 +34,7 @@ def add_top_songs(userId, songs, db, cursor, database):
 # Returns: a list of song objects
 def get_top_songs(userId, db, cursor, database):
     try:
-        song_sql = "SELECT name, previewUrl, spotifyUrl FROM " + database + ".Song WHERE userId = %s"
+        song_sql = "SELECT name, previewUrl, spotifyUrl FROM " + database + ".song WHERE userId = %s"
 
         cursor.execute(song_sql, (userId,))
 
@@ -89,12 +88,11 @@ def add_song_ratings(song_ratings, db, cursor, database):
     This method has been updated in branch 7/8-Retrieve-Batch-1/2-Data so don't create a test for this just yet.
     """
     try:
-        db, cursor, database = open_connection()
-        song_sql = "Insert into " + database + ".SongRating(userId, matchedUserId, spotifyUrl, rating, playlistNumber) " \
-                                               "Values (%s,%s,%s,%s,%s) "
+        song_sql = "Insert into " + database + ".SongRating(userId, matchedUserId, spotifyUrl, rating) Values (%s," \
+                                               "%s,%s,%s) "
         for song_rating in song_ratings:
-            val = (song_rating.userId, song_rating.matchedUserId, song_rating.spotify_url,
-                   song_rating.rating, song_rating.playlistNumber)
+
+            val = (song_rating.userId, song_rating.matchedUserId, song_rating.spotify_url, song_rating.rating)
             cursor.execute(song_sql, val)
 
         if os.getenv('IS_TESTING') == "FALSE":
@@ -104,3 +102,6 @@ def add_song_ratings(song_ratings, db, cursor, database):
         print(e)
         db.rollback()
         raise DatabaseException("Error connecting to database when storing song ratings.")
+
+
+
