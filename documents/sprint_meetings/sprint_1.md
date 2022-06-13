@@ -24,7 +24,7 @@
 
 #### Main problems encountered
 
-##### Problem 
+##### Problem 1
 - Description: We don't have the questionnaires so we were not able to complete the calculations of the personality and value vector
 - Reaction: We told Sandy that a questionnaire needs to be decided as soon as possible and she told she would get back to us in a few days with a final decision
 
