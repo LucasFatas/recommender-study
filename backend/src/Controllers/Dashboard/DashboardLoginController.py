@@ -2,14 +2,14 @@ import os
 import flask
 import jwt
 from dotenv import load_dotenv
-from flask import request, Blueprint, jsonify
+from flask import request, jsonify, Blueprint
 
 from src.spotify import AuthorizationException
 
-loginDashboard = Blueprint('dashboard/login', __name__)
+dashboard = Blueprint('dashboard', __name__, url_prefix='/dashboard')
 
 
-@loginDashboard.route("", methods=["POST"])
+@dashboard.route("/login", methods=["POST"])
 def create_token():
     """
     This method checks the credentials provided to us by the frontend when the researcher is logging in to the dashboard
