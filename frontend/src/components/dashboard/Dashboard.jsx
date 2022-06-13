@@ -150,7 +150,7 @@ export const Dashboard = ({switchCurrentBatch}) => {
       {
         batchNumber === "2" 
         ? 
-        <button className={buttonStyle} onClick={() => handleRevertData(revertBatch)} >
+        <button className={buttonStyle} onClick={() => handleRevertData(revertBatch, setBatchNumber)} >
           Revert batch
         </button>
         : ""

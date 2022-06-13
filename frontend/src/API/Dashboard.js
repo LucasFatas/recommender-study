@@ -110,9 +110,12 @@ const helperPost = async (uri, token) => {
     }
 }
 
-export const revertBatch = (token) => helperPost('/parameters/revert', token);
+export const revertBatch = (token, setBatchNumber) => {
+    helperPost('/revert', token);
+    setBatchNumber(1)
+};
 
-export const resetData = (token) => helperPost('/parameters/reset', token);
+export const resetData = (token) => helperPost('/reset', token);
 
 export const logIn = async (credentials) => {
 
