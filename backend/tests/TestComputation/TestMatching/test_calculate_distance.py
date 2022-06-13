@@ -31,5 +31,15 @@ def test_calculate_distance_euclidean_size_10():
     assert answer == 5.196152422706632
 
 
+def test_calculate_distance_manhattan_negative():
+    answer = calculate_distance([0, -2, -3, -6], [0, -6, -6, -6], "Manhattan")
+    assert answer == 7
+
+
+def test_calculate_distance_euclidean_negative():
+    answer = calculate_distance([0, -2, -3, -6], [0, -6, -6, -6], "Euclidean")
+    assert answer == 5
+
+
 
 
