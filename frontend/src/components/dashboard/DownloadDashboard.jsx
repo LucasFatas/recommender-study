@@ -25,7 +25,7 @@ export const DownloadDashboard = ({downloadData, setDataToDownload, setBatchToDo
       <span className="text-white text-xl pr-8"> Batch: </span>
       <div className='flex justify-center items-center'>
       {batchs.map((batch, index) => 
-        (<div key={index} className='pr-8 flex justify-center'>
+        (<div key={index} className='pr-8 flex justify-center items-center'>
           <input 
             type="radio" 
             // className={inputStyle} 

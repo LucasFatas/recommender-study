@@ -1,9 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
-const { buttonDefault, buttonInactive, buttonDisabled } = require('../../util/style.json');
+const buttonDefault = "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-5 rounded-full text-2xl";
+const buttonInactive = "select-none bg-blue-300 text-white font-bold py-2 px-5 rounded-full text-2xl";
+const buttonDisabled = "select-none text-transparent fonted bg-transparent hover:bg-transparent py-2 px-5 rounded-full text-2xl";
 
 export const Buttons = (props) => {
+
+  console.log(typeof(buttonInactive));
 
   const [showWarning, setShowWarning] = useState(false);
 

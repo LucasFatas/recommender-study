@@ -5,14 +5,11 @@ import { backEndCreateNewBatch, isLoggedIn } from "../../controller/dashboardCon
 import { DownloadDashboard } from './DownloadDashboard';
 import { getBatch, getMetric, getUsers, setBatch } from '../../API/Dashboard';
 
-const { buttonDefault } = require('../../util/style.json');
 
 export const Dashboard = ({switchCurrentBatch}) => {
   
-
   const navigate = useNavigate()
 
-  
   const [batchNumber, setBatchNumber] = useState("");
   const [batchUsers, setBatchUsers] = useState("");
   const [batchMetric, setBatchMetric] = useState("");
@@ -65,7 +62,7 @@ export const Dashboard = ({switchCurrentBatch}) => {
   return (
     
   
-    <div className='w-screen h-screen flex flex-col items-center justify-between py-28'>
+    <div className='w-screen h-screen flex flex-col items-center justify-center'>
       <div className='flex rounded-[20px] h-3/4 p-8 justify-center items-center border-solid border-4 border-gray-300 bg-gray-700 text-xl' >
         <div className='flex flex-col'>
           <div className='flex flex-col rounded-[10px] mx-10 px-12 py-6 border-solid border-2 border-gray-300 bg-gray-700'>
@@ -153,7 +150,7 @@ export const Dashboard = ({switchCurrentBatch}) => {
         
       </div>
       <div className='py-2'>
-        <button className={buttonDefault} onClick={logout} >
+        <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-5 rounded-full text-2xl" onClick={logout} >
           <div className='grid place-items-center '>
             <span className="text-white">Log out</span>
           </div>

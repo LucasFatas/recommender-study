@@ -2,9 +2,12 @@ import React from "react";
 import { useState } from "react";
 import { useNavigate } from 'react-router-dom';
 
-const { buttonDefault, buttonInactive } = require('../../util/style.json');
+const buttonDefault = "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-5 rounded-full text-2xl";
+const buttonInactive = "select-none bg-blue-300 text-white font-bold py-2 px-5 rounded-full text-2xl";
 
 export const ConsentPage = () => {
+
+
   
   const [checked, setChecked] = useState(false);
 
@@ -23,13 +26,9 @@ export const ConsentPage = () => {
           <span className="ml-2 text-lg">I accept the terms and agreements.</span>
         </label>
       </div>
-      <div className="flex items-center justify-center w-fit mb-5 space-x-7">
-        <button className={checked ? buttonDefault : buttonInactive} disabled={!checked} onClick={handleNext} >
-          <div className='grid place-items-center '>
-            <span className="text-white"> Next </span>
-          </div>
-        </button> 
-      </div>
+      <button className={checked ? buttonDefault : buttonInactive} disabled={!checked} onClick={handleNext} >
+        Next
+      </button> 
     </div>
   )
 }

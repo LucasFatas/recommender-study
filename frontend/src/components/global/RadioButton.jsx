@@ -11,7 +11,7 @@ export const RadioButton = (props) => {
   } = props;
 
   return (
-    <div className="flex flex-col items-center">
+    <div className="flex flex-col items-center text-sm">
       {type === 'values' 
         ? <label className="" htmlFor={`${questionNumber}${type}${value}`}>{value}</label>
         : ""

@@ -3,7 +3,8 @@ import { Link } from "react-router-dom";
 
 import { Playlist } from "./Playlist"
 
-const { buttonDefault, buttonInactive } = require('../../util/style.json');
+const buttonDefault = "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-5 rounded-full text-2xl";
+const buttonInactive = "select-none bg-blue-300 text-white font-bold py-2 px-5 rounded-full text-2xl";
 
 export const RecommenderPage = (props) => {
   

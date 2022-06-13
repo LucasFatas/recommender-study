@@ -26,7 +26,7 @@ export const StarRating = (props) => {
   );
 
   return (
-    <div className="star-rating text-center py-1">
+    <div className="star-rating text-center pb-1">
       {[...Array(5)].map((star, index) => {
         index += 1;
         return (

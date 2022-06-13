@@ -66,7 +66,7 @@ export const Recommender = (props) => {
 	
 	const recommenderPage = (
 		<RecommenderPage
-		shuffledTracklist={shuffledTracklist}
+			shuffledTracklist={shuffledTracklist}
 			ratings={ratings}
 			setRatings={setRatings}
 			ratingsFilled={ratingsFilled}

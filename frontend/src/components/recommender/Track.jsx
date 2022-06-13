@@ -15,10 +15,10 @@ export const Track = (props) => {
         <h3>Artist : {artist.join(', ')}</h3>
       </div>
       
-      <audio className="text-xl" controls src={trackUrl}/>
+      <audio className="text-sm px-2 py-2" controls src={trackUrl}/>
       <StarRating 
         {...props}
-        starStyle="text-xl"
+        starStyle="text-base"
       />
 		</div>
   )
