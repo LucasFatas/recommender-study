@@ -3,7 +3,8 @@ from dotenv import set_key, find_dotenv
 from flask import request, Blueprint, jsonify
 
 from src.Controllers.Dashboard.DashboardLoginController import check_token, dashboard
-from src.Services.DashboardService import get_user_total
+from src.Controllers.Dashboard.DashboardLoginController import check_token
+from src.Services.DashboardService import get_user_total, reset_database
 from src.Services.database_config import open_connection
 from src.spotify import AuthorizationException
 
@@ -25,8 +26,8 @@ def total_users():
         response = jsonify({'message': "Missing Token"})
         return response, 401
 
-    batch = request.args['batchId']
     db, cursor, database = open_connection()
+    batch = request.args['batchId']
 
     users = get_user_total(batch, db, cursor, database)
 
@@ -103,7 +104,6 @@ def set_batch():
 def revert_batch():
     """
     Reverts the experiment to batch 1 and euclidean metric as default
-    Method non-accessible by the dashboard, only for development purposes
     :except AuthorizationException: if the token provided has the wrong credentials
     :except KeyError: if the token provided is missing
     :return: a JSON object with the amount of users with a fulfilled experiment.
@@ -123,5 +123,36 @@ def revert_batch():
 
     os.environ["METRIC"] = "Euclidean"
     set_key(find_dotenv(), "METRIC", os.getenv("METRIC"))
+    metric = os.environ["METRIC"]
 
-    return jsonify(batch=batch)
+    return jsonify(batch=batch, metric=metric)
+
+
+@dashboard.route("/reset", methods=['POST'])
+def reset_experiment():
+    """
+    Reverts the experiment to batch 1 and euclidean metric as default
+    It also resets the database by deleting all data from the tables
+    :except AuthorizationException: if the token provided has the wrong credentials
+    :except KeyError: if the token provided is missing
+    :return: a JSON object with the amount of users with a fulfilled experiment.
+    """
+    try:
+        check_token(request.headers['Authorization'].replace("Bearer ", ""))
+    except AuthorizationException:
+        response = jsonify({'message': "Incorrect Token"})
+        return response, 401
+    except KeyError:
+        response = jsonify({'message': "Missing Token"})
+        return response, 401
+
+    db, cursor, database = open_connection()
+
+    data = revert_batch().get_json(force=True)
+    batch = data["batch"]
+    metric = data["metric"]
+
+    reset_database(db, cursor, database)
+
+    return jsonify(batch=batch, metric=metric)
+

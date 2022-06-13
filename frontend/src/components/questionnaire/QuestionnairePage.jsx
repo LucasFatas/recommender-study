@@ -8,6 +8,8 @@ import {
   updateAnswersLogic, 
   checkEveryElementIsInMap
 } from "../../controller/questionnaireController";
+import { useNavigate } from "react-router-dom";
+import { questionnairePageSecurity } from "../../controller/pathSecurityController";
 
 const legendItems = [
   'Not like me at all',
@@ -32,6 +34,13 @@ export const QuestionnairePage = (props) => {
     currentPath
   } = props;
 
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    questionnairePageSecurity(navigate, type, pageNumber)
+
+  }, []);
+
   //boolean value to check if all answers in the current page have been answered.
   const [ answered, setAnswered ] = useState(false);
   const questionsNumberArr = useMemo(() => [...questions.map(x => x[1] + 1)], [questions]);
@@ -46,7 +55,12 @@ export const QuestionnairePage = (props) => {
 
   const handleNext = () => {
     const nextQuestionsNumber = questionsNumberArr.map(x => x + questionsNumberArr.length);
+    
     setAnswered(checkEveryElementIsInMap(nextQuestionsNumber, answers[type]));
+    
+    
+      sessionStorage.setItem("currentUrl", "/questionnaire/" + (type === 'values' ? 'v' : 'p') + "/page" + (pageNumber + 1) )
+
   }
 
   return (

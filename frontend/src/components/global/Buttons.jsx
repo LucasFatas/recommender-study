@@ -32,7 +32,8 @@ export const Buttons = (props) => {
   const handleSubmit = () => {
     if (submitResults &&submitFunction)
       submitFunction(data, navigate);
-      
+
+    sessionStorage.setItem("currentUrl", pathOnSubmit)
     navigate(pathOnSubmit);
   }
 
