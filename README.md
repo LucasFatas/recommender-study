@@ -7,6 +7,19 @@ RecMix a Value Based Recommender for Music
 The objective of this project is to create a web application. The website would consist of two parts a questionnaire and a rating part. The questionnaire would allow to determine the values and personality of an individual. The rating part would consist of rating and answering some questions about 3 playlist that are 5 songs long. One playlist comes from a user that has values analogue to the participant, another playlist comes from a user with a similar personality and the last playlist is chosen at random. This website is an experiment for PhD student Sandy Manolios to see if people appreciate music of others with similar values. To determin the values of an individual the HEXACO was chosen, more information can be found here: http://hexaco.org./ . The PVQ allows to determin the personality of users any additional information can be found here: LINK . On the internet there are a multitude of different websites to see your values and personality however this website is the only one that uses values and personality to recommend playlist. This allows participants to not only see their values and personality but additionally discover music they might appreciate. To get the music snippets and favorite songs pf each participant we use the Sportify api, the following link will show the doucumentation of the api: https://developer.spotify.com/documentation/web-api/reference/. 
 
 ## Installation Frontend
+To install front-end application, go to the /frontend folder and use yarn or npm to run the command:
+ 
+ "yarn install" 
+ 
+ or 
+ 
+ "npm install" 
+ 
+ respectively. 
+ 
+ This will install the packages on your computer. 
+
+
 
 ## Installation Backend
 To get the backend running smoothly, make sure to install and use python 3.8
@@ -18,6 +31,23 @@ pip install requirements.txt
 The requirements.txt file is in the backend directory and contains all the packages used in the backend.
 
 ## Run Frontend 
+To run the front-end application, go to the /frontend folder and run the command:
+
+"yarn start-lin" 
+
+or 
+
+"yarn start-win" 
+
+depending on if you are using linux or windows. 
+
+It will start the application on port 5000. Go then to your favorite browser and open the application with the right url and port 5000.
+
+To build the front-end application, go to the /frontend folder and run 
+
+"yarn build" 
+
+It will create the build folder and save the builded application in it. When you want to deploy the application, you only need to take the files of the build folder. 
 
 ## Run Backend
 The backend can be run with the command:
