@@ -2,7 +2,9 @@
 
 ### Iteration number 4
 
+
 |  user story # |  task | task assigned to  | estimated effort  | actual effort  | done | note |
+|---|---|---|---|---|---|---|
 | 26 split questionnaire based on type  | Refactor Questionnaire and QuestionnarePage components | Diego Viero | 2h  | 3h  | Yes  |  |
 | 26 split questionnaire based on type  | Implement logic for having 2 questionnaires | Diego Viero | 3h  | 5h  | Yes  |  |
 | 26 split questionnaire based on type  | Implement randomness in first questionnaire | Diego Viero | 1h  | 1h  | Yes  |  |
@@ -11,7 +13,7 @@
 | 17 Deploy Application  |  Run server on hosting server | Diego Viero  | 1h  | 1h  | Yes  |  |
 | 17 Deploy Application  |  Handle routing between pages | Diego Viero  | 3h  | 4h  |   Yes  |  |
 | 27 Get Pipeline Working | try to implement a test to have a pipeline working | Kenzo Boudier | 2h | 10h | no | Ran into many problems to implement a single test on the front end will only focus on it next week |
-| 9 User Matching Process  | Retrieve Playlist from Back End  | Kenzo Boudier | 4h  | 5h  | Yes  | |
+| 9 User Matching Process  | Retrieve Playlist from Back End  | Kenzo Boudier | 4h  | 5h  | Yes  ||
 | 8 Retrieve Batch 2 Data  | API endpoint to send CSV file  | Daniel Puente  | 4h  | 5h  | Yes  | Once retrieved from the database, some formatting is done in this part.  |
 | 8 Retrieve Batch 2 Data  | Retrieve and format necessary data from database | Daniel Puente  | 5h  | 6h  | Yes  | Complicated SQL query created with temporary tables and joining afterwards. |
 | 27 Get Pipeline Working  | Organize test into test suite that can be run with a command  |  Lucas Fatas | 2h  | 2h  | Yes  |   |
