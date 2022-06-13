@@ -1,4 +1,4 @@
-from tests.test_fixtures import set_up
+from tests.fixtures import set_up
 from src.Services.QuestionnaireService import add_value, add_answers, add_user, add_personality
 from src.Services.SongService import add_top_songs, get_top_songs, add_playlist_ratings, add_song_ratings
 from src.Entities.Song import Song
