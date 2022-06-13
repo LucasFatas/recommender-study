@@ -16,7 +16,7 @@ def add_feedback_questions(userId, matchedUserId, answers, db, cursor, database)
     :param cursor: cursor that executes the SQL commands in our database
     :param database: string of the database name we will be using
     :except mysql.connector.errors.Error: handles the case where the database has some errors
-    :raises DatabaseException: custom exception in our app, in order for better handling
+    :raises DatabaseException: custom exception in our app, in order for better handling when database commands fail
     :return: success message
     """
     try:
@@ -53,7 +53,7 @@ def add_open_feedback(userId, matchedUserId, feedback, db, cursor, database):
     :param cursor: cursor that executes the SQL commands in our database
     :param database: string of the database name we will be using
     :except mysql.connector.errors.Error: handles the case where the database has some errors
-    :raises DatabaseException: custom exception in our app, in order for better handling
+    :raises DatabaseException: custom exception in our app, in order for better handling when database commands fail
     :return: success message.
     """
     try:

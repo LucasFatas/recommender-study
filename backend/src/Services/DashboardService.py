@@ -13,7 +13,7 @@ def get_all_scores(batch, db, cursor, database):
     :param cursor: cursor that executes the SQL commands in our database
     :param database: string of the database name we will be using
     :except mysql.connector.errors.Error: handles the case where the database has some errors
-    :raises DatabaseException: custom exception in our app, in order for better handling
+    :raises DatabaseException: custom exception in our app, in order for better handling when database commands fail
     :return: result with all the users of a provided batch along with their scores
     """
     try:
@@ -44,7 +44,7 @@ def get_all_answers(batch, db, cursor, database):
     :param cursor: cursor that executes the SQL commands in our database
     :param database: string of the database name we will be using
     :except mysql.connector.errors.Error: handles the case where the database has some errors
-    :raises DatabaseException: custom exception in our app, in order for better handling
+    :raises DatabaseException: custom exception in our app, in order for better handling when database commands fail
     :return: result with all the users of a provided batch along with their answers to the questionnaires
     """
     try:
@@ -70,7 +70,7 @@ def get_all_songs(batch, db, cursor, database):
     :param cursor: cursor that executes the SQL commands in our database
     :param database: string of the database name we will be using
     :except mysql.connector.errors.Error: handles the case where the database has some errors
-    :raises DatabaseException: custom exception in our app, in order for better handling
+    :raises DatabaseException: custom exception in our app, in order for better handling when database commands fail
     :return: result with all the users of a provided batch along with their scores
     """
     try:
@@ -95,7 +95,7 @@ def get_all_match_data(db, cursor, database):
     :param cursor: cursor that executes the SQL commands in our database
     :param database: string of the database name we will be using
     :except mysql.connector.errors.Error: handles the case where the database has some errors
-    :raises DatabaseException: custom exception in our app, in order for better handling
+    :raises DatabaseException: custom exception in our app, in order for better handling when database commands fail
     :return: result with all the users from batch 2 along with their matches
     and the feedback provided to the playlist of each match
     """
@@ -169,7 +169,7 @@ def get_song_ratings(db, cursor, database):
     :param cursor: cursor that executes the SQL commands in our database
     :param database: string of the database name we will be using
     :except mysql.connector.errors.Error: handles the case where the database has some errors
-    :raises DatabaseException: custom exception in our app, in order for better handling
+    :raises DatabaseException: custom exception in our app, in order for better handling when database commands fail
     :return: result with all the users of batch 2 along with their song ratings (only the non-zero ones)
     """
     try:
@@ -225,7 +225,7 @@ def get_user_total(batch, db, cursor, database):
     :param cursor: cursor that executes the SQL commands in our database
     :param database: string of the database name we will be using
     :except mysql.connector.errors.Error: handles the case where the database has some errors
-    :raises DatabaseException: custom exception in our app, in order for better handling
+    :raises DatabaseException: custom exception in our app, in order for better handling when database commands fail
     :return: total number of users
     """
     try:

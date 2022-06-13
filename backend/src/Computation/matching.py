@@ -7,16 +7,14 @@ db, cursor, database = open_connection()
 
 def match(userId, values, personality, batch, metric):
     """
-    Real code when values are implemented
-    #batch_values = get_all_values(batch)
-    #val_user = closest_user(values, batch_values, metric)
-
-    pers_user = userId
-    # batch_personality = get_all_personalities(batch)
-    # pers_user = closest_user(personality, batch_personality, metric)
-
-    #random_user = get_random_user(val_user, pers_user, batch)
-    return val_user, pers_user, random_user
+    Method that calculates the matches for a given user by calculating the closest user
+    based on value scores and personality scores, and a random user as well
+    :param userId: the id of the user that will be matched
+    :param values: the user's value scores
+    :param personality: the user's personality scores
+    :param batch: the batch to match the users on
+    :param metric: the metric that we will use to create the matches
+    :return: the ids of the value matched user, the personality matched user, and the random user
     """
     batch_personality = get_all_personalities(batch, db, cursor, database)
     pers_user = closest_user(personality, batch_personality, metric)

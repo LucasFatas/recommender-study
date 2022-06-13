@@ -18,7 +18,7 @@ def add_answers(answers, db, cursor, database):
     :param cursor: cursor that executes the SQL commands in our database
     :param database: string of the database name we will be using
     :except mysql.connector.errors.Error: handles the case where the database has some errors
-    :raises DatabaseException: custom exception in our app, in order for better handling
+    :raises DatabaseException: custom exception in our app, in order for better handling when database commands fail
     :return: result with all the users of a provided batch along with their answers to the questionnaires
     """
     try:
@@ -46,7 +46,7 @@ def add_user(batch_id, db, cursor, database):
     :param cursor: cursor that executes the SQL commands in our database
     :param database: string of the database name we will be using
     :except mysql.connector.errors.Error: handles the case where the database has some errors
-    :raises DatabaseException: custom exception in our app, in order for better handling
+    :raises DatabaseException: custom exception in our app, in order for better handling when database commands fail
     :return: id of the new user
     """
     try:
@@ -76,7 +76,7 @@ def add_value(user_id, values, db, cursor, database):
     :param cursor: cursor that executes the SQL commands in our database
     :param database: string of the database name we will be using
     :except mysql.connector.errors.Error: handles the case where the database has some errors
-    :raises DatabaseException: custom exception in our app, in order for better handling
+    :raises DatabaseException: custom exception in our app, in order for better handling when database commands fail
     :return: success message
     """
     try:
@@ -113,7 +113,7 @@ def add_personality(user_id, personality, db, cursor, database):
     :param cursor: cursor that executes the SQL commands in our database
     :param database: string of the database name we will be using
     :except mysql.connector.errors.Error: handles the case where the database has some errors
-    :raises DatabaseException: custom exception in our app, in order for better handling
+    :raises DatabaseException: custom exception in our app, in order for better handling when database commands fail
     :return: success message
     """
     try:
@@ -148,7 +148,7 @@ def get_value(user_id, db, cursor, database):
         :param cursor: cursor that executes the SQL commands in our database
         :param database: string of the database name we will be using
         :except mysql.connector.errors.Error: handles the case where the database has some errors
-        :raises DatabaseException: custom exception in our app, in order for better handling
+        :raises DatabaseException: custom exception in our app, in order for better handling when database commands fail
         :return: a tuple with userId and 10 value scores
         """
     try:
@@ -177,7 +177,7 @@ def get_personality(user_id, db, cursor, database):
     :param cursor: cursor that executes the SQL commands in our database
     :param database: string of the database name we will be using
     :except mysql.connector.errors.Error: handles the case where the database has some errors
-    :raises DatabaseException: custom exception in our app, in order for better handling
+    :raises DatabaseException: custom exception in our app, in order for better handling when database commands fail
     :return: a tuple with userId and the 6 personality scores
     """
     try:
@@ -206,7 +206,7 @@ def add_matches(user_id, val_user, pers_user, random_user, db, cursor, database)
     :param cursor: cursor that executes the SQL commands in our database
     :param database: string of the database name we will be using
     :except mysql.connector.errors.Error: handles the case where the database has some errors
-    :raises DatabaseException: custom exception in our app, in order for better handling
+    :raises DatabaseException: custom exception in our app, in order for better handling when database commands fail
     :return: success message
     """
     try:
@@ -238,7 +238,7 @@ def get_all_values(batch, db, cursor, database, pers_user):
         :param cursor: cursor that executes the SQL commands in our database
         :param database: string of the database name we will be using
         :except mysql.connector.errors.Error: handles the case where the database has some errors
-        :raises DatabaseException: custom exception in our app, in order for better handling
+        :raises DatabaseException: custom exception in our app, in order for better handling when database commands fail
         :return: a list of tuples with userId and 10 value scores
         """
     try:
@@ -265,7 +265,7 @@ def get_all_personalities(batch, db, cursor, database):
     :param cursor: cursor that executes the SQL commands in our database
     :param database: string of the database name we will be using
     :except mysql.connector.errors.Error: handles the case where the database has some errors
-    :raises DatabaseException: custom exception in our app, in order for better handling
+    :raises DatabaseException: custom exception in our app, in order for better handling when database commands fail
     :return: a list of tuples with userId and 6 value scores
     """
     try:
@@ -294,7 +294,7 @@ def get_random_user(user1, user2, batch, db, cursor, database):
         :param cursor: cursor that executes the SQL commands in our database
         :param database: string of the database name we will be using
         :except mysql.connector.errors.Error: handles the case where the database has some errors
-        :raises DatabaseException: custom exception in our app, in order for better handling
+        :raises DatabaseException: custom exception in our app, in order for better handling when database commands fail
         :return: a userId chosen at random from all the users in the batch that are not user1 or user2
         """
     try:
