@@ -3,6 +3,10 @@ import { Link } from "react-router-dom";
 
 export const PageNotFound = (props) => {
 
+  const {
+    redirect //String with redirect path
+  } = props;
+
   return (
     <div className="h-3/4 w-screen flex flex-col justify-center content-center items-center absolute z-0">
       <h1 className="uppercase p-10 text-xl font-black">

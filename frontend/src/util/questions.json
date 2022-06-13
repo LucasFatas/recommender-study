@@ -5,14 +5,13 @@
         "questions" : [
             "I would be quite bored by a visit to an art gallery.",
             "I plan ahead and organize things, to avoid scrambling at the last minute.",
-            "I rarely hold a grudge, even against people who have badly wronged me.",
+            "I rarely hold a grudge, even against people who have badly wronged me."
+        ],
+        "hiddenQuestions" : [
             "I feel reasonably satisfied with myself overall.",
             "I would feel afraid if I had to travel in bad weather conditions.",
             "I wouldn't use flattery to get a raise or promotion at work, even if I thought it would succeed.",
-            "I'm interested in learning about the history and politics of other countries."
-            
-        ],
-        "hiddenQuestions" : [
+            "I'm interested in learning about the history and politics of other countries.",
             "I often push myself very hard when trying to achieve a goal.",
             "People sometimes tell me that I am too critical of others.",
             "I rarely express my opinions in group meetings.",
@@ -73,7 +72,9 @@
         "questions" : [
             "Thinking up new ideas and being creative is important to him. He likes to do things in his own original way",
             "It is important to him to be rich. He wants to have a lot of money and expensive things",
-            "He thinks it is important that every person in the world be treated equally. He believes everyone should have equal opportunities in life",
+            "He thinks it is important that every person in the world be treated equally. He believes everyone should have equal opportunities in life"
+        ],
+        "hiddenQuestions" : [
             "It's very important to him to show his abilities. He wants people to admire what he does",
             "It is important to him to live in secure surroundings. He avoids anything that might endanger his safety",
             "He thinks it is important to do lots of different things in life. He always looks for new things to try.",
@@ -81,9 +82,7 @@
             "It is important to him to listen to people who are different from him. Even when he disagrees with them, he still wants to understand them",
             "He thinks it's important not to ask for more than what you have. He believes that people should be satisfied with what they have",
             "He seeks every chance he can to have fun. It is important to him to do things that give him pleasure",
-            "It is important to him to make his own decisions about what he does. He likes to be free to plan and to choose his activities for himself"
-        ],
-        "hiddenQuestions" : [
+            "It is important to him to make his own decisions about what he does. He likes to be free to plan and to choose his activities for himself",
             "It's very important to him to help the people around him. He wants to care for their well-being",
             "Being very successful is important to him. He likes to impress other people",
             "It is very important to him that his country be safe. He thinks the state must be on watch against threats from within and without",
@@ -118,12 +117,12 @@
     "feedback" : {
         "answerOptions" : 5,
         "questions" : [
-            "Question 1?",
-            "Question 2?",
-            "Question 3?",
-            "Question 4?",
-            "Question 5?",
-            "Question 6?"
+            "Several songs in the list of recommended songs were very different from  each other.",
+            "The recommender is recommending content I hadn’t previously considered.",
+            "The provided recommended songs were interesting.",
+            "The recommended songs fitted my preference.",
+            "This list of recommendations was appealing.",
+            "The list contains too many bad items."
         ]
     }
 }

@@ -5,7 +5,7 @@ from src.Services.database_config import DatabaseException
 from src.Services.database_config import open_connection
 from src.Services.QuestionnaireService import add_answers, add_personality, add_value
 
-from src.Services.QuestionnaireService import add_answers
+
 
 questionnaire = Blueprint("questionnaire", __name__)
 db, cursor, database = open_connection()
@@ -17,7 +17,7 @@ def save_answer():
     data = request.get_json(force=True)
 
     # Format answers retrieved from frontend into our database format to store the data.
-    # Format: UserId, question number, answer.
+    # Format: user, question number, answer.
     answers = []
 
     # Personality answers formatting
