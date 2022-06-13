@@ -21,12 +21,13 @@ def add_top_songs(user_id, songs, db, cursor, database):
     """
     try:
         song_sql = """
-            INSERT INTO """ + database + """.Song(previewUrl, userId, name, spotifyUrl) VALUES (%s, %s, %s, %s)
+            INSERT INTO """ + database + """.Song(previewUrl, userId, name, spotifyUrl, playlistNumber) 
+            VALUES (%s, %s, %s, %s, %s)
         """
         artist_sql = """INSERT INTO """ + database + """.Artist(spotifyUrl, name) VALUES (%s, %s)"""
 
-        for song in songs:
-            val = (song.preview_url, user_id, song.name, song.spotify_url)
+        for i, song in enumerate(songs):
+            val = (song.preview_url, user_id, song.name, song.spotify_url, i + 1)
             cursor.execute(song_sql, val)
             for artist in song.artists:
                 val = (song.spotify_url, artist['artist_name'])
