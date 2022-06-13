@@ -9,10 +9,15 @@ import { loadResultsIfStored } from "../../controller/questionnaireController";
 import { getBatch } from "../../API/Dashboard";
 import { getLastPage } from "../../controller/questionnaireController";
 import { sendAnswer } from '../../API/Questionnaire';
+import { questionnaireResultSecurity } from "../../controller/pathSecurityController";
 
 export const QuestionnaireResult = () => {
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    questionnaireResultSecurity(navigate)
+  }, []);
 
   const [currentBatch, setCurrentBatch] = useState("");
   getBatch(setCurrentBatch, "batch")
@@ -44,7 +49,7 @@ export const QuestionnaireResult = () => {
           </div>
           <div className="mt-10">
             <Link to={lastPage}>
-              <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full ">Next</button>
+              <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full " onClick={() => sessionStorage.setItem("currentUrl", lastPage)}>Next</button>
             </Link> 
           </div>
         </div>

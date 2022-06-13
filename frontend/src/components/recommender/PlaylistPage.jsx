@@ -6,6 +6,8 @@ import { Buttons } from "../global/Buttons";
 import { sendRatings } from "../../API/Recommender";
 import { checkEveryElementIsInMap } from "../../controller/questionnaireController";
 import { updateAnswersLogic } from "../../controller/recommenderController";
+import { useNavigate } from "react-router-dom";
+import { PlaylistPageSecurity } from "../../controller/pathSecurityController";
 
 
 export const PlaylistPage = (props) => {
@@ -22,11 +24,19 @@ export const PlaylistPage = (props) => {
 		playlistKey,
 		trackList,
 		setRatingsFilled,
-		comment
+		comment,
+		nextPage
 	} = props;
 
 	const currentFeedback = feedback[playlistName];
 	const questionsNumberArr = questions.map((x, i) => i + 1);
+
+	const navigate = useNavigate()
+
+  useEffect(() => {
+    PlaylistPageSecurity(navigate)
+
+  }, []);
 	
 	useEffect(() => {	
 			setAnswered(checkEveryElementIsInMap(questionsNumberArr, currentFeedback.questions));
@@ -57,6 +67,7 @@ export const PlaylistPage = (props) => {
 				submitFunction={() => sendRatings(ratings, feedback)}
 				submitResults={playlistName === 'random'}
 				answered={answered}
+				onNext={() => sessionStorage.setItem("currentUrl", "/recommender/page" + (nextPage))}
 			/>
 		</div>
 	)

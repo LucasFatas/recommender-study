@@ -1,8 +1,16 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import correctLogo from '../../assets/correctLogo.svg'
+import { thanksPageSecurity } from "../../controller/pathSecurityController";
 
 export const Thanks = () => {
 
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    thanksPageSecurity(navigate)
+
+  }, []);
 
   return (
     <div className='flex flex-col items-center justify-center h-screen w-screen text-center'>

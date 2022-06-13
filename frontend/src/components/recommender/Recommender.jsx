@@ -3,12 +3,13 @@ import { useState, useEffect } from "react";
 
 import { RecommenderPage } from "./RecommenderPage";
 import { PlaylistPage } from "./PlaylistPage";
-import { Routes, Route, Navigate } from "react-router-dom";
+import { Routes, Route, Navigate, useNavigate } from "react-router-dom";
 import { PageNotFound } from "../errors/PageNotFound";
 import questionsObj from '../../util/questions.json';
 import {	loadFeedbackIfStored, loadRatingsIfStored, loadTracklistsIfStored } from "../../controller/recommenderController";
 import { getSongs } from "../../API/Recommender";
 import loadingGif from '../../assets/loading.gif';
+import { recommenderSecurity } from "../../controller/pathSecurityController";
 
 
 const lastPageIdx = 4;
@@ -17,6 +18,14 @@ const questions = questionsObj.feedback.questions;
 export const Recommender = (props) => {
 
 	const { defaultPage } = props;
+
+	const navigate = useNavigate()
+
+  
+  useEffect(() => {
+		recommenderSecurity(navigate)
+  }, []);
+
 
 	const [tracklists, setTracklists] = useState(loadTracklistsIfStored(sessionStorage.getItem("tracklists")));
 	const [shuffledTracklist, setShuffled] = useState(loadTracklistsIfStored(sessionStorage.getItem("shuffled")))

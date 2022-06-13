@@ -106,9 +106,10 @@ def save_ratings():
         # Add song ratings into our database.
         # In order to do that, we need to format the data retrieved. We use a helper Entity SongRating
         # SongRating(user id, matched user, spotify preview url, rating)
-        songRatings = []
 
         for rating in ratings:
+            songRatings = []
+
             matchedUserId = rating["matchedUserId"]
 
             for i, songRating in enumerate(rating["songsRatings"]):

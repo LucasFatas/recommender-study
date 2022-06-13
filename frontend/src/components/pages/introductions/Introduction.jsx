@@ -20,9 +20,9 @@ export const Introduction = (props) => {
   return (
     <Routes>
       <Route path="/" element={<Navigate replace to={firstQuestionnaire}/>}/>
-      <Route path="values" element={<IntroductionPage intro={intro.values} nextpage="/questionnaire/v/page1" />} />
-      <Route path="personality" element={<IntroductionPage intro={intro.personality} nextpage={'/questionnaire/p/page1'} />} />
-      <Route path="playlist" element={<IntroductionPage intro={intro.playlist} nextpage={'/recommender'} />} />
+      <Route path="values" element={<IntroductionPage type="values" intro={intro.values} nextpage="/questionnaire/v/page1" />} />
+      <Route path="personality" element={<IntroductionPage type="personality"  intro={intro.personality} nextpage={'/questionnaire/p/page1'} />} />
+      <Route path="playlist" element={<IntroductionPage type="playlist"  intro={intro.playlist} nextpage={'/recommender'} />} />
     </Routes>
   )
 

@@ -1,19 +1,44 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
-import { useNavigate } from 'react-router-dom';
+
+import { useLocation, useNavigate } from 'react-router-dom';
+import { constentPageSecurity } from "../../controller/pathSecurityController";
 
 const buttonDefault = "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-5 rounded-full text-2xl";
 const buttonInactive = "select-none bg-blue-300 text-white font-bold py-2 px-5 rounded-full text-2xl";
 
+
+
 export const ConsentPage = () => {
 
-
   
-  const [checked, setChecked] = useState(false);
-
   const navigate = useNavigate();
 
-  const handleNext = () => navigate('/websiteIntroduction');
+
+  if(sessionStorage.getItem("currentUrl") === null){
+    sessionStorage.setItem("currentUrl", "/consentPage")
+  }
+
+  useEffect(() => {
+    constentPageSecurity(navigate)
+  }, []);
+    
+  console.log(sessionStorage.getItem("currentUrl"))
+  const [checked, setChecked] = useState(false);
+
+
+  const handleNext = () => {
+    sessionStorage.setItem("currentUrl", "/websiteIntroduction");
+    navigate('/websiteIntroduction')
+
+  }
+
+  const buttonStyles = {
+    active : "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full ",
+    inactive : "select-none bg-blue-300 text-white font-bold py-2 px-4 rounded-full "
+  }
+
+ 
 
   return (
     <div className='flex flex-col items-center justify-center h-screen w-screen'>

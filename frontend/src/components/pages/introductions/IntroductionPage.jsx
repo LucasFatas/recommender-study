@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 import { useNavigate } from 'react-router-dom';
+import { introductionPagesSecurity } from "../../../controller/pathSecurityController";
 
 const buttonDefault = "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-5 rounded-full text-2xl";
 
@@ -10,14 +11,20 @@ export const IntroductionPage = (props) => {
   
 
   const {
+    type,
     intro,
     nextpage
   } = props;
 
   const navigate = useNavigate();
 
+  useEffect(() => {
+    introductionPagesSecurity(navigate, type)
+  }, []);
+
   const handleNext = () => {
     //the navigated page is possibly going to change in the future 
+    sessionStorage.setItem("currentUrl", nextpage)
     navigate(nextpage)
   }
 
