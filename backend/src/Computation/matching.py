@@ -16,14 +16,17 @@ def match(userId, values, personality, batch, metric):
     # pers_user = closest_user(personality, batch_personality, metric)
 
     #random_user = get_random_user(val_user, pers_user, batch)
-    # add_matches(userId, val_user, pers_user, random_user)
     return val_user, pers_user, random_user
     """
     batch_personality = get_all_personalities(batch, db, cursor, database)
     pers_user = closest_user(personality, batch_personality, metric)
 
-    random_user = get_random_user(userId, pers_user, batch, db, cursor, database)
-    return userId, pers_user, random_user
+    batch_values = get_all_values(batch, db, cursor, database, pers_user)
+    val_user = closest_user(values, batch_values, metric)
+
+    random_user = get_random_user(pers_user, val_user, batch, db, cursor, database)
+    add_matches(userId, val_user, pers_user, random_user, db, cursor, database)
+    return val_user, pers_user, random_user
 
 
 def calculate_distance(answer, batch_answer, metric):
@@ -37,7 +40,7 @@ def calculate_distance(answer, batch_answer, metric):
     """
     if metric.casefold() == "Manhattan".casefold():
         return manhattan_distance(answer, batch_answer)
-    elif metric.casefold() == "Euclidean".casefold():
+    elif metric.casefold() == "Euclidean".casefold() or metric.casefold() == "Euclidian".casefold():
         return euclidean_distance(answer, batch_answer)
 
 

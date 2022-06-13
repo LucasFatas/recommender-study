@@ -5,7 +5,7 @@ import { backEndCreateNewBatch, isLoggedIn } from "../../controller/dashboardCon
 import { DownloadDashboard } from './DownloadDashboard';
 import { getBatch, getMetric, getUsers, setBatch } from '../../API/Dashboard';
 
-export const Dashboard = () => {
+export const Dashboard = ({switchCurrentBatch}) => {
   
 
   const navigate = useNavigate()
@@ -52,9 +52,8 @@ export const Dashboard = () => {
   
 
 
-  const createNewBatch = () => {
-    backEndCreateNewBatch(setBatch, setBatchNumber, setBatchMetric, setChangeBatch, setMetricNextBatch, metricNextBatch)
-  }
+  const createNewBatch = () => backEndCreateNewBatch(setBatch, setBatchNumber, setBatchMetric, setChangeBatch, setMetricNextBatch, metricNextBatch);
+
   const showChangeBatchButtons = () => {
     setChangeBatch(true)
   }

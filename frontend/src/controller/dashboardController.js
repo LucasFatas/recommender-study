@@ -1,16 +1,6 @@
 import { getAnswers, getMatchData, getScores, getSongRatings, getSongs } from "../API/Dashboard";
 
 
-/**
- * If batch is set to 'questionnaire', set it to 'recommender and vice versa
- * @param {string} currentBatch either 'questionnaire' or 'recommender'
- * @param {*} setCurrentBatch function to change current batch
- */
-export const switchBatch = (currentBatch, setCurrentBatch) => {
-    currentBatch === 'questionnaire' 
-        ? setCurrentBatch('recommender') 
-        : setCurrentBatch('questionnaire');
-}
 
 /**
  * Check if the user is logged in, if not, she/he is redirected to the log in
@@ -84,7 +74,8 @@ export const retrieveCSV = async (batchToDownload, dataToDownload, setCSVToDownl
  * @param {*} setBatchMetric Setter for Metric
  * @param {*} setChangeBatch Setter for changing batchs
  * @param {*} setMetricNextBatch Setter for MetricNextBatch
- * @param {String} metricNextBatch 
+ * @param {String} metricNextBatch the metric of the next batch
+ * @patam {*} switchCurrentBatch for the questionnaire and recommender part of the website 
  */
 export const backEndCreateNewBatch = (setBatch, setBatchNumber, setBatchMetric, setChangeBatch, setMetricNextBatch, metricNextBatch) => {
   console.log("create new batch with ", metricNextBatch, "metric")

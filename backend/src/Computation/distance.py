@@ -14,7 +14,6 @@ def manhattan_distance(arg1, arg2):
     # Calculate manhattan distance.
     distance = np.sum(np.abs(point1 - point2))
 
-    print(distance)
     return distance
 
 

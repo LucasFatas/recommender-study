@@ -1,4 +1,6 @@
-import requests
+import requests, os
+from dotenv import load_dotenv
+
 from src.Entities.Song import Song
 
 
@@ -10,7 +12,10 @@ class InvalidAccountException(Exception):
     pass
 
 
+load_dotenv()
+
 app_authorization = "Basic ODA3M2VlMGYxNmE2NDc3NGJkMGU3ZjhmYTk1NWI5ZDY6MmEyNGVmM2U2NjkwNGVlYWI4MjRhODc3Mjg5MDU1M2Q="
+port = os.getenv('PORT')
 
 
 def get_access_token(auth_code):
@@ -24,7 +29,7 @@ def get_access_token(auth_code):
     body = {
         'grant_type': "authorization_code",
         'code': auth_code,
-        'redirect_uri': "http://localhost:3000/spotify/callback"
+        'redirect_uri': f"http://localhost:{port}/spotify/callback"
     }
     headers = {
         "Authorization": app_authorization

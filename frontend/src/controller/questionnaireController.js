@@ -26,7 +26,7 @@ export const splitArrayIntoMatrix = (array, rowSize) => {
  * @param {{personality : Map, values : Map}} answers answers object
  * @returns The same answers object but with ordered maps.
  */
-const orderAnswers = (answers) => {
+export const orderAnswers = (answers) => {
     return {
         "personality" : new Map([...answers.personality.entries()].sort()),
         "values" : new Map([...answers.values.entries()].sort())
@@ -117,21 +117,34 @@ export const getRandomQuestionnaire = (options) => {
  * @param {object} obj obect imported from questions.JSON file, all the entries are spread and included in the returned object
  * @param {string[][]} questionsMatrix 2D array containing questions text
  * @param {string} type 'values' for values object and 'personality' for personality
- * @param {string} lastPage last page path
  * @param {string} firstQuestionnaire 'values' for values object and 'personality' for personality
  * @returns data object containing useful information used in QuestionnairePage component.
  */
-export const getDataObj = (obj, questionsMatrix, type, lastPage, firstQuestionnaire) => {
+export const getDataObj = (obj, questionsMatrix, type, firstQuestionnaire) => {
 
     const nextQuestionnaire = firstQuestionnaire === 'values' ? 'personality' : 'values';
 
     return {
         ...obj,
         matrix : questionsMatrix, 
-        pathOnSubmit : firstQuestionnaire === type ? `/introduction/${nextQuestionnaire}` : lastPage,
+        pathOnSubmit : firstQuestionnaire === type ? `/introduction/${nextQuestionnaire}` : '/questionnaire/results',
         lastPage : questionsMatrix.length,
         path : type === 'values' ? '/v' : '/p',
         type : type,
-        submitResults : firstQuestionnaire === type
+        submitResults : firstQuestionnaire !== type
     }
 }
+
+/**
+ * Retrieves userID from url (given from backend) and stores it in local storage
+ * 
+ * @param {*} search 
+ */
+export const getAndStoreUserId = (search) => {
+    const userID = new URLSearchParams(search).get('userID');
+
+    console.log("user id : ", userID);
+    sessionStorage.setItem("userID", userID);
+}
+
+export const loadResultsIfStored = (results) => results ? JSON.parse(results) : undefined;
