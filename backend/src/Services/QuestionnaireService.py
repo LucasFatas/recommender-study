@@ -1,5 +1,7 @@
 import mysql.connector
 from src.Services.database_config import DatabaseException, open_connection
+from random import randint
+from src.Services.database_config import DatabaseException
 from dotenv import load_dotenv
 import os
 import time
@@ -8,15 +10,24 @@ import random
 load_dotenv()
 
 
-# Method that stores all answers of a user to the database
-# Parameters: a list of tuples containing: a user id, the question number and the user's answer
-# Returns: A confirmation message
 def add_answers(answers, db, cursor, database):
+    """
+    Stores answers provided by the user in the questionnaire
+    :param answers: list of ints symbolizing the answers to the questionnaires.
+    :param db: database object, handles the connection to our database
+    :param cursor: cursor that executes the SQL commands in our database
+    :param database: string of the database name we will be using
+    :except mysql.connector.errors.Error: handles the case where the database has some errors
+    :raises DatabaseException: custom exception in our app, in order for better handling
+    :return: result with all the users of a provided batch along with their answers to the questionnaires
+    """
     try:
         # The SQL statement for storing answers in the Answer table
-        sql = "INSERT INTO " + database + ".Answer(userId, questionNumber, response) VALUES (%s, %s, %s)"
+        sql = """INSERT INTO """ + database + """.Answer(userId, questionNumber, response) VALUES (%s, %s, %s);"""
 
         cursor.executemany(sql, answers)
+
+        # Commit only if we are not testing the application
         if os.getenv('IS_TESTING') == "FALSE":
             db.commit()
         return "Success storing all Answers"
@@ -27,16 +38,25 @@ def add_answers(answers, db, cursor, database):
         raise DatabaseException("Error connecting to database when adding answers.")
 
 
-# Method that stores a new user to the database
-# Parameters: a batch id
-# Returns: a user id
 def add_user(batch_id, db, cursor, database):
+    """
+    Stores a new user in the database
+    :param batch_id: batch number of the experiment
+    :param db: database object, handles the connection to our database
+    :param cursor: cursor that executes the SQL commands in our database
+    :param database: string of the database name we will be using
+    :except mysql.connector.errors.Error: handles the case where the database has some errors
+    :raises DatabaseException: custom exception in our app, in order for better handling
+    :return: id of the new user
+    """
     try:
-        cursor.execute("INSERT INTO " + database + ".Participant(batch) VALUES (%s)", (batch_id,))
+        cursor.execute("""INSERT INTO """ + database + """.Participant(batch) VALUES (%s);""", (batch_id,))
 
         participant_id = cursor.lastrowid
 
         time.sleep(1)
+
+        # Commit only if we are not testing the application
         if os.getenv('IS_TESTING') == "FALSE":
             db.commit()
         return participant_id
@@ -47,20 +67,32 @@ def add_user(batch_id, db, cursor, database):
         raise DatabaseException("Error connecting to database when adding users.")
 
 
-# Method that stores the value vector of a user to the database
-# Parameters: a user id and a value vector
-# Returns: A confirmation message
 def add_value(user_id, values, db, cursor, database):
+    """
+    Stores PVQ questionnaire related answers of the user in the database
+    :param user_id: id of the participant
+    :param values: answers of the PVQ questionnaire
+    :param db: database object, handles the connection to our database
+    :param cursor: cursor that executes the SQL commands in our database
+    :param database: string of the database name we will be using
+    :except mysql.connector.errors.Error: handles the case where the database has some errors
+    :raises DatabaseException: custom exception in our app, in order for better handling
+    :return: success message
+    """
     try:
         # The SQL statement for storing a value in the Value table
-        sql = "INSERT INTO " + database + ".Value (userId, stimulation, selfDirection, universalism" \
-                                          ", benevolence, tradition, conformity, securityVal, powerVal, " \
-                                          "achievement, hedonism)" \
-                                          " VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
+        sql = """
+            INSERT INTO """ + database + """.Value (userId, stimulation, selfDirection, universalism
+            , benevolence, tradition, conformity, securityVal, powerVal,
+            achievement, hedonism)
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);
+        """
+
         val = (user_id, values[0], values[1], values[2], values[3], values[4],
                values[5], values[6], values[7], values[8], values[9])
         cursor.execute(sql, val)
 
+        # Commit only if we are not testing the application
         if os.getenv('IS_TESTING') == "FALSE":
             db.commit()
 
@@ -72,19 +104,31 @@ def add_value(user_id, values, db, cursor, database):
         raise DatabaseException("Error connecting to database when adding values.")
 
 
-# Method that stores the personality vector of a user to the database
-# Parameters: a user id and a personality vector
-# Returns: A confirmation message
 def add_personality(user_id, personality, db, cursor, database):
+    """
+    Stores HEXACO personality answers of a user in the database
+    :param user_id: id of the participant
+    :param personality: answers of the HEXACO questionnaire
+    :param db: database object, handles the connection to our database
+    :param cursor: cursor that executes the SQL commands in our database
+    :param database: string of the database name we will be using
+    :except mysql.connector.errors.Error: handles the case where the database has some errors
+    :raises DatabaseException: custom exception in our app, in order for better handling
+    :return: success message
+    """
     try:
         # The SQL statement for storing a personality in the Personality table
-        sql = "INSERT INTO " + database + ".Personality (userId, openness, honesty, emotionality," \
-                                          "extroversion, agreeableness, conscientiousness) " \
-                                          "VALUES (%s, %s, %s, %s, %s, %s, %s)"
+        sql = """
+            INSERT INTO """ + database + """.Personality (userId, honesty, emotionality,
+            extroversion, agreeableness, conscientiousness, openness)
+            VALUES (%s, %s, %s, %s, %s, %s, %s);
+        """
+
         val = (user_id, personality[0], personality[1], personality[2],
                personality[3], personality[4], personality[5])
         cursor.execute(sql, val)
 
+        # Commit only if we are not testing the application
         if os.getenv('IS_TESTING') == "FALSE":
             db.commit()
 
@@ -96,13 +140,26 @@ def add_personality(user_id, personality, db, cursor, database):
         raise DatabaseException("Error connecting to database when adding personalities.")
 
 
-# Returns user's value score and takes userId is input
-def get_value(userId, db, cursor, database):
+def get_value(user_id, db, cursor, database):
+    """
+        Returns value scores of a user
+        :param user_id: id of the participant
+        :param db: database object, handles the connection to our database
+        :param cursor: cursor that executes the SQL commands in our database
+        :param database: string of the database name we will be using
+        :except mysql.connector.errors.Error: handles the case where the database has some errors
+        :raises DatabaseException: custom exception in our app, in order for better handling
+        :return: a tuple with userId and 10 value scores
+        """
     try:
-        sql = "SELECT stimulation, selfDirection, universalism, benevolence," \
-              " tradition, conformity, securityVal, powerVal, achievement, hedonism " \
-              "FROM " + database + ".Value AS v WHERE v.userId = %s"
-        cursor.execute(sql, (userId,))
+        sql = """
+            SELECT stimulation, selfDirection, universalism, benevolence,
+            tradition, conformity, securityVal, powerVal, achievement, hedonism
+            FROM """ + database + """.Value AS v 
+            WHERE v.userId = %s;
+        """
+
+        cursor.execute(sql, (user_id,))
 
         result = cursor.fetchall()
         return result
@@ -112,13 +169,24 @@ def get_value(userId, db, cursor, database):
         raise DatabaseException("Error connecting to database when trying to retrieve values.")
 
 
-# Returns user's personality score and takes userId as input
-def get_personality(userId, db, cursor, database):
+def get_personality(user_id, db, cursor, database):
+    """
+    Returns personality scores of a user
+    :param user_id: id of the participant
+    :param db: database object, handles the connection to our database
+    :param cursor: cursor that executes the SQL commands in our database
+    :param database: string of the database name we will be using
+    :except mysql.connector.errors.Error: handles the case where the database has some errors
+    :raises DatabaseException: custom exception in our app, in order for better handling
+    :return: a tuple with userId and the 6 personality scores
+    """
     try:
-        sql = "SELECT openness, honesty, emotionality," \
-              "extroversion, agreeableness, conscientiousness " \
-              "FROM " + database + ".Personality AS pe WHERE pe.userId = %s"
-        cursor.execute(sql, (userId,))
+        sql = """
+            SELECT openness, honesty, emotionality, extroversion, agreeableness, conscientiousness 
+            FROM """ + database + """.Personality AS pe 
+            WHERE pe.userId = %s
+        """
+        cursor.execute(sql, (user_id,))
         result = cursor.fetchall()
         return result
 
@@ -127,39 +195,61 @@ def get_personality(userId, db, cursor, database):
         raise DatabaseException("Error connecting to database when trying to retrieve personality.")
 
 
-# Method that stores a user and his matches on personality and value and a random other user
-# Parameters: a user id , a value user id, a personality user id and a random user id
-# Returns: A confirmation message
-def add_matches(userId, val_user, pers_user, random_user, db, cursor, database):
+def add_matches(user_id, val_user, pers_user, random_user, db, cursor, database):
+    """
+    Stores match information of a user in the database
+    :param user_id: id of the participant
+    :param val_user: id of the first match (value based match)
+    :param pers_user: id of the second match (personality based match)
+    :param random_user: id of the third match (random based match)
+    :param db: database object, handles the connection to our database
+    :param cursor: cursor that executes the SQL commands in our database
+    :param database: string of the database name we will be using
+    :except mysql.connector.errors.Error: handles the case where the database has some errors
+    :raises DatabaseException: custom exception in our app, in order for better handling
+    :return: success message
+    """
     try:
         # The SQL statement for storing user id and matches in the Match table
-        sql = "INSERT INTO " + database + ".Matches (userId, valueId, personalityId, randomId) " \
-                                          "VALUES (%s, %s, %s, %s)"
-        val = (userId, val_user, pers_user, random_user)
+        sql = """
+            INSERT INTO """ + database + """.Matches (userId, valueId, personalityId, randomId)
+            VALUES (%s, %s, %s, %s)
+        """
+
+        val = (user_id, val_user, pers_user, random_user)
         cursor.execute(sql, val)
 
+        # Commit only if we are not testing the application
         if os.getenv('IS_TESTING') == "FALSE":
             db.commit()
 
         return "Success storing personality"
-
     except mysql.connector.errors.Error as e:
         print(e)
         db.rollback()
-        raise DatabaseException("Error connecting to database when adding matches.")
+        raise DatabaseException("Error connecting to database when adding personalities.")
 
 
-# Method that gets all the users of a certain batch and their values
-# Parameters: batch number
-# Returns: a list of tuples containing user and his values
-def get_all_values(batch, db, cursor, database):
+def get_all_values(batch, db, cursor, database, pers_user):
+    """
+        Returns value scores of all users in a batch
+        :param batch: batch to retrieve information about
+        :param db: database object, handles the connection to our database
+        :param cursor: cursor that executes the SQL commands in our database
+        :param database: string of the database name we will be using
+        :except mysql.connector.errors.Error: handles the case where the database has some errors
+        :raises DatabaseException: custom exception in our app, in order for better handling
+        :return: a list of tuples with userId and 10 value scores
+        """
     try:
-        sql = "SELECT p.userId, stimulation, selfDirection, universalism, benevolence," \
-              " tradition, conformity, securityVal, powerVal, achievement, hedonism " \
-              "FROM " + database + ".Value AS v , " + database + ".Participant AS p " \
-                                                                 "WHERE v.userId = p.userId AND p.batch = %s"
+        v_sql = """
+            SELECT pa.userId, stimulation, selfDirection, universalism, benevolence, 
+            tradition, conformity, securityVal, powerVal, achievement, hedonism 
+            FROM """ + database + """.Value AS v , """ + database + """.Participant AS pa
+            WHERE v.userId = pa.userId AND pa.batch = %s AND NOT pa.userId = %s
+        """
 
-        cursor.execute(sql, (batch,))
+        cursor.execute(v_sql, (batch, pers_user))
         result = cursor.fetchall()
         return result
     except mysql.connector.errors.Error as e:
@@ -167,18 +257,25 @@ def get_all_values(batch, db, cursor, database):
         raise DatabaseException("Error connecting to database when retrieving values.")
 
 
-# Method that gets all the users of a certain batch and their personalities
-# Parameters: batch number
-# Returns: a list of tuples containing user and his personalities
 def get_all_personalities(batch, db, cursor, database):
+    """
+    Returns personality scores of all users in a batch
+    :param batch: batch to retrieve information about
+    :param db: database object, handles the connection to our database
+    :param cursor: cursor that executes the SQL commands in our database
+    :param database: string of the database name we will be using
+    :except mysql.connector.errors.Error: handles the case where the database has some errors
+    :raises DatabaseException: custom exception in our app, in order for better handling
+    :return: a list of tuples with userId and 6 value scores
+    """
     try:
-        sql = "SELECT pa.userId, openness, honesty, emotionality," \
-              "extroversion, agreeableness, conscientiousness " \
-              "FROM " + database + ".Personality AS pe , " \
-              + database + ".Participant AS pa " \
-                           "WHERE pe.userId = pa.userId AND pa.Batch = %s"
+        p_sql = """
+            SELECT pa.userID, openness, honesty, emotionality, extroversion, agreeableness, conscientiousness 
+            FROM """ + database + """.personality AS pe , """ + database + """.participant AS pa 
+            WHERE pe.userId = pa.UserId AND pa.Batch = %s
+        """
 
-        cursor.execute(sql, (batch,))
+        cursor.execute(p_sql, (batch,))
         result = cursor.fetchall()
         return result
 
@@ -187,17 +284,29 @@ def get_all_personalities(batch, db, cursor, database):
         raise DatabaseException("Error connecting to database when retrieving personalities.")
 
 
-# Method that gets all the users of a certain batch apart from the value user and personality user
-# Parameters: batch number
-# Returns: one random user id
-def get_random_user(user1, user2, user3, batch, db, cursor, database):
+def get_random_user(user1, user2, batch, db, cursor, database):
+    """
+        Retrieves all users that are not already matched and returns a random user from the set of users retrieved
+        :param user1: value based matched user
+        :param user2: personality based matched user
+        :param batch: batch to retrieve information about
+        :param db: database object, handles the connection to our database
+        :param cursor: cursor that executes the SQL commands in our database
+        :param database: string of the database name we will be using
+        :except mysql.connector.errors.Error: handles the case where the database has some errors
+        :raises DatabaseException: custom exception in our app, in order for better handling
+        :return: a userId chosen at random from all the users in the batch that are not user1 or user2
+        """
     try:
-        sql = "SELECT userId FROM " + database + ".Participant AS p " \
-                "WHERE p.batch = %s AND NOT (p.UserID = %s or p.userId = %s or p.userId = %s)"
+        sql = """
+                SELECT pa.userId FROM """ + database + """.Participant AS pa
+                WHERE pa.batch = %s AND NOT (pa.userId = %s OR pa.userId = %s)
+            """
 
-        cursor.execute(sql, (batch, user1, user2, user3))
+        cursor.execute(sql, (batch, user1, user2))
         result = cursor.fetchall()
         return random.choice(result)[0]
+
     except mysql.connector.errors.Error as e:
         print(e)
         raise DatabaseException("Error connecting to database when retrieving users.")

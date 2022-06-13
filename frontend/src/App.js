@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import {
   BrowserRouter,
   Routes,
@@ -26,8 +25,7 @@ import intro from './util/introductions.json'
 const defaultPage = '/consentPage';
 
 const App = () => {
-
-
+  
   return (
     <BrowserRouter>
       <Routes>
@@ -38,9 +36,7 @@ const App = () => {
         <Route path="/login" element={<LogIn />} />
         <Route path="/dashboard" element={<Dashboard/>} />
         <Route path="/websiteIntroduction" element={<WebsiteIntroduction data={data}/>} />
-        <Route path="/introduction/values" element={<Introduction intro={intro.values} nextpage="/questionnaire/v/page1" />} />
-        <Route path="/introduction/personality" element={<Introduction intro={intro.personality} nextpage={'/questionnaire/p/page1'} />} />
-        <Route path="/introduction/playlist" element={<Introduction intro={intro.playlist} nextpage={'/recommender'} />} />
+        <Route path="/introduction/*" element={<Introduction intro={intro}/>}/>
         <Route path="/consentPage"  element={<ConsentPage defaultPage={defaultPage}/>} />
         <Route path="/questionnaire/*" element={<Questionnaire defaultPage={defaultPage} />} />
         <Route path="/recommender/*" element={<Recommender  defaultPage={defaultPage}/>} />

@@ -28,7 +28,7 @@ export const Feedback = (props) => {
         className=' rounded-[2px] my-5 mt-10 border-4 border-green-500 resize-none' 
       
         placeholder="type your feedback" 
-        maxLength="80" 
+        maxLength="500" 
         cols="50" 
         rows="5"
         wrap="hard"
