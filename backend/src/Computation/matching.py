@@ -1,7 +1,7 @@
 import sys
 
 from src.Services.QuestionnaireService import get_all_values, get_all_personalities, get_random_user, add_matches
-from src.Computation.distance import manhattan_distance, euclidean_distance, camberan_distance
+from src.Computation.distance import manhattan_distance, euclidean_distance
 from src.Services.database_config import open_connection
 
 
@@ -32,12 +32,10 @@ def match(userId, values, personality, batch, metric):
 
 # Calculates Distance of two vectors based on a defined metric
 def calculate_distance(answer, batch_answer, metric):
-    if metric.casefold() == "manhattan".casefold():
+    if metric.casefold() == "Manhattan".casefold():
         return manhattan_distance(answer, batch_answer)
-    elif metric.casefold() == "euclidean".casefold():
+    elif metric.casefold() == "Euclidean".casefold():
         return euclidean_distance(answer, batch_answer)
-    else:
-        return camberan_distance(answer, batch_answer)
 
 
 def closest_user(answer, batch_answer, metric, id):
