@@ -5,11 +5,9 @@ import { useEffect } from "react";
 import { logIn } from "../../API/Dashboard";
 
 
-export const LogIn = (props) => {
+export const LogIn = () => {
 
   const navigate = useNavigate();
-
-  
 
   const [username, setUserName] = useState("");
   const [password, setPassword] = useState("");
@@ -22,20 +20,19 @@ export const LogIn = (props) => {
       username,
       password
     });
-    if(token instanceof Error || !token)
-    {
+    if(token instanceof Error || !token) {
       console.log("wrong authentification");
-      setErrorLogIn(true)
+      setErrorLogIn(true);
     }
-    else{
+    else {
       sessionStorage.setItem("token", token); 
-      navigate("/dashboard")
+      navigate("/dashboard");
     }
   }
 
   useEffect(() => {
     const token = sessionStorage.getItem("token");
-    if(token)
+    if (token)
       navigate("/dashboard")
   });
   
@@ -43,10 +40,10 @@ export const LogIn = (props) => {
 
 
   return(
-    <div className='flex flex-col items-center justify-between py-28'>
-      <h1>Please Log In</h1>
+    <div className='flex flex-col items-center justify-between py-28 text-center'>
+      <h1 className="text-xl w-1/3">Welcome to the login page for the researcher dashboard, please login with the provided credentials to access the dashboard.</h1>
       <form onSubmit={handleSubmit}>
-        <label className="block pd-5">
+        <label className="block py-5">
           <p>Username</p>
           <input className="mt-1 block  px-3 py-2 bg-white border border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400
           focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500" type="text" onChange={e => setUserName(e.target.value)}/>
