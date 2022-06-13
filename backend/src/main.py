@@ -26,7 +26,7 @@ def create_app():
     ]
 
     for bp_name in api_blueprints:
-        blueprint = import_string('src.Controllers.Dashboard.%s:dashboard' % (bp_name))
+        blueprint = import_string('src.Controllers.Dashboard.%s:dashboard' % bp_name)
         app.register_blueprint(blueprint)
 
     app.run(debug=True, port=os.getenv('PORT'))

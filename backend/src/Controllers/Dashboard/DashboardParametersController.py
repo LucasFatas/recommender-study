@@ -123,6 +123,5 @@ def revert_batch():
 
     os.environ["METRIC"] = "Euclidean"
     set_key(find_dotenv(), "METRIC", os.getenv("METRIC"))
-    metric = os.environ["METRIC"]
 
     return jsonify(batch=batch)

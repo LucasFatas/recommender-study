@@ -232,15 +232,16 @@ def add_matches(user_id, val_user, pers_user, random_user, db, cursor, database)
 
 def get_all_values(batch, db, cursor, database, pers_user):
     """
-        Returns value scores of all users in a batch
-        :param batch: batch to retrieve information about
-        :param db: database object, handles the connection to our database
-        :param cursor: cursor that executes the SQL commands in our database
-        :param database: string of the database name we will be using
-        :except mysql.connector.errors.Error: handles the case where the database has some errors
-        :raises DatabaseException: custom exception in our app, in order for better handling when database commands fail
-        :return: a list of tuples with userId and 10 value scores
-        """
+    Returns value scores of all users in a batch
+    :param pers_user: the calculated personality user, since these two users can't be the same
+    :param batch: batch to retrieve information about
+    :param db: database object, handles the connection to our database
+    :param cursor: cursor that executes the SQL commands in our database
+    :param database: string of the database name we will be using
+    :except mysql.connector.errors.Error: handles the case where the database has some errors
+    :raises DatabaseException: custom exception in our app, in order for better handling when database commands fail
+    :return: a list of tuples with userId and 10 value scores
+    """
     try:
         v_sql = """
             SELECT pa.userId, stimulation, selfDirection, universalism, benevolence, 

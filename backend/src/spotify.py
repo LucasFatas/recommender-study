@@ -1,4 +1,5 @@
-import requests, os
+import os
+import requests
 from dotenv import load_dotenv
 
 from src.Entities.Song import Song
