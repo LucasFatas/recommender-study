@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 import { useNavigate } from 'react-router-dom';
+import { introductionPagesSecurity } from "../../../controller/pathSecurityController";
 
 
 //TODO use port and url in json file
@@ -9,6 +10,7 @@ export const IntroductionPage = (props) => {
   
 
   const {
+    type,
     intro,
     nextpage
   } = props;
@@ -17,8 +19,13 @@ export const IntroductionPage = (props) => {
 
   const navigate = useNavigate();
 
+  useEffect(() => {
+    introductionPagesSecurity(navigate, type)
+  }, []);
+
   const handleNext = () => {
     //the navigated page is possibly going to change in the future 
+    sessionStorage.setItem("currentUrl", nextpage)
     navigate(nextpage)
   }
   const buttonStyleActive = "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full";

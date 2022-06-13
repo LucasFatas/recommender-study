@@ -1,21 +1,36 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { constentPageSecurity } from "../../controller/pathSecurityController";
 
 
 
 //TODO use port and url in json file
 
+
 export const ConsentPage = () => {
+
   
-
-  const [checked, setChecked] = useState(false);
-
   const navigate = useNavigate();
 
+
+  if(sessionStorage.getItem("currentUrl") === null){
+    sessionStorage.setItem("currentUrl", "/consentPage")
+  }
+
+  useEffect(() => {
+    constentPageSecurity(navigate)
+  }, []);
+    
+  console.log(sessionStorage.getItem("currentUrl"))
+  const [checked, setChecked] = useState(false);
+
+
   const handleNext = () => {
+    sessionStorage.setItem("currentUrl", "/websiteIntroduction");
     navigate('/websiteIntroduction')
+
   }
 
   const buttonStyles = {
