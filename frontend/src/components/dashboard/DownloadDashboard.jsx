@@ -26,22 +26,22 @@ export const DownloadDashboard = (props) => {
     <div className='flex'>
       <span className="text-white pr-3"> Batch: </span>
       {batches.map((batch, index) => 
-        (<div key={index} className='pr-3 '>
+        (<div key={index} className='pl-3 '>
           <input 
             type="radio" 
             // className={inputStyle} 
             value={batch}
             name={"batch"}
             onChange={e => setBatchToDownload(e.target.value)}
-          /> 
-          <span className="text-white"> {batch} </span>
+            /> 
+          <span className="text-white pl-2">{batch}</span>
         </div>)
       )}
     </div>
     {
       batchToDownload ? 
-        <div className='flex'>
-          <span className="text-white pr-3"> Data: </span>
+        <div className='grid grid-cols-3 grid-rows-3 mt-4'>
+          <span className="text-white row-start-1 row-end-4 "> Data: </span>
           {downloadData.map((data, index) => {
             if ((batchToDownload === "1" && data === "Playlist Rating&Feedback") ||  
               (batchToDownload === "1" && data === "Song Ratings") )
@@ -49,7 +49,7 @@ export const DownloadDashboard = (props) => {
             else 
               return(
               //playlist rating & feedback, song ratings
-              <div key={index} className='pr-3 '>
+              <div key={index} className='pr-5 '>
                 <input 
                   type="radio" 
                   value={data}
@@ -63,9 +63,11 @@ export const DownloadDashboard = (props) => {
         </div>
       : ""
     }
-    <button className={buttonStyle} onClick={() => retrieveCSV(batchToDownload, dataToDownload, setCSVToDownload, setCanDownload)} >
-      Retrieve Data
-    </button>  
+    <div className='flex items-center justify-center'>
+      <button className={buttonStyle} onClick={() => retrieveCSV(batchToDownload, dataToDownload, setCSVToDownload, setCanDownload)} >
+        Retrieve Data
+      </button>  
+    </div>
     {
       canDownload
       ?

@@ -47,7 +47,7 @@ export const PlaylistPage = (props) => {
 	const onAnswerChange = (e, questionNumber) => updateAnswersLogic(e, questionNumber, feedback, setFeedback, currentFeedback, setAnswered, questionsNumberArr);
 
   return (
-		<div className="flex flex-col items-center content-center">
+		<div className="w-screen h-screen flex flex-col items-center content-center py-4 pb-32">
 			<div className='grid grid-cols-3 grid-rows-1 place-items-center'>
 				<Playlist
 					playlistName={playlistName}

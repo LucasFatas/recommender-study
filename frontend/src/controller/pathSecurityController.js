@@ -18,7 +18,7 @@ export const introductionPagesSecurity = (navigate, type) => {
           console.log("This is the first questionnaire")
           sessionStorage.setItem("currentUrl", "/introduction/" + type)
         }
-        else if(! url === "introduction/" + type){
+        else if(url !== "introduction/" + type){
             console.log("you are redirected to", url)
             navigate(sessionStorage.getItem("currentUrl"))
     

@@ -271,8 +271,8 @@ def get_all_personalities(batch, db, cursor, database):
     try:
         p_sql = """
             SELECT pa.userID, openness, honesty, emotionality, extroversion, agreeableness, conscientiousness 
-            FROM """ + database + """.personality AS pe , """ + database + """.participant AS pa 
-            WHERE pe.userId = pa.UserId AND pa.Batch = %s
+            FROM """ + database + """.Personality AS pe , """ + database + """.Participant AS pa 
+            WHERE pe.userId = pa.userId AND pa.Batch = %s
         """
 
         cursor.execute(p_sql, (batch,))

@@ -26,7 +26,7 @@ export const StarRating = (props) => {
   );
 
   return (
-    <div className="star-rating text-center pt-2">
+    <div className="star-rating text-center pb-1">
       {[...Array(5)].map((star, index) => {
         index += 1;
         return (
@@ -39,7 +39,7 @@ export const StarRating = (props) => {
             /* onMouseEnter={() => setHover(index)} */
             /* onMouseLeave={() => setHover(currentRating)} */
           >
-            <span className={ starStyle + " text-2xl star"}>&#9733;</span>
+            <span className={`${starStyle} star`}>&#9733;</span>
           </button>
         );
       })}

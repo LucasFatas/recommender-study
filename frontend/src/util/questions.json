@@ -1,6 +1,6 @@
 {
-    "questionsPerPage" : 5,
     "personality" : {
+        "questionsPerPage" : 5,
         "answerOptions" : 5,
         "questions" : [
             "I would be quite bored by a visit to an art gallery.",
@@ -68,6 +68,7 @@
         ]
     },
     "values" : {
+        "questionsPerPage" : 4,
         "answerOptions" : 6,
         "questions" : [
             "Thinking up new ideas and being creative is important to him. He likes to do things in his own original way",

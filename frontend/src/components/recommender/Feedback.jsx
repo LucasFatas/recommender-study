@@ -17,9 +17,9 @@ export const Feedback = (props) => {
   return (
     <div className="flex flex-col items-center content-center col-span-2">
       {questions.map((e, i) => (
-        <div key={i} className="p-8 flex flex-col items-center">
-          <h1 className="text-center text-xl">{e}</h1>
-          <div className="flex justify-center w-fit mt-5 space-x-7">
+        <div key={i} className="py-6 flex flex-col items-center">
+          <h1 className="text-center text-xl text-blue-500">{e}</h1>
+          <div className="flex justify-center">
             <Answer {...props} questionNumber={i}/>
           </div>
         </div>
@@ -30,7 +30,7 @@ export const Feedback = (props) => {
         placeholder="type your feedback" 
         maxLength="500" 
         cols="50" 
-        rows="5"
+        rows="3"
         wrap="hard"
         value={currentFeedback.comment}
         name={playlistName}
