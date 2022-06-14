@@ -69,6 +69,7 @@ export const Recommender = (props) => {
 				prevPage={idx === 1 ? false : idx - 1} 
 				nextPage={idx === lastPageIdx ? false : idx + 1}
 				showSubmit={idx === lastPageIdx ? 3 : false}
+				submitResults={idx === lastPageIdx}
 			/>
 		)
 	};

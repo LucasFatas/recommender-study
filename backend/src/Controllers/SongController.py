@@ -123,7 +123,9 @@ def save_ratings():
                                  db, cursor, database)
 
             if rating["comment"] != "":
-                add_open_feedback(userId, matchedUserId, rating["comment"].replace(",", "; ").replace("\n", ". "),
+                add_open_feedback(userId, matchedUserId,
+                                  rating["comment"].replace(',' '; ').replace('\n', '. ')
+                                  .replace('"', " ").replace("'", " "),
                                   db, cursor, database)
 
             add_feedback_questions(userId, matchedUserId, rating["questionFeedback"], db, cursor, database)
