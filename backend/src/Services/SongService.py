@@ -40,7 +40,7 @@ def add_top_songs(user_id, songs, db, cursor, database):
     except mysql.connector.errors.Error as e:
         print(e)
         db.rollback()
-        raise DatabaseException("Error connecting to database when adding songs.")
+        raise DatabaseException("Error connecting to database when adding top songs of a user.")
 
 
 def get_top_songs(userId, db, cursor, database):
@@ -78,7 +78,7 @@ def get_top_songs(userId, db, cursor, database):
         return songs
     except mysql.connector.errors.Error as e:
         print(e)
-        raise DatabaseException("Error connecting to database when getting songs.")
+        raise DatabaseException("Error connecting to database when getting top songs from a user.")
 
 
 def add_playlist_ratings(playlist, db, cursor, database):

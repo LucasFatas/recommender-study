@@ -310,4 +310,4 @@ def get_random_user(user1, user2, batch, db, cursor, database):
 
     except mysql.connector.errors.Error as e:
         print(e)
-        raise DatabaseException("Error connecting to database when retrieving users.")
+        raise DatabaseException("Error connecting to database when retrieving random user.")

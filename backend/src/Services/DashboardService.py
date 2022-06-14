@@ -35,7 +35,7 @@ def get_all_scores(batch, db, cursor, database):
 
     except mysql.connector.errors.Error as e:
         print(e)
-        raise DatabaseException("Error connecting to database when retrieving Scores.")
+        raise DatabaseException("Error connecting to database when retrieving scores.")
 
 
 def get_all_answers(batch, db, cursor, database):
@@ -61,7 +61,7 @@ def get_all_answers(batch, db, cursor, database):
 
     except mysql.connector.errors.Error as e:
         print(e)
-        raise DatabaseException("Error connecting to database when retrieving Scores.")
+        raise DatabaseException("Error connecting to database when retrieving answers to the questionnaire.")
 
 
 def get_all_songs(batch, db, cursor, database):
@@ -88,7 +88,7 @@ def get_all_songs(batch, db, cursor, database):
 
     except mysql.connector.errors.Error as e:
         print(e)
-        raise DatabaseException("Error connecting to database when retrieving Scores.")
+        raise DatabaseException("Error connecting to database when retrieving songs.")
 
 
 def get_all_match_data(db, cursor, database):
@@ -277,5 +277,5 @@ def reset_database(db, cursor, database):
 
     except mysql.connector.errors.Error as e:
         print(e)
-        raise DatabaseException("Error connecting to database when resetting the database.")
+        raise DatabaseException("Error connecting to database to reset it.")
 
