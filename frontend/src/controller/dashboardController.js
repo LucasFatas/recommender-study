@@ -8,11 +8,8 @@ import { getAnswers, getMatchData, getScores, getSongRatings, getSongs } from ".
  * @param {*} navigate react function to navigate to another page
  */
 export const isLoggedIn = (token, navigate) => {
-    
-      if(!token)
-        navigate("/login")
-      else
-        console.log('authentication is a success');
+  if(!token)
+    navigate("/login")
 }
 
 /**
@@ -36,9 +33,9 @@ export const retrieveCSV = async (batchToDownload, dataToDownload, setCSVToDownl
       })
       break;
     case "Playlist Rating&Feedback":
-      if(batchToDownload === "1"){
+      if (batchToDownload === "1") 
         console.log("this batch has not this type of data : " + dataToDownload)
-      }else{
+      else {
         await getMatchData(sessionStorage.getItem("token")).then(res =>{
           helperCSVDownload(res, setCSVToDownload, setCanDownload)
         })
@@ -50,16 +47,15 @@ export const retrieveCSV = async (batchToDownload, dataToDownload, setCSVToDownl
       })
       break;
     case "Song Ratings":
-      if(batchToDownload === "1"){
+      if (batchToDownload === "1") 
         console.log("this batch has not this type of data : " + dataToDownload)
-      }else{
+      else {
         await getSongRatings(sessionStorage.getItem("token")).then(res =>{
           helperCSVDownload(res, setCSVToDownload, setCanDownload)
         })
       }
       break;
     default:
-      // code block
       console.log("error word does not exist: " ,dataToDownload)
   }
 }
@@ -76,7 +72,6 @@ export const retrieveCSV = async (batchToDownload, dataToDownload, setCSVToDownl
  * @patam {*} switchCurrentBatch for the questionnaire and recommender part of the website 
  */
 export const backEndCreateNewBatch = (setBatch, setBatchNumber, setBatchMetric, setChangeBatch, setMetricNextBatch, metricNextBatch) => {
-  console.log("create new batch with ", metricNextBatch, "metric")
   if (metricNextBatch)
     setBatch(setBatchNumber, setBatchMetric, setChangeBatch, setMetricNextBatch,  sessionStorage.getItem("token"), metricNextBatch)
 }

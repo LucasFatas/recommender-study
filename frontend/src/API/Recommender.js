@@ -8,8 +8,6 @@ export const sendRatings = async (ratings, feedback) => {
 
     const data = buildDataObject(userId, ratings, tracklists, feedback);
 
-    console.log(data);
-
     try {
         const response = await fetch(`${serverUrl}:${port}/spotify/ratings/add`, {
             method: 'POST',
@@ -18,7 +16,6 @@ export const sendRatings = async (ratings, feedback) => {
             },
             body: JSON.stringify(data),
         }).then(res => res.json());
-        console.log("add ratings : ", response);
     } catch (error) {
         console.log(error);
         return;
@@ -44,7 +41,6 @@ export const getSongs = async (userId, setTracklists, setLoading, setShuffled) =
             ];
             setTracklists(tracklists);
             const shuffled = shuffleArray(tracklists);
-            console.log('shuffled', shuffled);
             setShuffled(shuffled);
             sessionStorage.setItem("tracklists", JSON.stringify(tracklists));
             sessionStorage.setItem("shuffled", JSON.stringify(shuffled));

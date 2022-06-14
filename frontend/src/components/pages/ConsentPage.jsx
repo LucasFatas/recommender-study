@@ -23,7 +23,6 @@ export const ConsentPage = () => {
     constentPageSecurity(navigate)
   }, []);
     
-  console.log(sessionStorage.getItem("currentUrl"))
   const [checked, setChecked] = useState(false);
 
 
@@ -43,7 +42,34 @@ export const ConsentPage = () => {
   return (
     <div className='flex flex-col items-center justify-center h-screen w-screen'>
       <div className="w-1/2 h-1/2 overflow-y-scroll">
-        <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Cum, fugit! Accusantium obcaecati voluptatem numquam. Repellat adipisci repudiandae facere nesciunt beatae neque in quibusdam, perspiciatis, quidem quo officiis aperiam inventore, impedit eius sint dolorum aliquam ipsam amet natus asperiores eos aliquid quis! Quidem at deleniti consectetur, dicta praesentium corporis perspiciatis nemo similique sequi amet provident quos laboriosam recusandae eaque quasi aliquam eius aspernatur soluta nisi, non aperiam excepturi? Optio, sint? Et consequatur repudiandae adipisci ab aliquid tempore! Excepturi perspiciatis nobis reiciendis. Voluptatibus deserunt eveniet rerum animi. Eum natus, sit voluptate debitis cumque explicabo ipsum quam quo, quae vel minima in ducimus illo dolores molestiae magnam corporis minus, enim dolorem non! Aut excepturi, expedita reiciendis quis numquam accusamus maiores voluptatem corrupti corporis pariatur recusandae sequi error ad eaque doloribus. Dignissimos corporis a sit velit, repellat hic reiciendis mollitia commodi alias nemo aspernatur rem aliquid corrupti quia animi cum sint tenetur vel provident porro! Nostrum, saepe obcaecati tempore blanditiis magni ad provident suscipit eveniet rerum, neque corrupti sit hic incidunt aliquam, eaque dolorem sed excepturi. Sunt nihil rem saepe voluptas at recusandae deleniti ad facere animi tenetur. Laborum delectus tempore earum sint doloribus, unde iste, accusamus quasi ratione cupiditate fugit modi amet praesentium illum dicta dolores veritatis. Mollitia quis aliquam cum consectetur! Adipisci, exercitationem sint. Excepturi rerum, consectetur facere modi nemo asperiores aut aliquam quo reprehenderit aspernatur nam voluptate, ex veritatis, cupiditate qui nulla mollitia? Repudiandae, dicta officia doloribus voluptatem ratione quo repellat sint nesciunt tenetur dolor illo atque porro, commodi facilis quod, pariatur labore! Perferendis optio est nisi, id tempore aliquam reprehenderit numquam repellat debitis possimus. Aut facilis corrupti aspernatur fugit voluptate consequuntur iure ab. Itaque natus assumenda, aperiam voluptatum dicta eligendi voluptatem ullam nemo consequuntur tempore suscipit nostrum beatae soluta, eos temporibus enim incidunt consectetur maxime ipsum! Assumenda porro officiis repellendus at tempora, officia amet facilis sed eveniet beatae voluptatibus, culpa quibusdam qui tempore maxime voluptatem consequatur praesentium corrupti? Ratione accusamus iusto voluptatibus ipsam. Officiis corporis qui possimus unde fugit laborum in, optio dolores. Doloremque aspernatur odit suscipit aperiam optio provident doloribus temporibus obcaecati dolores vitae facere voluptates unde error nobis ducimus quis est, atque deserunt porro sed non itaque incidunt voluptas consequatur? Minus neque ex facilis ipsa. Aspernatur alias nisi enim quisquam? Quaerat, alias corrupti! Perspiciatis ut architecto, aperiam dolore pariatur doloribus voluptatem magni, voluptatibus voluptate quisquam, rem saepe dolorum. Blanditiis, deserunt dolore nobis autem illo fugiat quam quas aliquam vero aperiam! Asperiores laboriosam laudantium porro possimus iusto. Libero, magni accusantium. Harum molestiae modi atque nesciunt corrupti voluptatum animi iusto officiis nihil fuga nemo in fugit, perferendis amet debitis porro beatae nam vitae? Ipsa nostrum pariatur, quo mollitia illo nobis quas asperiores commodi nesciunt voluptatum reiciendis doloribus neque voluptate obcaecati, maiores adipisci perferendis provident magni odit expedita soluta eligendi suscipit. Reprehenderit possimus ab doloremque repudiandae nam mollitia, quod quisquam praesentium fugit repellat sint consectetur voluptates ad cumque sed ex minima sit aliquam! Cumque, corrupti iste odio, cum omnis aliquid rerum cupiditate soluta perspiciatis, voluptatum sunt ratione qui. Perspiciatis, quasi maxime?</p>
+        <p>
+          You are being invited to participate in a research study conducted by Sandy Manolios from the TUDelft.
+          The purpose of this research study is to compare different music recommendation approaches
+          based on who people are. It will take you approximately 45 minutes to complete. We will be asking
+          you to answer two surveys designed to know you better as a personn. We will also ask you to login
+          into Spotify to retrieve your favorite songs. If you are a part of the longer condition, you will then be
+          presented 3 lists of 5 personalized recommendations and asked to provide feedback through 6
+          multiple choice questions. You will also have the option to give additional comments.
+          This data will be used to provide the recommendation and compare the different approaches. The
+          study is aimed to be published, along with a dataset with participants’ opinion of the
+          recommendation lists. A second dataset containing the scores to the two surveys and the tops
+          songs will also be published for further research purposes.
+          As with any online activity the risk of a breach is always possible. To the best of our ability your
+          answers in this study will remain confidential. We will minimize any risks by completely
+          annonymizing the datasets. Demographic information will be reported in an aggregated way to
+          show how representative our participants are of the overall population. The feedback dataset will
+          only contain participants’ answers to the 6 feedback multiple choice questions about each list, as
+          well as random users’ ID (not your Prolific IDs). The additional comments will be excluded, though
+          they may be quoted in the paper reporting the study. To reinforce annonymization, the second
+          dataset will contain different random user IDs so that your answers cannot be linked to the same
+          person.
+          Your participation in this study is entirely voluntary and you can withdraw at any time. Note though
+          that we can only use full results in our study and therefore, will only compensate participants who
+          finish the experiment by answering all of the mandatory questions.
+          For more information about this research and how you data will be handeled, or for any request
+          regarding this study and your data, you can contact Sandy Manolios at s.manolios@tudelft.nl
+          By checking the checkbox below and going through the next page, you recognize having read and agreed to all of the above.
+        </p>
       </div>
       <div className="my-10">
         <label className="inline-flex items-center">
