@@ -15,7 +15,7 @@ export const Answer = (props) => {
     inputs.push(<RadioButton {...props} key={i} value={i} />)
 
   return (
-    <div className="flex justify-center w-fit mt-5 space-x-7 ">
+    <div className="flex justify-center w-fit mt-4 space-x-7 text-lg">
       {type === 'values'
         ? ""
         : <h3 className="">Disagree</h3>
