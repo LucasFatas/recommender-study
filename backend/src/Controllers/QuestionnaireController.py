@@ -6,7 +6,6 @@ from src.Services.database_config import open_connection
 from src.Services.QuestionnaireService import add_answers, add_personality, add_value
 
 
-
 questionnaire = Blueprint("questionnaire", __name__)
 db, cursor, database = open_connection()
 

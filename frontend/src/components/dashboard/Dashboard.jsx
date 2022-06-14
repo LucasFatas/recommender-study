@@ -159,13 +159,11 @@ export const Dashboard = ({switchCurrentBatch}) => {
         />
         
       </div>
+      
       <div className='py-2 flex items-center justify-around w-1/2'>
         <button className={buttonStyle} onClick={logout} >
-          <div className='grid place-items-center '>
-            <span className="text-white">Log out</span>
-          </div>
-        </button> 
-
+          Log out
+        </button>
         {
           batchNumber === "2" 
           ? 

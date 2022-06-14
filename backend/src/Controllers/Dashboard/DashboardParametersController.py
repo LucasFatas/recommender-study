@@ -2,15 +2,14 @@ import os
 from dotenv import set_key, find_dotenv
 from flask import request, Blueprint, jsonify
 
+from src.Controllers.Dashboard.DashboardLoginController import check_token, dashboard
 from src.Controllers.Dashboard.DashboardLoginController import check_token
 from src.Services.DashboardService import get_user_total, reset_database
 from src.Services.database_config import open_connection
 from src.spotify import AuthorizationException
 
-parameterDashboard = Blueprint('dashboard/parameters', __name__)
 
-
-@parameterDashboard.route("/users")
+@dashboard.route("/users")
 def total_users():
     """
     Retrieves total number of users that have filled out the questionnaires
@@ -35,7 +34,7 @@ def total_users():
     return jsonify(users=users)
 
 
-@parameterDashboard.route("/batch")
+@dashboard.route("/batch")
 def get_batch():
     """
     Retrieves the batch number from the .env file
@@ -47,7 +46,7 @@ def get_batch():
     return jsonify(batch=batch)
 
 
-@parameterDashboard.route("/metric")
+@dashboard.route("/metric")
 def get_metric():
     """
     Retrieves the metric being employed by the experiment at that moment
@@ -71,7 +70,7 @@ def get_metric():
     return jsonify(metric=metric)
 
 
-@parameterDashboard.route("/setBatch")
+@dashboard.route("/setBatch")
 def set_batch():
     """
     Method that sets the experiment into a new batch, with the option to change the metric.
@@ -101,7 +100,7 @@ def set_batch():
     return jsonify(batch=batch, metric=metric)
 
 
-@parameterDashboard.route("/revert", methods=['POST'])
+@dashboard.route("/revert", methods=['POST'])
 def revert_batch():
     """
     Reverts the experiment to batch 1 and euclidean metric as default
@@ -129,7 +128,7 @@ def revert_batch():
     return jsonify(batch=batch, metric=metric)
 
 
-@parameterDashboard.route("/reset", methods=['POST'])
+@dashboard.route("/reset", methods=['POST'])
 def reset_experiment():
     """
     Reverts the experiment to batch 1 and euclidean metric as default
