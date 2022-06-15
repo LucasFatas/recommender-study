@@ -5,11 +5,8 @@ import { introductionPagesSecurity } from "../../../controller/pathSecurityContr
 
 const buttonDefault = "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-5 rounded-full text-2xl";
 
-//TODO use port and url in json file
-
 export const IntroductionPage = (props) => {
   
-
   const {
     type,
     intro,
@@ -28,12 +25,10 @@ export const IntroductionPage = (props) => {
     navigate(nextpage)
   }
 
-  console.log(intro)
-
   return (
-    <div className='flex flex-col items-center justify-between h-screen w-screen py-28'>
+    <div className='flex flex-col items-center justify-center h-screen w-screen py-28'>
     <h1 className="text-2xl py-5"> {intro.title} </h1>
-    <div className="w-1/2 h-3/4 overflow-y-scroll">
+    <div className="w-3/5 h-auto text-xl py-32">
       <p>{intro.introduction}</p>    
     </div>
     <div className="flex items-center justify-center w-fit mb-5 space-x-7 py-10">

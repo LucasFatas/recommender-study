@@ -41,7 +41,7 @@ export const DownloadDashboard = (props) => {
     {
       batchToDownload ? 
         <div className='grid grid-cols-3 grid-rows-3 mt-4'>
-          <span className="text-white row-start-1 row-end-4 "> Data: </span>
+          <span className="text-white row-start-1 row-end-4 col-end-1 pr-9"> Data: </span>
           {downloadData.map((data, index) => {
             if ((batchToDownload === "1" && data === "Playlist Rating&Feedback") ||  
               (batchToDownload === "1" && data === "Song Ratings") )

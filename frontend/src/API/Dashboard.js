@@ -17,8 +17,6 @@ const retrieveCSVHelperFunction = async ({batchId, token, endpoint}) => {
             }
         }).then(res => res.text());
 
-        console.log(response);
-
         return response        
     } catch (error) {
         console.log(error);
@@ -124,8 +122,6 @@ export const logIn = async (credentials) => {
         "username": credentials.username,
         "password": credentials.password
     }
-
-    console.log(credentials);
 
     try {
         const response = await fetch(`${serverUrl}:${port}/dashboard/login`, {

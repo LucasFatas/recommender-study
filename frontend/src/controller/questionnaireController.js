@@ -28,8 +28,8 @@ export const splitArrayIntoMatrix = (array, rowSize) => {
  */
 export const orderAnswers = (answers) => {
     return {
-        "personality" : new Map([...answers.personality.entries()].sort()),
-        "values" : new Map([...answers.values.entries()].sort())
+        "personality" : new Map([...answers.personality.entries()].sort(((a, b) => parseInt(a[0]) - parseInt(b[0])))),
+        "values" : new Map([...answers.values.entries()].sort(((a, b) => parseInt(a[0]) - parseInt(b[0]))))
     }
 }
 
@@ -42,7 +42,7 @@ export const orderAnswers = (answers) => {
  */
 export const stringifyAnswers = (answers) => {
     const orderedAnswers = orderAnswers(answers);
-    
+    console.log(orderedAnswers);
     return JSON.stringify({
         "personality" : Array.from(orderedAnswers.personality.entries()), 
         "values" : Array.from(orderedAnswers.values.entries())

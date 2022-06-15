@@ -7,8 +7,6 @@ const buttonDisabled = "select-none text-transparent fonted bg-transparent hover
 
 export const Buttons = (props) => {
 
-  console.log(typeof(buttonInactive));
-
   const [showWarning, setShowWarning] = useState(false);
 
   useEffect(() => {
@@ -62,7 +60,7 @@ export const Buttons = (props) => {
         </button> 
       </Link>
       
-      <button {...setStyleAndDisabled(showSubmit, answered)} onClick={handleSubmit}>
+      <button {...setStyleAndDisabled(showSubmit, answered)} onClick={showSubmit ? handleSubmit : ""}>
         Submit
       </button>
 
@@ -81,7 +79,7 @@ export const Buttons = (props) => {
         </div>
       </Link>
       {
-        showWarning 
+        showWarning && nextPage
         ?
         <div className={'absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-1/4 text-center bg-neutral-100 rounded-lg text-xl border-solid border-2 border-rose-500 p-2'}>
           <h3 className='text-rose-700'>Please fill out all questions before proceeding to next the page</h3>

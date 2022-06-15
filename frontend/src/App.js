@@ -13,7 +13,6 @@ import { WebsiteIntroduction } from './components/pages/introductions/WebsiteInt
 import { Introduction } from './components/pages/introductions/Introduction';
 import { ConsentPage } from './components/pages/ConsentPage';
 import { Thanks } from './components/pages/Thanks';
-import { ResultPage } from './components/pages/ResultPage';
 import { Dashboard } from './components/dashboard/Dashboard';
 
 import { LogIn } from './components/dashboard/LogIn';
@@ -40,7 +39,6 @@ const App = () => {
         <Route path="/consentPage"  element={<ConsentPage defaultPage={defaultPage}/>} />
         <Route path="/questionnaire/*" element={<Questionnaire defaultPage={defaultPage} />} />
         <Route path="/recommender/*" element={<Recommender  defaultPage={defaultPage}/>} />
-        <Route path="/resultPage" element={<ResultPage/>} />
         <Route path="/thanks" element={<Thanks/>} />
 
       </Routes>

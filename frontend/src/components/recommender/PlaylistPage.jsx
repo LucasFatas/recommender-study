@@ -64,7 +64,6 @@ export const PlaylistPage = (props) => {
 				pathOnSubmit="/thanks"
 				currentPath="/recommender"
 				submitFunction={() => sendRatings(ratings, feedback)}
-				submitResults={playlistName === 'random'}
 				answered={answered}
 				onNext={() => sessionStorage.setItem("currentUrl", "/recommender/page" + (nextPage))}
 			/>

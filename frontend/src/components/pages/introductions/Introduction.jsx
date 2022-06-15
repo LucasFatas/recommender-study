@@ -11,8 +11,6 @@ export const Introduction = (props) => {
 
   const { intro } = props;
 
-  console.log(firstQuestionnaire);
-
   const search = useLocation().search;
   if (sessionStorage.getItem("userID") === null)
     getAndStoreUserId(search);
