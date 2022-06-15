@@ -16,17 +16,18 @@ def add_top_songs(user_id, songs, db, cursor, database):
     :param cursor: cursor that executes the SQL commands in our database
     :param database: string of the database name we will be using
     :except mysql.connector.errors.Error: handles the case where the database has some errors
-    :raises DatabaseException: custom exception in our app, in order for better handling
+    :raises DatabaseException: custom exception in our app, in order for better handling when database commands fail
     :return: success message
     """
     try:
         song_sql = """
-            INSERT INTO """ + database + """.Song(previewUrl, userId, name, spotifyUrl) VALUES (%s, %s, %s, %s)
+            INSERT INTO """ + database + """.Song(previewUrl, userId, name, spotifyUrl, playlistNumber) 
+            VALUES (%s, %s, %s, %s, %s)
         """
         artist_sql = """INSERT INTO """ + database + """.Artist(spotifyUrl, name) VALUES (%s, %s)"""
 
-        for song in songs:
-            val = (song.preview_url, user_id, song.name, song.spotify_url)
+        for i, song in enumerate(songs):
+            val = (song.preview_url, user_id, song.name, song.spotify_url, i + 1)
             cursor.execute(song_sql, val)
             for artist in song.artists:
                 val = (song.spotify_url, artist['artist_name'])
@@ -39,7 +40,7 @@ def add_top_songs(user_id, songs, db, cursor, database):
     except mysql.connector.errors.Error as e:
         print(e)
         db.rollback()
-        raise DatabaseException("Error connecting to database when adding songs.")
+        raise DatabaseException("Error connecting to database when adding top songs of a user.")
 
 
 def get_top_songs(userId, db, cursor, database):
@@ -50,11 +51,11 @@ def get_top_songs(userId, db, cursor, database):
     :param cursor: cursor that executes the SQL commands in our database
     :param database: string of the database name we will be using
     :except mysql.connector.errors.Error: handles the case where the database has some errors
-    :raises DatabaseException: custom exception in our app, in order for better handling
+    :raises DatabaseException: custom exception in our app, in order for better handling when database commands fail
     :return: a tuple with userId and their 5 top songs
     """
     try:
-        sql = """SELECT name, previewUrl, spotifyUrl FROM """ + database + """.song WHERE userId = %s"""
+        sql = """SELECT name, previewUrl, spotifyUrl FROM """ + database + """.Song WHERE userId = %s"""
 
         cursor.execute(sql, (userId,))
 
@@ -77,7 +78,7 @@ def get_top_songs(userId, db, cursor, database):
         return songs
     except mysql.connector.errors.Error as e:
         print(e)
-        raise DatabaseException("Error connecting to database when getting songs.")
+        raise DatabaseException("Error connecting to database when getting top songs from a user.")
 
 
 def add_playlist_ratings(playlist, db, cursor, database):
@@ -88,7 +89,7 @@ def add_playlist_ratings(playlist, db, cursor, database):
     :param cursor: cursor that executes the SQL commands in our database
     :param database: string of the database name we will be using
     :except mysql.connector.errors.Error: handles the case where the database has some errors
-    :raises DatabaseException: custom exception in our app, in order for better handling
+    :raises DatabaseException: custom exception in our app, in order for better handling when database commands fail
     :return: result with all the users of a provided batch along with their answers to the questionnaires
     """
     try:
@@ -110,13 +111,17 @@ def add_playlist_ratings(playlist, db, cursor, database):
         raise DatabaseException("Error connecting to database when storing playlist ratings.")
 
 
-# Method that stores the recommendation ratings of a user
-# Parameters: a userId and a list of song objects with a name, spotify_url and list of artist(s)
-# Returns: a confirmation message
 def add_song_ratings(song_ratings, db, cursor, database):
+    """
+    Stores all the song ratings into the database, along with an index to keep track of the order of the playlist
+    :param song_ratings: the ratings of the songs, provided in a list of SongRatings
+    :param db: database object, handles the connection to our database
+    :param cursor: cursor that executes the SQL commands in our database
+    :param database: string of the database name we will be using
+    :raises DatabaseException: custom exception in our app, in order for better handling when database commands fail
+    :return: Success message
+    """
     try:
-        db, cursor, database = open_connection()
-
         sql = """
             INSERT INTO """ + database + """.SongRating(userId, matchedUserId, spotifyUrl, 
             rating, playlistNumber)

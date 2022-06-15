@@ -6,6 +6,8 @@ import { Buttons } from "../global/Buttons";
 import { sendRatings } from "../../API/Recommender";
 import { checkEveryElementIsInMap } from "../../controller/questionnaireController";
 import { updateAnswersLogic } from "../../controller/recommenderController";
+import { useNavigate } from "react-router-dom";
+import { PlaylistPageSecurity } from "../../controller/pathSecurityController";
 
 
 export const PlaylistPage = (props) => {
@@ -22,10 +24,19 @@ export const PlaylistPage = (props) => {
 		trackList, //Object[] check Recommender.jsx for structure
 		setRatingsFilled, //Function to change ratingsFilled parameter
 		comment //String containing feedback comment on current page
+		nextPage
+		playlistKey,
 	} = props;
 
 	const currentFeedback = feedback[playlistName];
 	const questionsNumberArr = questions.map((x, i) => i + 1);
+
+	const navigate = useNavigate()
+
+  useEffect(() => {
+    PlaylistPageSecurity(navigate)
+
+  }, []);
 	
 	useEffect(() => {	
 			setAnswered(checkEveryElementIsInMap(questionsNumberArr, currentFeedback.questions));
@@ -36,7 +47,7 @@ export const PlaylistPage = (props) => {
 	const onAnswerChange = (e, questionNumber) => updateAnswersLogic(e, questionNumber, feedback, setFeedback, currentFeedback, setAnswered, questionsNumberArr);
 
   return (
-		<div className="flex flex-col items-center content-center">
+		<div className="w-screen h-screen flex flex-col items-center content-center py-4 pb-32">
 			<div className='grid grid-cols-3 grid-rows-1 place-items-center'>
 				<Playlist
 					playlistName={playlistName}
@@ -55,6 +66,7 @@ export const PlaylistPage = (props) => {
 				submitFunction={() => sendRatings(ratings, feedback)}
 				submitResults={playlistName === 'random'}
 				answered={answered}
+				onNext={() => sessionStorage.setItem("currentUrl", "/recommender/page" + (nextPage))}
 			/>
 		</div>
 	)

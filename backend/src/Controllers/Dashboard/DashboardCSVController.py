@@ -4,16 +4,14 @@ import io
 import numpy as np
 from flask import request, Blueprint, jsonify, make_response
 
-from src.Controllers.Dashboard.DashboardLoginController import check_token
+from src.Controllers.Dashboard.DashboardLoginController import check_token, dashboard
 from src.Services.DashboardService import get_all_scores, get_all_answers, get_all_songs, get_all_match_data, \
     get_song_ratings
 from src.Services.database_config import open_connection
 from src.spotify import AuthorizationException
 
-CSVDashboard = Blueprint('dashboard/csv', __name__)
 
-
-@CSVDashboard.route("/scores")
+@dashboard.route("/scores")
 def retrieve_scores():
     """
     Retrieves CSV file containing tuples of userId, value scores and personality scores
@@ -52,7 +50,7 @@ def retrieve_scores():
     return output
 
 
-@CSVDashboard.route("/answers")
+@dashboard.route("/answers")
 def retrieve_answers():
     """
     Retrieves CSV file containing tuples of userId, question number and answer for that question
@@ -88,7 +86,7 @@ def retrieve_answers():
     return output
 
 
-@CSVDashboard.route("/songs")
+@dashboard.route("/songs")
 def retrieve_songs_from_batch():
     """
     Retrieves CSV file containing tuples of userId and spotify url of each user's top 5 songs.
@@ -124,7 +122,7 @@ def retrieve_songs_from_batch():
     return output
 
 
-@CSVDashboard.route("/match")
+@dashboard.route("/match")
 def retrieve_match_data():
     """
     Retrieves CSV file containing tuples of userId, matchedUserId and the feedback provided for the recommendation
@@ -194,7 +192,7 @@ def retrieve_match_data():
     return output
 
 
-@CSVDashboard.route("/songRatings")
+@dashboard.route("/songRatings")
 def retrieve_song_ratings():
     """
     Retrieves CSV file containing tuples of userId, matchedUserId and the feedback provided for the songs recommended to

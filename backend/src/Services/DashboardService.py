@@ -1,3 +1,5 @@
+import os
+
 import mysql.connector
 from src.Services.database_config import DatabaseException
 from dotenv import load_dotenv
@@ -13,7 +15,7 @@ def get_all_scores(batch, db, cursor, database):
     :param cursor: cursor that executes the SQL commands in our database
     :param database: string of the database name we will be using
     :except mysql.connector.errors.Error: handles the case where the database has some errors
-    :raises DatabaseException: custom exception in our app, in order for better handling
+    :raises DatabaseException: custom exception in our app, in order for better handling when database commands fail
     :return: result with all the users of a provided batch along with their scores
     """
     try:
@@ -33,7 +35,7 @@ def get_all_scores(batch, db, cursor, database):
 
     except mysql.connector.errors.Error as e:
         print(e)
-        raise DatabaseException("Error connecting to database when retrieving Scores.")
+        raise DatabaseException("Error connecting to database when retrieving scores.")
 
 
 def get_all_answers(batch, db, cursor, database):
@@ -44,7 +46,7 @@ def get_all_answers(batch, db, cursor, database):
     :param cursor: cursor that executes the SQL commands in our database
     :param database: string of the database name we will be using
     :except mysql.connector.errors.Error: handles the case where the database has some errors
-    :raises DatabaseException: custom exception in our app, in order for better handling
+    :raises DatabaseException: custom exception in our app, in order for better handling when database commands fail
     :return: result with all the users of a provided batch along with their answers to the questionnaires
     """
     try:
@@ -59,7 +61,7 @@ def get_all_answers(batch, db, cursor, database):
 
     except mysql.connector.errors.Error as e:
         print(e)
-        raise DatabaseException("Error connecting to database when retrieving Scores.")
+        raise DatabaseException("Error connecting to database when retrieving answers to the questionnaire.")
 
 
 def get_all_songs(batch, db, cursor, database):
@@ -70,7 +72,7 @@ def get_all_songs(batch, db, cursor, database):
     :param cursor: cursor that executes the SQL commands in our database
     :param database: string of the database name we will be using
     :except mysql.connector.errors.Error: handles the case where the database has some errors
-    :raises DatabaseException: custom exception in our app, in order for better handling
+    :raises DatabaseException: custom exception in our app, in order for better handling when database commands fail
     :return: result with all the users of a provided batch along with their scores
     """
     try:
@@ -78,6 +80,7 @@ def get_all_songs(batch, db, cursor, database):
             SELECT p.userId, spotifyUrl FROM """ + database + """.Song AS s 
             LEFT JOIN """ + database + """.Participant AS p ON s.userId = p.userId 
             WHERE p.batch = %s
+            ORDER BY p.userId, s.playlistNumber
         """
         cursor.execute(sql, (batch,))
         result = cursor.fetchall()
@@ -85,7 +88,7 @@ def get_all_songs(batch, db, cursor, database):
 
     except mysql.connector.errors.Error as e:
         print(e)
-        raise DatabaseException("Error connecting to database when retrieving Scores.")
+        raise DatabaseException("Error connecting to database when retrieving songs.")
 
 
 def get_all_match_data(db, cursor, database):
@@ -95,7 +98,7 @@ def get_all_match_data(db, cursor, database):
     :param cursor: cursor that executes the SQL commands in our database
     :param database: string of the database name we will be using
     :except mysql.connector.errors.Error: handles the case where the database has some errors
-    :raises DatabaseException: custom exception in our app, in order for better handling
+    :raises DatabaseException: custom exception in our app, in order for better handling when database commands fail
     :return: result with all the users from batch 2 along with their matches
     and the feedback provided to the playlist of each match
     """
@@ -169,7 +172,7 @@ def get_song_ratings(db, cursor, database):
     :param cursor: cursor that executes the SQL commands in our database
     :param database: string of the database name we will be using
     :except mysql.connector.errors.Error: handles the case where the database has some errors
-    :raises DatabaseException: custom exception in our app, in order for better handling
+    :raises DatabaseException: custom exception in our app, in order for better handling when database commands fail
     :return: result with all the users of batch 2 along with their song ratings (only the non-zero ones)
     """
     try:
@@ -225,7 +228,7 @@ def get_user_total(batch, db, cursor, database):
     :param cursor: cursor that executes the SQL commands in our database
     :param database: string of the database name we will be using
     :except mysql.connector.errors.Error: handles the case where the database has some errors
-    :raises DatabaseException: custom exception in our app, in order for better handling
+    :raises DatabaseException: custom exception in our app, in order for better handling when database commands fail
     :return: total number of users
     """
     try:
@@ -242,4 +245,37 @@ def get_user_total(batch, db, cursor, database):
         return str(result[0][0])
     except mysql.connector.errors.Error as e:
         print(e)
-        raise DatabaseException("Error connecting to database when retrieving Song ratings.")
+        raise DatabaseException("Error connecting to database when retrieving total users.")
+
+
+def reset_database(db, cursor, database):
+    """
+    SQL queries that delete all entries in the database
+    :param db: database object, handles the connection to our database
+    :param cursor: cursor that executes the SQL commands in our database
+    :param database: string of the database name we will be using
+    :except mysql.connector.errors.Error: handles the case where the database has some errors
+    :raises DatabaseException: custom exception in our app, in order for better handling
+    :return: Success message
+    """
+    try:
+        safe_update_sql = """SET SQL_SAFE_UPDATES = %s"""
+
+        delete_entries_sql = """TRUNCATE  """ + database + """.{table_name}"""
+        tables = ['Answer', 'Artist', 'Matches', 'OpenFeedback', 'Participant', 'Personality',
+                  'PlaylistRating', 'QuestionFeedback', 'Song', 'SongRating', 'Value']
+
+        cursor.execute(safe_update_sql, (0,))
+        for table in tables:
+            a = delete_entries_sql.format(table_name=table)
+            cursor.execute(delete_entries_sql.format(table_name=table))
+        cursor.execute(safe_update_sql, (1,))
+
+        # Commit only if we are not testing the application
+        if os.getenv('IS_TESTING') == "FALSE":
+            db.commit()
+
+    except mysql.connector.errors.Error as e:
+        print(e)
+        raise DatabaseException("Error connecting to database to reset it.")
+

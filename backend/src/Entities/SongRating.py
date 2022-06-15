@@ -14,4 +14,3 @@ class SongRating:
         self.spotify_url = spotify_url
         self.rating = rating
         self.playlistNumber = playlist_number
-

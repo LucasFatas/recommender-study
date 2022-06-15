@@ -1,6 +1,6 @@
 import React from "react";
-import { useState } from 'react';
-import { Route, Routes, Navigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { Route, Routes, Navigate, useNavigate, useLocation } from 'react-router-dom';
 
 import questions from '../../util/questions.json';
 import { QuestionnairePage } from './QuestionnairePage';
@@ -12,6 +12,7 @@ import {
   getRandomQuestionnaire,
   getDataObj
 } from "../../controller/questionnaireController";
+import { questionnaireSecurity } from "../../controller/pathSecurityController";
 
 
 const options = ['values', 'personality'];
@@ -20,8 +21,22 @@ const options = ['values', 'personality'];
 const firstQuestionnaire = getRandomQuestionnaire(options);
 
 export const Questionnaire = (props) => {
+
+  const navigate = useNavigate()
+
+  //moved here because needed in the useEffect
+  const initialPath = firstQuestionnaire === 'values' ? 'v' : 'p';
   
-  const { defaultPage } = props;
+  useEffect(() => {
+    questionnaireSecurity(navigate, initialPath)
+
+  }, []);
+  
+    
+  const {
+    defaultPage
+  } = props;
+
 
   const sessionAnswers = sessionStorage.getItem("answers");
 
@@ -34,14 +49,13 @@ export const Questionnaire = (props) => {
       : parseSessionObj(JSON.parse(sessionAnswers))
   );
   
-  const initialPath = firstQuestionnaire === 'values' ? 'v' : 'p';
+  // const lastPage = getLastPage(currentBatch === "1" ? "questionnaire" : "recommender");
 
   const valuesObj = questions.values;
   const personalityObj = questions.personality;
-  const questionsPerPage = questions.questionsPerPage;
 
-  const personalityQuestionsMatrix = splitArrayIntoMatrix(personalityObj.questions, questionsPerPage);
-  const valuesQuestionsMatrix = splitArrayIntoMatrix(valuesObj.questions, questionsPerPage);
+  const personalityQuestionsMatrix = splitArrayIntoMatrix(personalityObj.questions, personalityObj.questionsPerPage);
+  const valuesQuestionsMatrix = splitArrayIntoMatrix(valuesObj.questions, valuesObj.questionsPerPage);
 
   const values = getDataObj(valuesObj, valuesQuestionsMatrix, 'values', firstQuestionnaire);
   const personality = getDataObj(personalityObj, personalityQuestionsMatrix, 'personality', firstQuestionnaire);

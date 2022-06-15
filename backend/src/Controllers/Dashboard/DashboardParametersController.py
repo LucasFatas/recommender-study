@@ -2,15 +2,14 @@ import os
 from dotenv import set_key, find_dotenv
 from flask import request, Blueprint, jsonify
 
+from src.Controllers.Dashboard.DashboardLoginController import check_token, dashboard
 from src.Controllers.Dashboard.DashboardLoginController import check_token
-from src.Services.DashboardService import get_user_total
+from src.Services.DashboardService import get_user_total, reset_database
 from src.Services.database_config import open_connection
 from src.spotify import AuthorizationException
 
-parameterDashboard = Blueprint('dashboard/parameters', __name__)
 
-
-@parameterDashboard.route("/users")
+@dashboard.route("/users")
 def total_users():
     """
     Retrieves total number of users that have filled out the questionnaires
@@ -27,15 +26,15 @@ def total_users():
         response = jsonify({'message': "Missing Token"})
         return response, 401
 
-    batch = request.args['batchId']
     db, cursor, database = open_connection()
+    batch = request.args['batchId']
 
     users = get_user_total(batch, db, cursor, database)
 
     return jsonify(users=users)
 
 
-@parameterDashboard.route("/batch")
+@dashboard.route("/batch")
 def get_batch():
     """
     Retrieves the batch number from the .env file
@@ -47,7 +46,7 @@ def get_batch():
     return jsonify(batch=batch)
 
 
-@parameterDashboard.route("/metric")
+@dashboard.route("/metric")
 def get_metric():
     """
     Retrieves the metric being employed by the experiment at that moment
@@ -71,7 +70,7 @@ def get_metric():
     return jsonify(metric=metric)
 
 
-@parameterDashboard.route("/setBatch")
+@dashboard.route("/setBatch")
 def set_batch():
     """
     Method that sets the experiment into a new batch, with the option to change the metric.
@@ -101,11 +100,10 @@ def set_batch():
     return jsonify(batch=batch, metric=metric)
 
 
-@parameterDashboard.route("/revert", methods=['POST'])
+@dashboard.route("/revert", methods=['POST'])
 def revert_batch():
     """
     Reverts the experiment to batch 1 and euclidean metric as default
-    Method non-accessible by the dashboard, only for development purposes
     :except AuthorizationException: if the token provided has the wrong credentials
     :except KeyError: if the token provided is missing
     :return: a JSON object with the amount of users with a fulfilled experiment.
@@ -127,4 +125,34 @@ def revert_batch():
     set_key(find_dotenv(), "METRIC", os.getenv("METRIC"))
     metric = os.environ["METRIC"]
 
-    return jsonify(batch=batch)
+    return jsonify(batch=batch, metric=metric)
+
+
+@dashboard.route("/reset", methods=['POST'])
+def reset_experiment():
+    """
+    Reverts the experiment to batch 1 and euclidean metric as default
+    It also resets the database by deleting all data from the tables
+    :except AuthorizationException: if the token provided has the wrong credentials
+    :except KeyError: if the token provided is missing
+    :return: a JSON object with the amount of users with a fulfilled experiment.
+    """
+    try:
+        check_token(request.headers['Authorization'].replace("Bearer ", ""))
+    except AuthorizationException:
+        response = jsonify({'message': "Incorrect Token"})
+        return response, 401
+    except KeyError:
+        response = jsonify({'message': "Missing Token"})
+        return response, 401
+
+    db, cursor, database = open_connection()
+
+    data = revert_batch().get_json(force=True)
+    batch = data["batch"]
+    metric = data["metric"]
+
+    reset_database(db, cursor, database)
+
+    return jsonify(batch=batch, metric=metric)
+

@@ -52,7 +52,7 @@ def val_calc(val_answers):
 def reverse(score):
     """
     Calculates the reverse of a 1-5 score, in order to compute the scores of the HEXACO questionnaire
-    Thus, 1 becomes 5, 2 becomes 4, 3 stays as 3, 4 becomes 2 and 5 becomes 1.
+    Thus, 1 becomes 5, 2 becomes 4, 3 stays as 3, 4 becomes 2 and 5 becomes 1
     :param score: the number to reverse
     :return: the reversed score.
     """
@@ -62,9 +62,9 @@ def reverse(score):
 def pers_calc(pers_answers):
     """
     Calculates the scores of a user based on his answers to the HEXACO questionnaire.
-    Scoring key is commented over each array entry. The letter R after a number symbolizes the reverse of the score.
+    Scoring key is commented over each array entry. The letter R after a number symbolizes the reverse of the score
     :param pers_answers: Answers of the user, an array of size 60
-    :return: an array of 6 scores representing the rating for each of the 6 personality traits for the user.
+    :return: an array of 6 scores representing the rating for each of the 6 personality traits for the user
     """
     personalities = np.array([
         # Honesty-Humility - 6, 30R, 54, 12R, 36, 60R, 18, 42R, 24R, 48R

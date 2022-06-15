@@ -2,7 +2,6 @@ const { serverUrl, port } = require('../util/API.json');
 
 
 const retrieveCSVHelperFunction = async ({batchId, token, endpoint}) => {
-    console.log(batchId);
 
     const uri = typeof batchId === 'undefined' || batchId === null
         ? `${serverUrl}:${port}/dashboard/${endpoint}`
@@ -26,27 +25,17 @@ const retrieveCSVHelperFunction = async ({batchId, token, endpoint}) => {
     }
 }
 
-export const getSongs = async (batchId, token) => {
-    return retrieveCSVHelperFunction({batchId : batchId, token : token, endpoint : "songs"})
-}
+export const getSongs = async (batchId, token) => retrieveCSVHelperFunction({batchId : batchId, token : token, endpoint : "songs"})
 
-export const getSongRatings = async (token) => {
-   return retrieveCSVHelperFunction({token : token, endpoint : "songRatings"})
-}
+export const getSongRatings = async (token) => retrieveCSVHelperFunction({token : token, endpoint : "songRatings"})
 
-export const getScores = async (batchId, token) => {
-   return retrieveCSVHelperFunction({token : token, batchId : batchId, endpoint : "scores"})
-}
+export const getScores = async (batchId, token) => retrieveCSVHelperFunction({token : token, batchId : batchId, endpoint : "scores"})
 
-export const getAnswers = async (batchId, token) => {
-    return retrieveCSVHelperFunction({token : token, batchId : batchId, endpoint : "answers"})
-}
+export const getAnswers = async (batchId, token) => retrieveCSVHelperFunction({token : token, batchId : batchId, endpoint : "answers"})
 
-export const getMatchData = async (token) => {
-    return retrieveCSVHelperFunction({token : token, endpoint : "match"})
-}
+export const getMatchData = async (token) => retrieveCSVHelperFunction({token : token, endpoint : "match"})
 
- const getHelper = async ({setter, parameter, token, batchId, endpoint}) => {
+const getHelper = async ({setter, parameter, token, batchId, endpoint}) => {
 
     const uri = typeof batchId === 'undefined' || batchId === null
         ? `${serverUrl}:${port}/dashboard/${endpoint}`
@@ -74,19 +63,13 @@ export const getMatchData = async (token) => {
     }
 }
 
-export const getBatch = async (setBatch, parameter) => {
-    getHelper({setter : setBatch, parameter : parameter , endpoint : "batch"})
-}
+export const getBatch = async (setBatch, parameter) => getHelper({setter : setBatch, parameter : parameter , endpoint : "batch"})
 
-export const getUsers = async (setBatch, parameter, token, batchId) => {
-    getHelper({setter : setBatch, parameter : parameter, token : token, batchId : batchId , endpoint : "users"})
-}
+export const getUsers = async (setBatch, parameter, token, batchId) => getHelper({setter : setBatch, parameter : parameter, token : token, batchId : batchId , endpoint : "users"})
 
-export const getMetric = async (setBatch, parameter, token) => {
-    getHelper({setter : setBatch, parameter : parameter, token : token, endpoint : "metric"})
-}
+export const getMetric = async (setBatch, parameter, token) => getHelper({setter : setBatch, parameter : parameter, token : token, endpoint : "metric"})
 
-export const setBatch = async ( setBatch, setMetric, setChangeBatch, setMetricNextBatch, token, metric) => {
+export const setBatch = async (setBatch, setMetric, setChangeBatch, setMetricNextBatch, token, metric) => {
 
     const uri = `${serverUrl}:${port}/dashboard/setBatch?metric=${metric}`
         
@@ -112,8 +95,27 @@ export const setBatch = async ( setBatch, setMetric, setChangeBatch, setMetricNe
     }
 }
 
+const helperPost = async (uri, token) => {
+    try {
+        await fetch(`${serverUrl}:${port}/dashboard${uri}`, {
+            method: 'POST',
+            headers: {
+                'Authorization': "Bearer " + token,
+                'Content-Type': 'application/json'
+            }
+        }).then(res => res)
 
+    } catch (error) {
+        console.log(error);    
+    }
+}
 
+export const revertBatch = (token, setBatchNumber) => {
+    helperPost('/revert', token);
+    setBatchNumber(1)
+};
+
+export const resetData = (token) => helperPost('/reset', token);
 
 export const logIn = async (credentials) => {
 
