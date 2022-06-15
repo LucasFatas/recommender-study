@@ -122,6 +122,9 @@ def save_ratings():
             add_playlist_ratings(PlaylistRating(userId, matchedUserId, rating["playlistRating"]),
                                  db, cursor, database)
 
+            # Checks if the comment isn't empty, then replaces commas with semicolons, 
+            # page breaks with full stops and single and double quotation marks with spaces.
+            # This checking is done to prevent the comments from breaking the CSV files when they're exported.
             if rating["comment"] != "":
                 add_open_feedback(userId, matchedUserId,
                                   rating["comment"].replace(',' '; ').replace('\n', '. ')
