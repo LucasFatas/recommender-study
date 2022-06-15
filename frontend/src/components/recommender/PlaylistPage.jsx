@@ -23,9 +23,8 @@ export const PlaylistPage = (props) => {
 		setRatings, //Function to change ratings object
 		trackList, //Object[] check Recommender.jsx for structure
 		setRatingsFilled, //Function to change ratingsFilled parameter
-		comment //String containing feedback comment on current page
+		comment, //String containing feedback comment on current page
 		nextPage
-		playlistKey,
 	} = props;
 
 	const currentFeedback = feedback[playlistName];
