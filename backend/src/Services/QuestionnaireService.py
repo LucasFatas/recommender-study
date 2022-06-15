@@ -285,7 +285,7 @@ def get_all_personalities(batch, db, cursor, database):
         raise DatabaseException("Error connecting to database when retrieving personalities.")
 
 
-def get_random_user(user1, user2, batch, db, cursor, database):
+def get_random_user(user1, user2, user3, batch, db, cursor, database):
     """
         Retrieves all users that are not already matched and returns a random user from the set of users retrieved
         :param user1: value based matched user
@@ -301,10 +301,10 @@ def get_random_user(user1, user2, batch, db, cursor, database):
     try:
         sql = """
                 SELECT pa.userId FROM """ + database + """.Participant AS pa
-                WHERE pa.batch = %s AND NOT (pa.userId = %s OR pa.userId = %s)
+                WHERE pa.batch = %s AND NOT (pa.userId = %s OR pa.userId = %s OR pa.userId = %s)
             """
 
-        cursor.execute(sql, (batch, user1, user2))
+        cursor.execute(sql, (batch, user1, user2, user3))
         result = cursor.fetchall()
         return random.choice(result)[0]
 

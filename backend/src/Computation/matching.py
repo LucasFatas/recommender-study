@@ -18,10 +18,10 @@ def match(userId, values, personality, batch, metric):
     """
     db, cursor, database = open_connection()
     batch_personality = get_all_personalities(batch, db, cursor, database)
-    pers_user = closest_user(personality, batch_personality, metric, 0)
+    pers_user = closest_user(personality, batch_personality, metric)
 
-    val_user = closest_user(values, batch_values, metric, pers_user)
     batch_values = get_all_values(batch, db, cursor, database, pers_user)
+    val_user = closest_user(values, batch_values, metric, pers_user)
 
     random_user = get_random_user(userId, pers_user, val_user, batch, db, cursor, database)
     add_matches(userId, val_user, pers_user, random_user, db, cursor, database)
@@ -44,7 +44,7 @@ def calculate_distance(answer, batch_answer, metric):
         return euclidean_distance(answer, batch_answer)
 
 
-def closest_user(answer, batch_answer, metric):
+def closest_user(answer, batch_answer, metric, id=0):
     """
     Calculates the closest user to the given participant through the use of the distance calculation method
     :param answer: answer of the user to be matched
