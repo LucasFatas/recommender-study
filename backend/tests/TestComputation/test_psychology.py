@@ -10,7 +10,7 @@ def test_val_calc():
                    4, 4, 4, 4, 4, 4,
                    3, 3, 5, 5]
 
-    exp_values = [1.1, -0.9, -0.15, -0.57, -1.4, 1.27, -0.73, 0.35, 0.93, 0.6]
+    exp_values = [1.27, -1.4, -0.57, -0.15, -0.9, 1.1, 0.6, 0.93, 0.35, -0.73]
 
     assert val_calc(val_answers) == exp_values
 
@@ -46,13 +46,9 @@ def test_calculations():
                    1, 1, 1, 1, 1, 1, 2, 3, 4, 5
                    ]
 
-    exp_values = [4.5, 2.5, 3.25, 2.83, 2.0, 4.67, 2.67, 3.75, 4.33, 4.0]
+    exp_values = [1.27, -1.4, -0.57, -0.15, -0.9, 1.1, 0.6, 0.93, 0.35, -0.73]
     exp_pers = [3.0, 2.8, 3.7, 3.6, 3.1, 3.4]
 
     assert calculations(val_answers, pers_answers) == (exp_values, exp_pers)
 
 
-if __name__ == '__main__':
-    test_pers_calc()
-    test_val_calc()
-    test_calculations()

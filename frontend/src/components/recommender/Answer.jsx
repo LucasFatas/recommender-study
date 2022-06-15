@@ -7,10 +7,10 @@ const optionsPerAnswer = 5;
 export const Answer = (props) => {
 
   const {
-    answers,
-    onAnswerChange,
-    playlistName,
-    questionNumber
+    answers, //Map containing questionnaire answers
+    onAnswerChange, //Function triggered when an answer i changed
+    playlistName, //String with playlist name
+    questionNumber //Number with current question number
   } = props;
 
   const inputs = [];

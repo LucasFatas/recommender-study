@@ -6,10 +6,10 @@ import { Answer } from "./Answer";
 export const Feedback = (props) => {
 
   const {
-    feedback,
-    playlistName,
-    questions,
-    setFeedback
+    feedback, //Object, for structure check recommenderController initialFeedbackObj
+    playlistName, //String with playlist name
+    questions, //String[] containing questions text
+    setFeedback //Function to change current feedback object
   } = props;
 
   const currentFeedback = feedback[playlistName];

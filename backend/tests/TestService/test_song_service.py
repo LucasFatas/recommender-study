@@ -1,4 +1,4 @@
-from tests.test_fixtures import set_up
+from tests.fixtures import set_up
 from src.Services.QuestionnaireService import add_value, add_answers, add_user, add_personality
 from src.Services.SongService import add_top_songs, get_top_songs, add_playlist_ratings, add_song_ratings
 from src.Entities.Song import Song
@@ -40,13 +40,6 @@ def test_add_song_ratings(set_up):
     assert "Success storing of top songs" == add_top_songs(add_user(1), tup, db, cursor, database)
 
 
-def test_add_answers(set_up):
-    db, cursor, database = set_up
-
-    tup = [(1, 1, 1), (1, 2, 3)]
-    assert "Success storing all Answers" == add_answers(tup, db, cursor, database)
-
-
 def test_get_top_songs(set_up):
     db, cursor, database = set_up
 
@@ -54,28 +47,33 @@ def test_get_top_songs(set_up):
         Song(
             "2hSBhzE4hbWRWl4PLMiJsu",
             "JOVEN PARA SIEMPRE",
-            [{"artist_name": "Funzo y Baby Loud"}]
+            [{"artist_name": "Funzo y Baby Loud"}],
+            "fakeurl1"
         ),
         Song(
             "1p0ZOyfoywejbepwfUyQAG",
             "Dale",
-            [{"artist_name": "Pole."}, {"artist_name": "Hens"}, {"artist_name": "Pole"}]
+            [{"artist_name": "Pole."}, {"artist_name": "Hens"}, {"artist_name": "Pole"}],
+            "fakeurl2"
 
         ),
         Song(
             "6COq76th7tzFFi2wlcD6xj",
             "Vuelve",
-            [{"artist_name": "Azel"}]
+            [{"artist_name": "Azel"}],
+            "fakeurl3"
         ),
         Song(
             "03J7yqJA8a4eSjnFUSfCbp",
             "Amanecer",
-            [{"artist_name": "Azel"}]
+            [{"artist_name": "Azel"}],
+            "fakeurl4"
         ),
         Song(
             "0LUwBqSMzszqZA7td5TjpK",
             "Loca",
-            [{"artist_name": "Azel"}]
+            [{"artist_name": "Azel"}],
+            "fakeurl5"
         )
     ]
 
@@ -102,14 +100,10 @@ def test_add_playlist_ratings(set_up):
     db, cursor, database = set_up
 
     matched_user_id = add_user(2, db, cursor, database)
-
-    playlist_ratings = [
-        PlaylistRating(matched_user_id, add_user(1, db, cursor, database), 3),
-        PlaylistRating(matched_user_id, add_user(1, db, cursor, database), 2),
-        PlaylistRating(matched_user_id, add_user(1, db, cursor, database), 5)
-    ]
-
-    assert add_playlist_ratings(playlist_ratings, db, cursor, database) == "Success storing playlist ratings"
+    user_id = add_user(1, db, cursor, database)
+    playlist_rating = PlaylistRating(matched_user_id, user_id, 3)
+    print(playlist_rating.userId)
+    assert add_playlist_ratings(playlist_rating, db, cursor, database) == "Success storing playlist ratings"
 
 
 def test_add_song_ratings(set_up):
@@ -125,27 +119,5 @@ def test_add_song_ratings(set_up):
 
     assert add_song_ratings(song_ratings, db, cursor, database) == "Success storing song ratings"
 
-
-def test_add_user(set_up):
-    db, cursor, database = set_up
-
-    actual = add_user(1, db, cursor, database)
-    assert type(actual) == int
-
-
-def test_add_value(set_up):
-    db, cursor, database = set_up
-
-    user_id = add_user(1, db, cursor, database)
-    tup = (1, 1, 1, 1, 1, 1, 1, 1, 1, 1)
-    assert "Success storing value" == add_value(user_id, tup, db, cursor, database)
-
-
-def test_add_personality(set_up):
-    db, cursor, database = set_up
-
-    user_id = add_user(1, db, cursor, database)
-    tup = (1, 1, 1, 1, 1, 1)
-    assert "Success storing personality" == add_personality(user_id, tup, db, cursor, database)
 
 

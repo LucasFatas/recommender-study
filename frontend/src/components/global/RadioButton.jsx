@@ -3,11 +3,11 @@ const inputStyle = "h-5 w-5 appearance-none rounded-full h-4 w-4 border border-g
 export const RadioButton = (props) => {
 
   const {
-    answers, 
-    value, 
-    questionNumber, 
-    onChange,
-    type
+    answers, //Map containing questionnaire answers
+    value, //Number : Value of the current radio button (if it's the first it'll be 1 and so on...)
+    questionNumber, //Number : question number
+    onChange, //Function that triggers when an answer is changed
+    type //?String, can be either 'personality', 'values' or undefined.
   } = props;
 
   return (

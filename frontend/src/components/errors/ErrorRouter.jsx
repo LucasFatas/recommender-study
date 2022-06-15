@@ -3,8 +3,12 @@ import { Route, Routes } from 'react-router-dom';
 import { ErrorPage } from "./ErrorPage";
 import { PageNotFound } from "./PageNotFound";
 
-export const ErrorRouter = ({ defaultPage }) => {
-  
+export const ErrorRouter = (props) => {
+
+  const {
+    defaultPage //String with redirect path
+  } = props;
+
   return (
     <Routes>
       <Route path="*" element={<PageNotFound redirect={defaultPage} />}/>

@@ -5,8 +5,8 @@ import { Track } from "./Track";
 export const Playlist = (props) => {
 
 	const {
-		playlistName,
-		trackList
+		playlistName, //String with current playlist name, either 'personality', 'values' or 'random
+		trackList //Object[] check Recommender.jsx for structure
 	} = props;
 
 	return (
