@@ -1,8 +1,8 @@
+import sys
+
 from src.Services.QuestionnaireService import get_all_values, get_all_personalities, get_random_user, add_matches
 from src.Computation.distance import manhattan_distance, euclidean_distance
 from src.Services.database_config import open_connection
-
-db, cursor, database = open_connection()
 
 
 def match(userId, values, personality, batch, metric):
@@ -16,17 +16,19 @@ def match(userId, values, personality, batch, metric):
     :param metric: the metric that we will use to create the matches
     :return: the ids of the value matched user, the personality matched user, and the random user
     """
+    db, cursor, database = open_connection()
     batch_personality = get_all_personalities(batch, db, cursor, database)
-    pers_user = closest_user(personality, batch_personality, metric)
+    batch_values = get_all_values(batch, db, cursor, database)
 
-    batch_values = get_all_values(batch, db, cursor, database, pers_user)
-    val_user = closest_user(values, batch_values, metric)
+    pers_user = closest_user(personality, batch_personality, metric, 0)
+    val_user = closest_user(values, batch_values, metric, pers_user)
 
-    random_user = get_random_user(pers_user, val_user, batch, db, cursor, database)
+    random_user = get_random_user(userId, pers_user, val_user, batch, db, cursor, database)
     add_matches(userId, val_user, pers_user, random_user, db, cursor, database)
     return val_user, pers_user, random_user
 
 
+# Calculates Distance of two vectors based on a defined metric
 def calculate_distance(answer, batch_answer, metric):
     """
     Method that calculates which distance metric we are going to use to match users
@@ -38,7 +40,7 @@ def calculate_distance(answer, batch_answer, metric):
     """
     if metric.casefold() == "Manhattan".casefold():
         return manhattan_distance(answer, batch_answer)
-    elif metric.casefold() == "Euclidean".casefold() or metric.casefold() == "Euclidian".casefold():
+    elif metric.casefold() == "Euclidean".casefold():
         return euclidean_distance(answer, batch_answer)
 
 
@@ -51,10 +53,15 @@ def closest_user(answer, batch_answer, metric):
     :return: closest id of all the users in the batch_answer set
     """
     closest = -1
-    closest_distance = float("inf")
+    closest_distance = sys.maxsize
+    count = 0
     for x in batch_answer:
-        distance = calculate_distance(answer, x[-(len(x) - 1):], metric)
-        if distance < closest_distance:
+        count += 1
+        distance = calculate_distance(answer, x[1:], metric)
+        print(distance, answer, x[1:], metric)
+        if distance < closest_distance and count != id:
             closest_distance = distance
             closest = x[0]
     return closest
+
+

@@ -79,6 +79,7 @@ def match_user():
 
             data.append(matched)
         return jsonify(match=data)
+
     except DatabaseException as e:
         # Exception handling in case there is an error.
         response = jsonify({'message': str(e)})
@@ -107,10 +108,8 @@ def save_ratings():
         # Add song ratings into our database.
         # In order to do that, we need to format the data retrieved. We use a helper Entity SongRating:
         # SongRating(user id, matched user, spotify preview url, rating)
-
         for rating in ratings:
             songRatings = []
-
             matchedUserId = rating["matchedUserId"]
 
             for i, songRating in enumerate(rating["songsRatings"]):

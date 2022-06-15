@@ -7,7 +7,7 @@ import { websiteIntroductionSecurity } from "../../../controller/pathSecurityCon
 export const WebsiteIntroduction = (props) => {
 
   const {
-    data
+    data //Object containing data of util/API.json
   } = props;
 
   

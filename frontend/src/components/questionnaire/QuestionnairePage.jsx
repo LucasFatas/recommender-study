@@ -23,15 +23,15 @@ const legendItems = [
 export const QuestionnairePage = (props) => {
 
   const {
-    answers,
-    setAnswers,
-    type,
-    numberOfPages,
-    questions,
-    pageNumber,
-    pathOnSubmit,
-    optionsPerAnswer,
-    currentPath
+    answers, //Object containing maps containing answers to questionnaire
+    setAnswers, //Function used to change answer
+    type, //String : either 'personality' or 'values'
+    numberOfPages, //Number : total number of pages
+    questions, //String[] : containing all questions for the current page
+    pageNumber, //Number : current page number
+    pathOnSubmit, //String : path to route on submit
+    optionsPerAnswer, //Number : number of radio buttons per answer
+    currentPath //String : current path of the page
   } = props;
 
   const navigate = useNavigate()
