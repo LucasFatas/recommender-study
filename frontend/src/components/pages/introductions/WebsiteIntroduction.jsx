@@ -40,8 +40,8 @@ export const WebsiteIntroduction = (props) => {
 
     <div className='flex flex-col items-center justify-center h-screen w-screen'>
       <h1 className="text-4xl">RecMix</h1>
-      <div className="w-1/2 h-1/2 overflow-y-scroll my-20">
-        <p>
+      <div className="w-1/2 h-auto overflow-y-scroll my-20">
+        <p className="text-lg">
           Our experiment is about music recommendation. In order to conduct it, 
           we need some information about your musical preferences. This is why we will 
           ask you in the next page to log in your Spotify account. (We will only have access 
