@@ -1,17 +1,18 @@
 import React from "react";
-import { useState } from 'react';
-import { Route, Routes, Navigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { Route, Routes, Navigate, useNavigate, useLocation } from 'react-router-dom';
 
 import questions from '../../util/questions.json';
 import { QuestionnairePage } from './QuestionnairePage';
+import { QuestionnaireResult } from './QuestionnaireResult';
 import { PageNotFound } from "../errors/PageNotFound";
 import { 
   splitArrayIntoMatrix, 
   parseSessionObj,
   getRandomQuestionnaire,
-  getLastPage,
   getDataObj
 } from "../../controller/questionnaireController";
+import { questionnaireSecurity } from "../../controller/pathSecurityController";
 
 
 const options = ['values', 'personality'];
@@ -20,11 +21,22 @@ const options = ['values', 'personality'];
 const firstQuestionnaire = getRandomQuestionnaire(options);
 
 export const Questionnaire = (props) => {
+
+  const navigate = useNavigate()
+
+  //moved here because needed in the useEffect
+  const initialPath = firstQuestionnaire === 'values' ? 'v' : 'p';
   
+  useEffect(() => {
+    questionnaireSecurity(navigate, initialPath)
+
+  }, []);
+  
+    
   const {
-    defaultPage,
-    currentBatch
+    defaultPage
   } = props;
+
 
   const sessionAnswers = sessionStorage.getItem("answers");
 
@@ -37,18 +49,16 @@ export const Questionnaire = (props) => {
       : parseSessionObj(JSON.parse(sessionAnswers))
   );
   
-  const initialPath = firstQuestionnaire === 'values' ? 'v' : 'p';
-  const lastPage = getLastPage(currentBatch);
+  // const lastPage = getLastPage(currentBatch === "1" ? "questionnaire" : "recommender");
 
   const valuesObj = questions.values;
   const personalityObj = questions.personality;
-  const questionsPerPage = questions.questionsPerPage;
 
-  const personalityQuestionsMatrix = splitArrayIntoMatrix(personalityObj.questions, questionsPerPage);
-  const valuesQuestionsMatrix = splitArrayIntoMatrix(valuesObj.questions, questionsPerPage);
+  const personalityQuestionsMatrix = splitArrayIntoMatrix(personalityObj.questions, personalityObj.questionsPerPage);
+  const valuesQuestionsMatrix = splitArrayIntoMatrix(valuesObj.questions, valuesObj.questionsPerPage);
 
-  const values = getDataObj(valuesObj, valuesQuestionsMatrix, 'values', lastPage, firstQuestionnaire);
-  const personality = getDataObj(personalityObj, personalityQuestionsMatrix, 'personality', lastPage, firstQuestionnaire);
+  const values = getDataObj(valuesObj, valuesQuestionsMatrix, 'values', firstQuestionnaire);
+  const personality = getDataObj(personalityObj, personalityQuestionsMatrix, 'personality', firstQuestionnaire);
 
   const questionnaireArray = firstQuestionnaire === 'values' ? [values, personality] : [personality, values];
 
@@ -77,6 +87,7 @@ export const Questionnaire = (props) => {
     <Routes>
       <Route path="*" element={<PageNotFound redirect={defaultPage} />}/>
       <Route path="/" element={<Navigate replace to={`${initialPath}/page1`}/>} />
+      <Route path="results" element={<QuestionnaireResult/>} />
       {questionnaireArray.map(obj => 
         obj.matrix.map((questions, idx) => 
           <Route

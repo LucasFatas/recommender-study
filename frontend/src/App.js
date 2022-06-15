@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import {
   BrowserRouter,
   Routes,
@@ -19,27 +18,14 @@ import { Dashboard } from './components/dashboard/Dashboard';
 
 import { LogIn } from './components/dashboard/LogIn';
 
-import questions from './util/questions.json';
 import * as data from './util/API.json'
 import intro from './util/introductions.json'
-
-import { switchBatch } from './controller/dashboardController';
 
 
 const defaultPage = '/consentPage';
 
 const App = () => {
   
-
-  const [currentBatch, setCurrentBatch] = useState('questionnaire');
-
-  //Call this function to switch batch
-  /* 
-    TODO : once the dashboard is implemented, pass this function 
-    to the Dashboard component and call it from there.
-  */
-  const switchCurrentBatch = () => switchBatch(currentBatch, setCurrentBatch);
-
   return (
     <BrowserRouter>
       <Routes>
@@ -48,13 +34,11 @@ const App = () => {
         <Route path="*" element={<PageNotFound redirect={defaultPage} />}/>
 
         <Route path="/login" element={<LogIn />} />
-        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/dashboard" element={<Dashboard/>} />
         <Route path="/websiteIntroduction" element={<WebsiteIntroduction data={data}/>} />
-        <Route path="/introduction/values" element={<Introduction intro={intro.values} nextpage="/questionnaire/v/page1" />} />
-        <Route path="/introduction/personality" element={<Introduction intro={intro.personality} nextpage={'/questionnaire/p/page1'} />} />
-        <Route path="/introduction/playlist" element={<Introduction intro={intro.playlist} nextpage={'/recommender'} />} />
+        <Route path="/introduction/*" element={<Introduction intro={intro}/>}/>
         <Route path="/consentPage"  element={<ConsentPage defaultPage={defaultPage}/>} />
-        <Route path="/questionnaire/*" element={<Questionnaire defaultPage={defaultPage} currentBatch={currentBatch}/>} />
+        <Route path="/questionnaire/*" element={<Questionnaire defaultPage={defaultPage} />} />
         <Route path="/recommender/*" element={<Recommender  defaultPage={defaultPage}/>} />
         <Route path="/resultPage" element={<ResultPage/>} />
         <Route path="/thanks" element={<Thanks/>} />

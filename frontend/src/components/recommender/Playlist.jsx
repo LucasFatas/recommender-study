@@ -11,17 +11,15 @@ export const Playlist = (props) => {
 
 	return (
 		<div>
-			<h2 className="text-center">{ playlistName }</h2>
-			<div className=" rounded-[20px] mx-10 px-12 py-6 border-solid border-8 border-green-300 bg-gray-900 hover:border-green-500">
+			<div className="text-xs rounded-[20px] mx-6 px-6 border-solid border-8 border-green-300 bg-gray-900 hover:border-green-500">
 				{trackList.map((e, idx) => (
 					<div key={idx}>
 						<Track 
-							trackUrl= {e.url}
+							trackUrl= {e.preview_url}
 							playlistName={playlistName} 
 							song={idx} 
-							songName={e.songName}
-							artist={e.artist}
-							albumName={e.albumName}
+							songName={e.name}
+							artist={e.artists}
 							idx={idx}
 							key={idx}
 							{...props}
@@ -32,7 +30,7 @@ export const Playlist = (props) => {
 			
 			<StarRating 
 				{...props}
-				starStyle='text-4xl text-center'
+				starStyle='text-2xl text-center'
 			/>
 		</div>
 	)
