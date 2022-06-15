@@ -31,8 +31,10 @@ export const introductionPagesSecurity = (navigate, type) => {
  */
 const helperFunction = (navigate, url) => {
     
-    if (!dev && sessionStorage.getItem("currentUrl") !== url)
-        navigate(sessionStorage.getItem("currentUrl"))  
+    const currentUrl = sessionStorage.getItem("currentUrl");
+
+    if (!dev && currentUrl && currentUrl !== url)
+        navigate(currentUrl)  
 }
 
 /**
