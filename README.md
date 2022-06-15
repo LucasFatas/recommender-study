@@ -1,87 +1,89 @@
 # Recommender
 
-
-
-## Getting started
-
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
-
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
-
-## Add your files
-
-- [ ] [Create](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#create-a-file) or [upload](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#upload-a-file) files
-- [ ] [Add files using the command line](https://docs.gitlab.com/ee/gitlab-basics/add-file.html#add-a-file-using-the-command-line) or push an existing Git repository with the following command:
-
-```
-cd existing_repo
-git remote add origin https://gitlab.ewi.tudelft.nl/cse2000-software-project/2021-2022-q4/cluster-02/value-based-recommendations/recommender.git
-git branch -M main
-git push -uf origin main
-```
-
-## Integrate with your tools
-
-- [ ] [Set up project integrations](https://gitlab.ewi.tudelft.nl/cse2000-software-project/2021-2022-q4/cluster-02/value-based-recommendations/recommender/-/settings/integrations)
-
-## Collaborate with your team
-
-- [ ] [Invite team members and collaborators](https://docs.gitlab.com/ee/user/project/members/)
-- [ ] [Create a new merge request](https://docs.gitlab.com/ee/user/project/merge_requests/creating_merge_requests.html)
-- [ ] [Automatically close issues from merge requests](https://docs.gitlab.com/ee/user/project/issues/managing_issues.html#closing-issues-automatically)
-- [ ] [Enable merge request approvals](https://docs.gitlab.com/ee/user/project/merge_requests/approvals/)
-- [ ] [Automatically merge when pipeline succeeds](https://docs.gitlab.com/ee/user/project/merge_requests/merge_when_pipeline_succeeds.html)
-
-## Test and Deploy
-
-Use the built-in continuous integration in GitLab.
-
-- [ ] [Get started with GitLab CI/CD](https://docs.gitlab.com/ee/ci/quick_start/index.html)
-- [ ] [Analyze your code for known vulnerabilities with Static Application Security Testing(SAST)](https://docs.gitlab.com/ee/user/application_security/sast/)
-- [ ] [Deploy to Kubernetes, Amazon EC2, or Amazon ECS using Auto Deploy](https://docs.gitlab.com/ee/topics/autodevops/requirements.html)
-- [ ] [Use pull-based deployments for improved Kubernetes management](https://docs.gitlab.com/ee/user/clusters/agent/)
-- [ ] [Set up protected environments](https://docs.gitlab.com/ee/ci/environments/protected_environments.html)
-
-***
-
-# Editing this README
-
-When you're ready to make this README your own, just edit this file and use the handy template below (or feel free to structure it however you want - this is just a starting point!).  Thank you to [makeareadme.com](https://www.makeareadme.com/) for this template.
-
-## Suggestions for a good README
-Every project is different, so consider which of these sections apply to yours. The sections used in the template are suggestions for most open source projects. Also keep in mind that while a README can be too long and detailed, too long is better than too short. If you think your README is too long, consider utilizing another form of documentation rather than cutting out information.
-
 ## Name
 RecMix a Value Based Recommender for Music
 
 ## Description
-The objective of this project is to create a web application. The website would consist of two parts a questionnaire and a rating part. The questionnaire would allow to determine the values and personality of an individual. The rating part would consist of rating and answering some questions about 3 playlist that are 5 songs long. One playlist comes from a user that has values analogue to the participant, another playlist comes from a user with a similar personality and the last playlist is chosen at random. This website is an experiment for PhD student Sandy Manolios to see if people appreciate music of others with similar values. To determin the values of an individual the HEXACO was chosen, more information can be found here: http://hexaco.org./ . The PVQ allows to determin the personality of users any additional information can be found here: LINK . On the internet there are a multitude of different websites to see your values and personality however this website is the only one that uses values and personality to recommend playlist. This allows participants to not only see their values and personality but additionally discover music they might appreciate. To get the music snippets and favorite songs pf each participant we use the Sportify api, the following link will show the doucumentation of the api: https://developer.spotify.com/documentation/web-api/reference/. 
+The objective of this project is to create a web application. The website consists of three parts: a questionnaire, a recommender and rating system, and a dashboard. The questionnaire allows to determine the values and personality of an individual. The rating part consists of rating and answering some questions about 3 playlist that are 5 songs long. One playlist comes from a user that has values analogue to the participant; another playlist comes from a user with a similar personality; and the last playlist is chosen at random. The dashboard part belongs to the experiment manipulation and management, and will solely be accessed by the researcher of this experiment - and our client - PhD candidate Sandy Manolios. 
+
+Her research aims to prove if people appreciate music of people with similar Portrait Values. To determine the personality of an individual the HEXACO model was chosen,  and more information can be found here: http://hexaco.org./ . The PVQ allows to determine the Portrait Values of users, and additional information can be found here: http://wiki.mgto.org/doku.php/portrait_value_questionnaire_pvq?msclkid=1ae65174d05e11ec82efdd1b9bb2c30c. 
+
+When looking at inspiration from other websites, we encountered multitude of different websites to calculate your value and personality scores. However this website is the only one that uses these scores to recommend music and assess the quality of the recommendations. This allows participants not only to see their values and personality, but also discover music they might appreciate.
+
+To get the music snippets and favorite songs pf each participant we use the Spotify API. The following link will show the documentation of the api: https://developer.spotify.com/documentation/web-api/reference/.
+
+## Installation Frontend
+To install front-end application, go to the /frontend folder and use yarn or npm to run the command:
+  
+````
+yarn install
+````
+ 
+ or 
+ 
+````
+npm install
+````
+
+respectively. <br />
+This will install the packages on your computer. 
 
 
-## Badges
-On some READMEs, you may see small images that convey metadata, such as whether or not all the tests are passing for the project. You can use Shields to add some to your README. Many services also have instructions for adding a badge.
 
-## Visuals
-For the visuals the groupe tried to aim for a simple design:
+## Installation Backend
+To get the backend running smoothly, make sure to install and use python 3.8. <br />
+To install the python packages install pip and run the command:
 
-Spotify login page: 
-Question page:
-Graph page:
-All playlists page:
-Individual playlist page:
-Dashboard page:
+````
+pip install requirements.txt
+````
 
+The requirements.txt file is in the backend directory and contains all the packages used in the backend.
 
-## Installation
-Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew. However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a specific context like a particular programming language version or operating system or has dependencies that have to be installed manually, also add a Requirements subsection.
+## Run Frontend 
+To run the front-end application, go to the /frontend folder on the console and run the command:
+
+````
+yarn start-lin
+````
+
+or 
+    
+````
+yarn start-win
+````
+
+depending on if you are using linux or windows. <br />
+This will start the application on port 5000. Go then to your favorite browser and open the application with the right url and port 5000. <br />
+To build the front-end application, go to the /frontend folder and run 
+
+````
+yarn build
+````
+
+It will create the build folder and save the builded application in it. When you want to deploy the application, you only need to take the files of the build folder. 
+
+## Run Backend
+The backend can be run with the command:
+
+````
+python main.py
+````
+
+main.py is in the backend directory
+
+## Deploy application
+The application is deployed on a Bastian server provided by TU Delft. To get access to the credentials to the recmix application you need to connect with SHH and SFTP. In order to do that you can contact:
+
+Bart Vastenhouw <br />
+B.Vastenhouw@tudelft.nl
 
 ## Usage
-The use of this project is to be used by anyone with a spotify account. The website has two purposes. The first purpose is for the PhD student Sandy Manolios, this website is an expirement to aid her in her thesis so she is able to monitor the entire website. From the dashboard, she is able to change the matching metric, the batch and export data collected on the website. The second purpose is for the participants of the experiance. Participants will first be directed to a consent page explaining them what they are about to do and the experiment thay areparticipating in. Then an introduction page of either the personality of value test will appear and direct them to a questionnaire. After completting both questionnaire, participants will be able to see thier results as a gaph. Next they will be shown three playlists that the user has to complete in order to finish the experiment.    
+This project divides is divided into two different and clearly distinguishable usage cases. The first one is the experiment management use. It is intended for PhD student Sandy Manolios  to aid her in her thesis so that she is able to monitor the entire website, and the parameters involved in the experiment walkthrough. From the dashboard, she is able to change the matching metric, the batch and export data collected on the website.
 
+The second use case is for the participants of the experiment. Participants will first be directed to a consent page explaining them what they are about to do and information about the experiment thay are participating in. Then an introduction page of either the personality of value test will appear and direct them to a questionnaire. After completing both questionnaire, participants will be able to see their results as a graph. Next, and only if the participant is fulfilling the experiment in its second batch, they will be shown three playlists that they have to rate in order to finish the experiment.
 
-## Support
-For any 
-Tell people where they can go to for help. It can be any combination of an issue tracker, a chat room, an email address, etc.
+This second usage case is how the app will be handled by most of the users. The dashboard will only be used by the client, and the rest of the users of our app will go through the experiment after receiving the link from a Prolific post made by Ms Manolios. <br /><br />
 
 ## Roadmap
 If you have ideas for releases in the future, it is a good idea to list them in the README.
@@ -95,11 +97,7 @@ For people who want to make changes to your project, it's helpful to have some d
 You can also document commands to lint the code or run tests. These steps help to ensure high code quality and reduce the likelihood that the changes inadvertently break something. Having instructions for running tests is especially helpful if it requires external setup, such as starting a Selenium server for testing in a browser.
 
 ## Authors and acknowledgment
-This project was made possible because of Lucas Fatas, Diego Vieron, Daniel Puente Barajas, Nathaniel De Leeuw and Kenzo Boudier. Additionly this project was suppervised by a great TA Bianca Cosma and TU Coach Gosia Migure to make sure that the group was going in the right direction. 
-
-
-## License
-For open source projects, say how it is licensed.
+This project was made possible because of Lucas Fatas, Diego Vieron, Daniel Puente Barajas, Nathaniël De Leeuw and Kenzo Boudier. Additionaly this project was supervised by TA Bianca Cosma and TU Coach Gosia Migut to make sure that the group was going in the right direction. 
 
 ## Project status
-If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
+The application is at a ready stage, and is fully deployed, but we recommend that more user testing is completed and that a helping developer is employed to ensure the application in a smoother way during the study. 
