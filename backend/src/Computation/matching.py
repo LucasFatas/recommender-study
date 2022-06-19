@@ -44,9 +44,10 @@ def calculate_distance(answer, batch_answer, metric):
         return euclidean_distance(answer, batch_answer)
 
 
-def closest_user(answer, batch_answer, metric, id=0):
+def closest_user(answer, batch_answer, metric, zero_id=0):
     """
     Calculates the closest user to the given participant through the use of the distance calculation method
+    :param zero_id: prevents variable count from breaking the for loop.
     :param answer: answer of the user to be matched
     :param batch_answer: list of answers and userIds of the participants in the specific batch
     :param metric: the metric that will be used to calculate the distances
@@ -59,7 +60,7 @@ def closest_user(answer, batch_answer, metric, id=0):
         count += 1
         distance = calculate_distance(answer, x[1:], metric)
         print(distance, answer, x[1:], metric)
-        if distance < closest_distance and count != id:
+        if distance < closest_distance and count != zero_id:
             closest_distance = distance
             closest = x[0]
     return closest

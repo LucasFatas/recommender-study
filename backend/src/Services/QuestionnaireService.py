@@ -288,8 +288,9 @@ def get_all_personalities(batch, db, cursor, database):
 def get_random_user(user1, user2, user3, batch, db, cursor, database):
     """
         Retrieves all users that are not already matched and returns a random user from the set of users retrieved
-        :param user1: value based matched user
-        :param user2: personality based matched user
+        :param user1: id of the user
+        :param user2: value based matched user
+        :param user3: personality based matched user
         :param batch: batch to retrieve information about
         :param db: database object, handles the connection to our database
         :param cursor: cursor that executes the SQL commands in our database
