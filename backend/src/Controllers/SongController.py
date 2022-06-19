@@ -126,7 +126,7 @@ def save_ratings():
             # This checking is done to prevent the comments from breaking the CSV files when they're exported.
             if rating["comment"] != "":
                 add_open_feedback(userId, matchedUserId,
-                                  rating["comment"].replace(',' '; ').replace('\n', '. ')
+                                  rating["comment"].replace(',', '; ').replace('\n', '. ')
                                   .replace('"', " ").replace("'", " "),
                                   db, cursor, database)
 
