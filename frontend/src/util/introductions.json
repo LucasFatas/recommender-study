@@ -1,0 +1,16 @@
+{
+    "personality" : {
+        "title" : "Introduction personality questionnaire",
+        "introduction" : "On the following step you will find a series of 60 statements about you. Please read each statement and decide how much you agree or disagree with that statement. Try to give the first answer that comes to your mind without thinking about it too much. Remember that there are no right or wrong answer. This survey takes about 10 minutes to complete."
+    },
+
+    "values" : {
+        "title" : "Introduction values questionnaire",
+        "introduction" : "This survey is composed of 40 brief descriptions of people. You will be asked to indicate how much like or unlike you those people are. Try to give the first answer that comes to your mind without thinking about it too much. Remember that there are no right or wrong answer. This survey takes around 10 minutes to complete."
+    },
+
+    "playlist" : {
+        "title" : "Introduction playlist",
+        "introduction" : "Thank you for completing the surveys! We are now going to use your answers to prepare for you 3 lists of recommended songs specially tailored for you. This is the last part of the study and it is composed of two steps.\n\n Step 1: \nAfter listening to each 30 seconds song excerpts, you will have to rate each list using the 5 stars scales at the bottom of your screen. You will also be able to rate specific songs if you wish to do so but it is not mandatory. \n\nFeedback on the list : \nStep 2 : \nPlease answer the following questions for this list. You can listen to the excerpts again and adjust your ratings if you wishes to do so. If you have any additional comments, feel free to add them in the optionnal comment field."
+    }
+}
